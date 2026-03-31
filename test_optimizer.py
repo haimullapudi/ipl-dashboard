@@ -123,6 +123,21 @@ class TestSquadConstraints(unittest.TestCase):
             self.assertEqual(team_sum, total,
                            f"Match {match['Match No']}: Team sum = {team_sum}, Total = {total}")
 
+    def test_both_playing_teams_have_players(self):
+        """Both home and away teams must have at least 1 player in each match."""
+        for match in self.matches:
+            home = match['Home']
+            away = match['Away']
+            home_count = int(match[home]) if match[home] else 0
+            away_count = int(match[away]) if match[away] else 0
+
+            self.assertGreaterEqual(home_count, 1,
+                                  f"Match {match['Match No']} ({home} vs {away}): "
+                                  f"{home} has 0 players")
+            self.assertGreaterEqual(away_count, 1,
+                                  f"Match {match['Match No']} ({home} vs {away}): "
+                                  f"{away} has 0 players")
+
 
 class TestTransferConstraints(unittest.TestCase):
     """Test transfer-related constraints."""
@@ -154,6 +169,44 @@ class TestTransferConstraints(unittest.TestCase):
             transfers = match['Transfers']
             self.assertTrue(transfers.isdigit() or transfers == '',
                           f"Match {match['Match No']}: Invalid transfers value '{transfers}'")
+
+    def test_transfers_calculation_correct(self):
+        """Verify transfers are calculated correctly from squad changes."""
+        TEAMS = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PK", "RCB", "RR", "SRH"]
+
+        # Get previous squad (Match 1)
+        prev_squad = {}
+        match1 = self.matches[0]
+        for team in TEAMS:
+            prev_squad[team] = int(match1[team]) if match1[team] else 0
+
+        for i in range(1, len(self.matches)):
+            match = self.matches[i]
+            curr_squad = {}
+            for team in TEAMS:
+                curr_squad[team] = int(match[team]) if match[team] else 0
+
+            # Calculate expected transfers: 11 - carried_over
+            carried_over = sum(min(prev_squad[team], curr_squad[team]) for team in TEAMS)
+            expected_transfers = 11 - carried_over
+
+            actual_transfers = int(match['Transfers']) if match['Transfers'] else 0
+
+            self.assertEqual(actual_transfers, expected_transfers,
+                           f"Match {match['Match No']}: Transfers = {actual_transfers}, "
+                           f"expected {expected_transfers} (carried over = {carried_over})")
+
+            prev_squad = curr_squad
+
+    def test_max_transfers_per_match(self):
+        """Each match (except Match 1) should have at most 4 transfers."""
+        for match in self.matches:
+            match_no = int(match['Match No'])
+            if match_no == 1:
+                continue
+            transfers = int(match['Transfers']) if match['Transfers'] else 0
+            self.assertLessEqual(transfers, 4,
+                               f"Match {match_no}: {transfers} transfers exceeds max of 4")
 
 
 class TestScoringPlayers(unittest.TestCase):
