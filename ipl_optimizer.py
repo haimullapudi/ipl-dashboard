@@ -108,14 +108,30 @@ def generate_candidates(
     min_scoring: int,
     max_scoring: int,
     max_transfers: int,
-    remaining_budget: int
+    remaining_budget: int,
+    team_gaps: Dict[str, Optional[int]] = None
 ) -> List[Tuple[Dict[str, int], int, int]]:
     """
     Generate candidate squads efficiently.
     Returns list of (squad, transfers, scoring) tuples.
+
+    Team gap constraints:
+    - Gap <= 3: max 3 players can be carried
+    - Gap > 3: max 2 players can be carried
+    - Playing teams (home/away) can have up to 7 players
     """
     candidates = []
     seen = set()
+
+    def get_max_carry(team: str, gap: Optional[int]) -> int:
+        """Get max players that can be carried for a team based on gap."""
+        if team in (home, away):
+            return 7  # Playing teams can have full allocation
+        if gap is None:
+            return 3  # No more matches - keep up to 3
+        if gap <= 3:
+            return 3  # Playing soon - keep up to 3
+        return 2  # Playing later - keep max 2
 
     def add(squad: Dict[str, int]):
         key = squad_to_tuple(squad)
@@ -128,11 +144,24 @@ def generate_candidates(
         transfers = calculate_transfers(prev_squad, squad)
         if transfers > max_transfers or transfers > remaining_budget:
             return
+        # Check gap-based carry limits
+        if team_gaps:
+            for team in TEAMS:
+                max_carry = get_max_carry(team, team_gaps.get(team))
+                if squad[team] > max_carry:
+                    return
         candidates.append((squad.copy(), transfers, scoring))
 
-    # Strategy 1: Keep previous squad if valid
+    # Apply gap limits to previous squad to get max allowed per team
+    max_per_team = {}
+    for team in TEAMS:
+        max_per_team[team] = get_max_carry(team, team_gaps.get(team) if team_gaps else None)
+
+    # Strategy 1: Keep previous squad if valid (after applying gap limits)
     prev_scoring = prev_squad[home] + prev_squad[away]
-    if min_scoring <= prev_scoring <= max_scoring:
+    # Check if prev_squad respects gap limits
+    prev_valid = all(prev_squad[t] <= max_per_team[t] for t in TEAMS)
+    if prev_valid and min_scoring <= prev_scoring <= max_scoring:
         add(prev_squad.copy())
 
     # Strategy 2: Adjust home/away counts systematically
@@ -147,56 +176,32 @@ def generate_candidates(
             if remaining < 0 or remaining > 7 * 8:
                 continue
 
-            squad = prev_squad.copy()
-            # Adjust home count
-            if h != squad[home]:
-                diff = h - squad[home]
-                if diff > 0:
-                    # Need to add players to home - take from others
-                    for t in TEAMS:
-                        if t in (home, away):
-                            continue
-                        while diff > 0 and squad[t] > 0:
-                            squad[t] -= 1
-                            diff -= 1
-                else:
-                    # Need to remove from home - give to others
-                    for t in TEAMS:
-                        if t in (home, away):
-                            continue
-                        while diff < 0 and squad[t] < 7:
-                            squad[t] += 1
-                            diff += 1
-                squad[home] = h
+            # Start fresh and apply gap limits
+            squad = {t: 0 for t in TEAMS}
+            squad[home] = h
+            squad[away] = a
 
-            # Adjust away count
-            if a != squad[away]:
-                diff = a - squad[away]
-                if diff > 0:
-                    for t in TEAMS:
-                        if t in (home, away):
-                            continue
-                        while diff > 0 and squad[t] > 0:
-                            squad[t] -= 1
-                            diff -= 1
-                else:
-                    for t in TEAMS:
-                        if t in (home, away):
-                            continue
-                        while diff < 0 and squad[t] < 7:
-                            squad[t] += 1
-                            diff += 1
-                squad[away] = a
+            # Distribute remaining players respecting gap limits
+            for t in TEAMS:
+                if t in (home, away):
+                    continue
+                # Take from prev_squad but respect gap limit
+                available = min(prev_squad[t], max_per_team[t])
+                take = min(available, remaining)
+                # Don't exceed gap limit
+                take = min(take, max_per_team[t])
+                squad[t] = take
+                remaining -= take
 
-            # Fill to 11
-            total = sum(squad.values())
-            if total < 11:
-                for t in TEAMS:
-                    while total < 11 and squad[t] < 7:
-                        squad[t] += 1
-                        total += 1
+            # If still have remaining, distribute to teams with room
+            for t in TEAMS:
+                if t in (home, away):
+                    continue
+                while remaining > 0 and squad[t] < max_per_team[t]:
+                    squad[t] += 1
+                    remaining -= 1
 
-            if sum(squad.values()) == 11 and all(0 <= c <= 7 for c in squad.values()):
+            if sum(squad.values()) == 11:
                 add(squad)
 
     # Strategy 3: Generate optimal distributions for common scoring values
@@ -213,14 +218,20 @@ def generate_candidates(
             squad[home] = h
             squad[away] = a
 
-            # Distribute remaining
+            # Distribute remaining respecting gap limits
             other = [t for t in TEAMS if t != home and t != away]
-            base = remaining // len(other)
-            extra = remaining % len(other)
-            for i, t in enumerate(other):
-                squad[t] = base + (1 if i < extra else 0)
+            for t in other:
+                max_allowed = min(max_per_team[t], remaining)
+                squad[t] = max_allowed
+                remaining -= max_allowed
 
-            if sum(squad.values()) == 11 and all(0 <= c <= 7 for c in squad.values()):
+            # If still remaining, add to teams with room (up to their gap limit)
+            for t in other:
+                while remaining > 0 and squad[t] < max_per_team[t]:
+                    squad[t] += 1
+                    remaining -= 1
+
+            if sum(squad.values()) == 11:
                 add(squad)
 
     return candidates
@@ -289,7 +300,17 @@ def beam_search(
             if remaining_budget < 0:
                 continue
 
-            # Generate candidates
+            # Build team gaps at this match (gap from current match to next)
+            team_gaps = {}
+            for team in TEAMS:
+                gap = None
+                for m in matches[match_idx:]:
+                    if m.home == team or m.away == team:
+                        gap = m.match_no - match.match_no
+                        break
+                team_gaps[team] = gap
+
+            # Generate candidates with gap-based carry limits
             candidates = generate_candidates(
                 prev_squad=prev_squad,
                 home=match.home,
@@ -297,7 +318,8 @@ def beam_search(
                 min_scoring=min_scoring,
                 max_scoring=max_scoring,
                 max_transfers=max_transfers_per_match,
-                remaining_budget=remaining_budget
+                remaining_budget=remaining_budget,
+                team_gaps=team_gaps
             )
 
             for candidate, transfers, scoring in candidates:
@@ -334,6 +356,28 @@ def beam_search(
                 prev_squad = tuple_to_squad(state.squad_tuple)
                 remaining_budget = TOTAL_TRANSFERS_CAP - state.transfers_used
 
+                # Build team_gaps for fallback
+                team_gaps = {}
+                for team in TEAMS:
+                    gap = None
+                    for m in matches[match_idx:]:
+                        if m.home == team or m.away == team:
+                            gap = m.match_no - match.match_no
+                            break
+                    team_gaps[team] = gap
+
+                # Get max per team based on gaps
+                def get_max_carry(team, gap):
+                    if team in (match.home, match.away):
+                        return 7
+                    if gap is None:
+                        return 3
+                    if gap <= 3:
+                        return 3
+                    return 2
+
+                max_per_team = {t: get_max_carry(t, team_gaps.get(t)) for t in TEAMS}
+
                 # Try to find any valid squad within budget that meets min_scoring
                 best_candidate = None
                 best_transfers = float('inf')
@@ -345,8 +389,9 @@ def beam_search(
                     away=match.away,
                     min_scoring=min_scoring,
                     max_scoring=max_scoring,
-                    max_transfers=max(4, remaining_budget),  # Use all remaining if needed
-                    remaining_budget=remaining_budget
+                    max_transfers=max(4, remaining_budget),
+                    remaining_budget=remaining_budget,
+                    team_gaps=team_gaps
                 )
 
                 for candidate, transfers, scoring in candidates:
@@ -356,32 +401,30 @@ def beam_search(
                             best_transfers = transfers
                             best_scoring = scoring
 
-                # If no valid candidate found, create one that meets min_scoring
+                # If no valid candidate found, create one that meets min_scoring and gap limits
                 if best_candidate is None:
-                    # Create a valid squad by modifying prev_squad (0 transfers = same players, just repositioned)
                     best_candidate = {t: 0 for t in TEAMS}
-                    # First, ensure min_scoring from home/away
                     best_candidate[match.home] = 3
                     best_candidate[match.away] = 3
-
-                    # Take players from prev_squad's non-playing teams
                     players_to_allocate = 5
+
+                    # Allocate respecting gap limits
                     for t in TEAMS:
                         if t in (match.home, match.away):
                             continue
-                        take = min(prev_squad[t], players_to_allocate)
+                        take = min(prev_squad[t], max_per_team[t], players_to_allocate)
                         best_candidate[t] = take
                         players_to_allocate -= take
                         if players_to_allocate <= 0:
                             break
 
-                    # Fill remaining slots
+                    # Fill remaining up to gap limits
                     for t in TEAMS:
-                        while players_to_allocate > 0 and best_candidate[t] < 7:
+                        while players_to_allocate > 0 and best_candidate[t] < max_per_team[t]:
                             best_candidate[t] += 1
                             players_to_allocate -= 1
 
-                    best_transfers = 0  # Same 11 players, just repositioned (no new players)
+                    best_transfers = 0
                     best_scoring = best_candidate[match.home] + best_candidate[match.away]
 
                 new_state = State(
