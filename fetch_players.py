@@ -236,7 +236,14 @@ def generate_html(data):
             font-size: 0.85rem;
             letter-spacing: 0.5px;
             white-space: nowrap;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
         }
+        th:hover { background: rgba(240, 165, 0, 0.8); }
+        th .sort-icon { margin-left: 5px; opacity: 0.5; }
+        th:hover .sort-icon { opacity: 1; }
+        th.sorted .sort-icon { opacity: 1; }
         tbody tr {
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             transition: background 0.3s ease;
@@ -379,12 +386,33 @@ def generate_html(data):
         function formatPercent(n) { return (n === null || n === undefined) ? '-' : n.toFixed(1) + '%'; }
         function getPointsClass(p) { return p >= 100 ? 'points-high' : p >= 50 ? 'points-medium' : 'points-low'; }
 
+        let currentSort = { field: 'isPlaying', direction: 'desc' };
+
+        function sortPlayers(players, field, type) {
+            const dir = currentSort.direction === 'asc' ? 1 : -1;
+            return [...players].sort((a, b) => {
+                let aVal = a[field];
+                let bVal = b[field];
+                if (type === 'string') {
+                    return dir * (aVal || '').localeCompare(bVal || '');
+                } else if (type === 'number') {
+                    return dir * ((aVal || 0) - (bVal || 0));
+                } else if (type === 'boolean') {
+                    return dir * ((bVal ? 1 : 0) - (aVal ? 1 : 0));
+                }
+                return 0;
+            });
+        }
+
         function renderTable(data) {
             const players = data.gamedayPlayers || [];
             const announcedCount = players.filter(p => p.isAnnounced).length;
             const playingCount = players.filter(p => p.isPlaying).length;
             const avgPoints = players.reduce((s, p) => s + (p.gamedayPoints || 0), 0) / players.length;
             const topScorer = players.reduce((max, p) => p.gamedayPoints > max.gamedayPoints ? p : max, players[0]);
+
+            // Default sort by playing XI (descending)
+            let sortedPlayers = sortPlayers(players, currentSort.field, 'boolean');
 
             const summaryHTML = `
                 <div class="stats-summary">
@@ -405,13 +433,21 @@ def generate_html(data):
                     <table id="playersTable">
                         <thead>
                             <tr>
-                                <th>Name</th><th>Team</th><th>Skill</th><th>Value (Cr)</th>
-                                <th>Active</th><th>Selected %</th><th>Captain %</th>
-                                <th>VCaptain %</th><th>Game Points</th><th>Overall Points</th>
+                                <th data-sort="isPlaying" data-type="boolean">Playing <span class="sort-icon">⇅</span></th>
+                                <th data-sort="fullName" data-type="string">Name <span class="sort-icon">⇅</span></th>
+                                <th data-sort="teamShortName" data-type="string">Team <span class="sort-icon">⇅</span></th>
+                                <th data-sort="skillName" data-type="string">Skill <span class="sort-icon">⇅</span></th>
+                                <th data-sort="value" data-type="number">Value (Cr) <span class="sort-icon">⇅</span></th>
+                                <th data-sort="isActive" data-type="boolean">Active <span class="sort-icon">⇅</span></th>
+                                <th data-sort="selectedPer" data-type="number">Selected % <span class="sort-icon">⇅</span></th>
+                                <th data-sort="capSelectedPer" data-type="number">Captain % <span class="sort-icon">⇅</span></th>
+                                <th data-sort="vCapSelectedPer" data-type="number">VCaptain % <span class="sort-icon">⇅</span></th>
+                                <th data-sort="gamedayPoints" data-type="number">Game Points <span class="sort-icon">⇅</span></th>
+                                <th data-sort="overallPoints" data-type="number">Overall Points <span class="sort-icon">⇅</span></th>
                             </tr>
                         </thead>
                         <tbody id="playersBody">
-                            ${players.map((p, idx) => `
+                            ${sortedPlayers.map((p, idx) => `
                                 <tr data-idx="${idx}" data-team="${p.teamShortName || ''}" data-announced="${p.isAnnounced ? '1' : '0'}" data-playing="${p.isPlaying ? '1' : '0'}">
                                     <td class="${p.isPlaying ? 'playing-player' : ''}${p.isAnnounced ? ' announced-player' : ''}">${p.isPlaying ? '✓ ' : ''}${p.fullName || p.shortName}</td>
                                     <td><span class="team-badge" style="background: ${getTeamColor(p.teamShortName)}; color: #fff;">${p.teamShortName || '-'}</span></td>
@@ -441,6 +477,56 @@ def generate_html(data):
 
             // Initialize filter stats
             document.getElementById('totalCount').textContent = players.length;
+
+            // Add click handlers for sorting
+            document.querySelectorAll('th[data-sort]').forEach(th => {
+                th.addEventListener('click', () => {
+                    const field = th.dataset.sort;
+                    const type = th.dataset.type;
+
+                    // Toggle direction if same field, otherwise default to desc
+                    if (currentSort.field === field) {
+                        currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        currentSort.field = field;
+                        currentSort.direction = 'desc';
+                    }
+
+                    // Update sorted players and re-render
+                    sortedPlayers = sortPlayers(players, field, type);
+
+                    // Update visual indicators
+                    document.querySelectorAll('th').forEach(h => h.classList.remove('sorted'));
+                    th.classList.add('sorted');
+
+                    // Re-render table body with sorted players
+                    const tbody = document.getElementById('playersBody');
+                    tbody.innerHTML = sortedPlayers.map((p, idx) => `
+                        <tr data-idx="${idx}" data-team="${p.teamShortName || ''}" data-announced="${p.isAnnounced ? '1' : '0'}" data-playing="${p.isPlaying ? '1' : '0'}">
+                            <td class="${p.isPlaying ? 'playing-player' : ''}${p.isAnnounced ? ' announced-player' : ''}">${p.isPlaying ? '✓ ' : ''}${p.fullName || p.shortName}</td>
+                            <td><span class="team-badge" style="background: ${getTeamColor(p.teamShortName)}; color: #fff;">${p.teamShortName || '-'}</span></td>
+                            <td>${p.skillName || '-'}</td>
+                            <td>${formatNumber(p.value)}</td>
+                            <td>${p.isActive ? 'Yes' : 'No'}</td>
+                            <td>
+                                <div class="selected-per-bar">
+                                    <span>${formatPercent(p.selectedPer)}</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: ${Math.min(p.selectedPer || 0, 100)}%"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>${formatPercent(p.capSelectedPer)}</td>
+                            <td>${formatPercent(p.vCapSelectedPer)}</td>
+                            <td class="${getPointsClass(p.gamedayPoints)}">${formatNumber(p.gamedayPoints)}</td>
+                            <td class="${getPointsClass(p.overallPoints)}">${formatNumber(p.overallPoints)}</td>
+                        </tr>
+                    `).join('');
+
+                    applyFilters();
+                });
+            });
+
             applyFilters();
         }
 
