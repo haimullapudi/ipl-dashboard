@@ -56,8 +56,8 @@ def fetch_players():
                     'vCapSelectedPer': p.get('vCapSelectedPer', 0),
                     'gamedayPoints': p.get('GamedayPoints', 0),
                     'overallPoints': p.get('OverallPoints', 0),
-                    'isAnnounced': p.get('IsAnnounced') in ['P', 'S'],
-                    'isPlaying': p.get('IS_FP') == '1',
+                    'isPlaying': p.get('IsAnnounced') == 'P',
+                    'isAnnounced': p.get('IsAnnounced') in ['P', 'NP'],
                 }
                 data['gamedayPlayers'].append(player)
 
@@ -389,12 +389,12 @@ def generate_html(data):
             const summaryHTML = `
                 <div class="stats-summary">
                     <div class="stat-card"><h3>${players.length}</h3><p>Total Players</p></div>
-                    <div class="stat-card"><h3>${announcedCount}</h3><p>Announced (Bold)</p></div>
+                    <div class="stat-card"><h3>${announcedCount}</h3><p>Announced Squad (Bold)</p></div>
                     <div class="stat-card"><h3>${avgPoints.toFixed(1)}</h3><p>Avg Game Day Points</p></div>
                     <div class="stat-card"><h3>${playingCount}</h3><p>Playing XI (Green + ✓)</p></div>
                 </div>
                 <div class="legend">
-                    <div class="legend-item"><div class="legend-color announced"></div><span>Playing XI (Green + ✓)</span></div>
+                    <div class="legend-item"><div class="legend-color announced"></div><span>Playing (Green + ✓)</span></div>
                     <div class="legend-item"><div class="legend-color normal"></div><span>Not Playing</span></div>
                     <div class="legend-item"><span style="font-weight:bold;color:#fff;">Bold</span><span>= Announced</span></div>
                 </div>
