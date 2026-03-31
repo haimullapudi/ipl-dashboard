@@ -110,23 +110,25 @@ The optimizer achieves:
 
 | Metric | Value | Target |
 |--------|-------|--------|
-| Total Scoring Players | **301** | 280+ |
-| Average per Match | **4.30** | > 4.0 |
+| Total Scoring Players | **283** | 280+ |
+| Average per Match | **4.04** | ≥ 4.0 |
 | Transfers Used | **160/160** | 160 |
 | Min-Scoring Violations | **0** | 0 |
 | Max Players per Team | **7** | ≤ 7 |
+| Max Transfers per Match | **4** | ≤ 4 |
+| Both Teams with Players | **All 70** | ≥ 1 each |
 
 ### Transfer Distribution
 
 | Segment | Transfers | Avg/Match |
 |---------|-----------|-----------|
-| Matches 1-10 | 34 | 3.4 |
-| Matches 11-20 | 21 | 2.1 |
-| Matches 21-30 | 22 | 2.2 |
-| Matches 31-40 | 20 | 2.0 |
-| Matches 41-50 | 19 | 1.9 |
-| Matches 51-60 | 21 | 2.1 |
-| Matches 61-70 | 9 | 0.9 |
+| Matches 1-10 | 31 | 3.1 |
+| Matches 11-20 | 20 | 2.0 |
+| Matches 21-30 | 21 | 2.1 |
+| Matches 31-40 | 21 | 2.1 |
+| Matches 41-50 | 20 | 2.0 |
+| Matches 51-60 | 18 | 1.8 |
+| Matches 61-70 | 15 | 1.5 |
 
 ## Running Tests
 
@@ -134,10 +136,10 @@ The optimizer achieves:
 python3 test_optimizer.py
 ```
 
-The test suite validates:
+The test suite validates (21 tests total):
 - Gap computation (forward scan, match numbers not days)
-- Squad constraints (11 players, max 7 per team)
-- Transfer constraints (160 cap, Match 1 = 0)
+- Squad constraints (11 players, max 7 per team, both playing teams ≥ 1 player)
+- Transfer constraints (160 cap, Match 1 = 0, max 4 per match, correct calculation)
 - Scoring players (formula, min/max bounds)
 - Output format (all columns, 70 matches)
 - Optimization quality (total scoring, transfer efficiency)
