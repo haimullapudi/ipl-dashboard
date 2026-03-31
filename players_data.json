@@ -1,5 +1,5 @@
 {
-  "_fetched_at": "2026-03-31T19:26:42.224850",
+  "_fetched_at": "2026-03-31T19:42:30.483264",
   "_tourgamedayId": 4,
   "gamedayPlayers": [
     {
@@ -19,7 +19,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 4.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 3993,
@@ -38,7 +38,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 110.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63726,
@@ -57,7 +57,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 11803,
@@ -76,7 +76,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 23.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 3850,
@@ -95,7 +95,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 64.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 11229,
@@ -114,7 +114,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 27.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63751,
@@ -133,7 +133,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 56.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63961,
@@ -152,7 +152,7 @@
       "gamedayPoints": 38.0,
       "overallPoints": 38.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66799,
@@ -171,7 +171,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 13.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64712,
@@ -190,7 +190,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 116.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 10053,
@@ -209,7 +209,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 10094,
@@ -228,7 +228,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64219,
@@ -247,7 +247,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 4255,
@@ -266,7 +266,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 60122,
@@ -285,7 +285,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 4338,
@@ -304,7 +304,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 4.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 59736,
@@ -323,7 +323,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 61.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 70761,
@@ -342,7 +342,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 46.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 9782,
@@ -361,7 +361,7 @@
       "gamedayPoints": 61.0,
       "overallPoints": 61.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66044,
@@ -380,7 +380,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 12.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 69238,
@@ -399,7 +399,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 59.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67469,
@@ -418,7 +418,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": -2.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 3852,
@@ -437,7 +437,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 114.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67905,
@@ -456,7 +456,7 @@
       "gamedayPoints": 18.0,
       "overallPoints": 18.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 69500,
@@ -475,7 +475,7 @@
       "gamedayPoints": 19.0,
       "overallPoints": 19.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 62023,
@@ -494,7 +494,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 17.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66818,
@@ -513,7 +513,7 @@
       "gamedayPoints": 71.0,
       "overallPoints": 71.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 100353,
@@ -532,7 +532,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 10.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66438,
@@ -551,7 +551,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 56964,
@@ -570,7 +570,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65756,
@@ -589,7 +589,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 59547,
@@ -608,7 +608,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63187,
@@ -627,7 +627,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 69657,
@@ -646,7 +646,7 @@
       "gamedayPoints": 7.0,
       "overallPoints": 7.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64861,
@@ -665,7 +665,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 10.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65867,
@@ -684,7 +684,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 8.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64254,
@@ -703,7 +703,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 68.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65748,
@@ -722,7 +722,7 @@
       "gamedayPoints": 37.0,
       "overallPoints": 37.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 62576,
@@ -741,7 +741,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65799,
@@ -760,7 +760,7 @@
       "gamedayPoints": 4.0,
       "overallPoints": 4.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 9844,
@@ -779,7 +779,7 @@
       "gamedayPoints": 54.0,
       "overallPoints": 54.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 5407,
@@ -798,7 +798,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": -2.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65632,
@@ -817,7 +817,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 42.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 71366,
@@ -836,7 +836,7 @@
       "gamedayPoints": 13.0,
       "overallPoints": 13.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 69409,
@@ -855,7 +855,7 @@
       "gamedayPoints": 52.0,
       "overallPoints": 52.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 61837,
@@ -874,7 +874,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 11.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65027,
@@ -893,7 +893,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 88677,
@@ -912,7 +912,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 68176,
@@ -931,7 +931,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 69656,
@@ -950,7 +950,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67516,
@@ -969,7 +969,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 73830,
@@ -988,7 +988,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 5313,
@@ -1007,7 +1007,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 74761,
@@ -1026,7 +1026,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 100574,
@@ -1045,7 +1045,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 57903,
@@ -1064,7 +1064,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64440,
@@ -1083,7 +1083,7 @@
       "gamedayPoints": 16.0,
       "overallPoints": 16.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 93526,
@@ -1102,7 +1102,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66053,
@@ -1121,7 +1121,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63940,
@@ -1140,7 +1140,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66927,
@@ -1159,7 +1159,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63345,
@@ -1178,7 +1178,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 83.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65430,
@@ -1197,7 +1197,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 113017,
@@ -1216,7 +1216,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 68.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65702,
@@ -1235,7 +1235,7 @@
       "gamedayPoints": 91.0,
       "overallPoints": 91.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 71370,
@@ -1254,7 +1254,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 48.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64727,
@@ -1273,7 +1273,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 57.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 74298,
@@ -1292,7 +1292,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 23.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 84562,
@@ -1311,7 +1311,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64724,
@@ -1330,7 +1330,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 10.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67402,
@@ -1349,7 +1349,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 27.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64941,
@@ -1368,7 +1368,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 119.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 74837,
@@ -1387,7 +1387,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 5.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 4311,
@@ -1406,7 +1406,7 @@
       "gamedayPoints": 2.0,
       "overallPoints": 2.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63520,
@@ -1425,7 +1425,7 @@
       "gamedayPoints": 8.0,
       "overallPoints": 8.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67589,
@@ -1444,7 +1444,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 122.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 88352,
@@ -1463,7 +1463,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 79.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 120157,
@@ -1482,7 +1482,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 2.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66939,
@@ -1501,7 +1501,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 21.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63788,
@@ -1520,7 +1520,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": -2.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 3991,
@@ -1539,7 +1539,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 96.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65687,
@@ -1558,7 +1558,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 53.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 71411,
@@ -1577,7 +1577,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": -1.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 5132,
@@ -1596,7 +1596,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 29.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 70222,
@@ -1615,7 +1615,7 @@
       "gamedayPoints": 58.0,
       "overallPoints": 58.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66584,
@@ -1634,7 +1634,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 7.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 114349,
@@ -1653,7 +1653,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 84.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 71376,
@@ -1672,7 +1672,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65893,
@@ -1691,7 +1691,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65034,
@@ -1710,7 +1710,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65723,
@@ -1729,7 +1729,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 74296,
@@ -1748,7 +1748,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 82442,
@@ -1767,7 +1767,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65478,
@@ -1786,7 +1786,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 70500,
@@ -1805,7 +1805,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "S",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 71151,
@@ -1824,7 +1824,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 70.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 71368,
@@ -1843,7 +1843,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 36.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63649,
@@ -1862,7 +1862,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65584,
@@ -1881,7 +1881,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 3676,
@@ -1900,7 +1900,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64721,
@@ -1919,7 +1919,7 @@
       "gamedayPoints": 8.0,
       "overallPoints": 8.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 94784,
@@ -1938,7 +1938,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": -2.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 28994,
@@ -1957,7 +1957,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65859,
@@ -1976,7 +1976,7 @@
       "gamedayPoints": 57.0,
       "overallPoints": 57.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66243,
@@ -1995,7 +1995,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 77.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 71288,
@@ -2014,7 +2014,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 49.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 88542,
@@ -2033,7 +2033,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 70376,
@@ -2052,7 +2052,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 58065,
@@ -2071,7 +2071,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 59067,
@@ -2090,7 +2090,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63865,
@@ -2109,7 +2109,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 82839,
@@ -2128,7 +2128,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 58223,
@@ -2147,7 +2147,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 83549,
@@ -2166,7 +2166,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 71260,
@@ -2185,7 +2185,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 62297,
@@ -2204,7 +2204,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 3899,
@@ -2223,7 +2223,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 68150,
@@ -2242,7 +2242,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65291,
@@ -2261,7 +2261,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 4276,
@@ -2280,7 +2280,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 41229,
@@ -2299,7 +2299,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63719,
@@ -2318,7 +2318,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64511,
@@ -2337,7 +2337,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 58482,
@@ -2356,7 +2356,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 57.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 98636,
@@ -2375,7 +2375,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 10232,
@@ -2394,7 +2394,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "S",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64225,
@@ -2413,7 +2413,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67285,
@@ -2432,7 +2432,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 12.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 70155,
@@ -2451,7 +2451,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67628,
@@ -2470,7 +2470,7 @@
       "gamedayPoints": 83.0,
       "overallPoints": 83.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 28035,
@@ -2489,7 +2489,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 10116,
@@ -2508,7 +2508,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 29.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 100564,
@@ -2527,7 +2527,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 29.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65295,
@@ -2546,7 +2546,7 @@
       "gamedayPoints": 34.0,
       "overallPoints": 34.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66870,
@@ -2565,7 +2565,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 31.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66558,
@@ -2584,7 +2584,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 124649,
@@ -2603,7 +2603,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 90571,
@@ -2622,7 +2622,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 90635,
@@ -2641,7 +2641,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 69300,
@@ -2660,7 +2660,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 137799,
@@ -2679,7 +2679,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 68585,
@@ -2698,7 +2698,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65945,
@@ -2717,7 +2717,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 89168,
@@ -2736,7 +2736,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66974,
@@ -2755,7 +2755,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64473,
@@ -2774,7 +2774,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 129988,
@@ -2793,7 +2793,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67476,
@@ -2812,7 +2812,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 134795,
@@ -2831,7 +2831,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 88873,
@@ -2850,7 +2850,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 133195,
@@ -2869,7 +2869,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67266,
@@ -2888,7 +2888,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64448,
@@ -2907,7 +2907,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 109339,
@@ -2926,7 +2926,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 74054,
@@ -2945,7 +2945,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 70402,
@@ -2964,7 +2964,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 58155,
@@ -2983,7 +2983,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 71951,
@@ -3002,7 +3002,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "S",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 124639,
@@ -3021,7 +3021,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 94786,
@@ -3040,7 +3040,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 68182,
@@ -3059,7 +3059,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 57239,
@@ -3078,7 +3078,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 23487,
@@ -3097,7 +3097,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 81813,
@@ -3116,7 +3116,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67887,
@@ -3135,7 +3135,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 4602,
@@ -3154,7 +3154,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66158,
@@ -3173,7 +3173,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 70324,
@@ -3192,7 +3192,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 83453,
@@ -3211,7 +3211,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 70296,
@@ -3230,7 +3230,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63605,
@@ -3249,7 +3249,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 71447,
@@ -3268,7 +3268,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 129073,
@@ -3287,7 +3287,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 24.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 82969,
@@ -3306,7 +3306,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66984,
@@ -3325,7 +3325,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 90501,
@@ -3344,7 +3344,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 70172,
@@ -3363,7 +3363,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 99932,
@@ -3382,7 +3382,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65160,
@@ -3401,7 +3401,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63846,
@@ -3420,7 +3420,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 6.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66812,
@@ -3439,7 +3439,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66983,
@@ -3458,7 +3458,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 24.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67784,
@@ -3477,7 +3477,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63867,
@@ -3496,7 +3496,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66953,
@@ -3515,7 +3515,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 8.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67126,
@@ -3534,7 +3534,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 4.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 74410,
@@ -3553,7 +3553,7 @@
       "gamedayPoints": 111.0,
       "overallPoints": 111.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 60544,
@@ -3572,7 +3572,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 4.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 85736,
@@ -3591,7 +3591,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63611,
@@ -3610,7 +3610,7 @@
       "gamedayPoints": 25.0,
       "overallPoints": 25.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67136,
@@ -3629,7 +3629,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 100840,
@@ -3648,7 +3648,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 88633,
@@ -3667,7 +3667,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 10128,
@@ -3686,7 +3686,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 56.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 71380,
@@ -3705,7 +3705,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 99128,
@@ -3724,7 +3724,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67706,
@@ -3743,7 +3743,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 71149,
@@ -3762,7 +3762,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "S",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 126819,
@@ -3781,7 +3781,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 90572,
@@ -3800,7 +3800,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 98813,
@@ -3819,7 +3819,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 11933,
@@ -3838,7 +3838,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 137547,
@@ -3857,7 +3857,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 90908,
@@ -3876,7 +3876,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 129333,
@@ -3895,7 +3895,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67778,
@@ -3914,7 +3914,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67726,
@@ -3933,7 +3933,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 109249,
@@ -3952,7 +3952,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 74123,
@@ -3971,7 +3971,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 132820,
@@ -3990,7 +3990,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 114374,
@@ -4009,7 +4009,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64498,
@@ -4028,7 +4028,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63550,
@@ -4047,7 +4047,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "S",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 59611,
@@ -4066,7 +4066,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "S",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 88543,
@@ -4085,7 +4085,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 88089,
@@ -4104,7 +4104,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 88692,
@@ -4123,7 +4123,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66923,
@@ -4142,7 +4142,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 81356,
@@ -4161,7 +4161,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 72042,
@@ -4180,7 +4180,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 86633,
@@ -4199,7 +4199,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 69659,
@@ -4218,7 +4218,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63082,
@@ -4237,7 +4237,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65618,
@@ -4256,7 +4256,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 74097,
@@ -4275,7 +4275,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "S",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 89179,
@@ -4294,7 +4294,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65152,
@@ -4313,7 +4313,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 133689,
@@ -4332,7 +4332,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 41.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 89196,
@@ -4351,7 +4351,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 126180,
@@ -4370,7 +4370,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 99098,
@@ -4389,7 +4389,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 100570,
@@ -4408,7 +4408,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 95322,
@@ -4427,7 +4427,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 64783,
@@ -4446,7 +4446,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "S",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 89169,
@@ -4465,7 +4465,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 70925,
@@ -4484,7 +4484,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 81901,
@@ -4503,7 +4503,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67752,
@@ -4522,7 +4522,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63641,
@@ -4541,7 +4541,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65090,
@@ -4560,7 +4560,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 96648,
@@ -4579,7 +4579,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": -2.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66819,
@@ -4598,7 +4598,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "NP",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66368,
@@ -4617,7 +4617,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66195,
@@ -4636,7 +4636,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 64.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 73152,
@@ -4655,7 +4655,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 15.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 126643,
@@ -4674,7 +4674,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 31.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 67735,
@@ -4693,7 +4693,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 27.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 88627,
@@ -4712,7 +4712,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66823,
@@ -4731,7 +4731,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 65861,
@@ -4750,7 +4750,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 63962,
@@ -4769,7 +4769,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 35.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66516,
@@ -4788,7 +4788,7 @@
       "gamedayPoints": 25.0,
       "overallPoints": 25.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 91316,
@@ -4807,7 +4807,7 @@
       "gamedayPoints": 35.0,
       "overallPoints": 35.0,
       "isAnnounced": "P",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 57672,
@@ -4826,7 +4826,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 87.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 5448,
@@ -4845,7 +4845,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 41.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     },
     {
       "id": 66046,
@@ -4864,7 +4864,7 @@
       "gamedayPoints": 0.0,
       "overallPoints": 61.0,
       "isAnnounced": "",
-      "isInjured": false
+      "isPlaying": false
     }
   ]
 }

@@ -57,7 +57,7 @@ def fetch_players():
                     'gamedayPoints': p.get('GamedayPoints', 0),
                     'overallPoints': p.get('OverallPoints', 0),
                     'isAnnounced': p.get('IsAnnounced', False),
-                    'isInjured': p.get('isInjured', '0') == '1',
+                    'isPlaying': p.get('IS_FP', 0) == 1,
                 }
                 data['gamedayPlayers'].append(player)
 
@@ -253,6 +253,9 @@ def generate_html(data):
         }
         .announced-player {
             font-weight: 700 !important;
+        }
+        .playing-player {
+            font-weight: 700 !important;
             color: #4ade80 !important;
             text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
         }
@@ -351,8 +354,8 @@ def generate_html(data):
                 <div class="filter-group">
                     <label>Display Options</label>
                     <label class="checkbox-group" style="cursor: pointer;">
-                        <input type="checkbox" id="announcedOnly" onchange="applyFilters()">
-                        <span>Show Announced Only</span>
+                        <input type="checkbox" id="playingOnly" onchange="applyFilters()">
+                        <span>Show Playing XI Only</span>
                     </label>
                 </div>
                 <div class="filter-stats">
@@ -379,19 +382,21 @@ def generate_html(data):
         function renderTable(data) {
             const players = data.gamedayPlayers || [];
             const announcedCount = players.filter(p => p.isAnnounced).length;
+            const playingCount = players.filter(p => p.isPlaying).length;
             const avgPoints = players.reduce((s, p) => s + (p.gamedayPoints || 0), 0) / players.length;
             const topScorer = players.reduce((max, p) => p.gamedayPoints > max.gamedayPoints ? p : max, players[0]);
 
             const summaryHTML = `
                 <div class="stats-summary">
                     <div class="stat-card"><h3>${players.length}</h3><p>Total Players</p></div>
-                    <div class="stat-card"><h3>${announcedCount}</h3><p>In Today's Squad</p></div>
+                    <div class="stat-card"><h3>${announcedCount}</h3><p>Announced (Bold)</p></div>
                     <div class="stat-card"><h3>${avgPoints.toFixed(1)}</h3><p>Avg Game Day Points</p></div>
-                    <div class="stat-card"><h3>${topScorer?.gamedayPoints || 0}</h3><p>Top Scorer (${topScorer?.shortName || '-'})</p></div>
+                    <div class="stat-card"><h3>${playingCount}</h3><p>Playing XI (Green + ✓)</p></div>
                 </div>
                 <div class="legend">
-                    <div class="legend-item"><div class="legend-color announced"></div><span>In Today's Squad (Announced)</span></div>
-                    <div class="legend-item"><div class="legend-color normal"></div><span>Not Announced</span></div>
+                    <div class="legend-item"><div class="legend-color announced"></div><span>Playing XI (Green + ✓)</span></div>
+                    <div class="legend-item"><div class="legend-color normal"></div><span>Not Playing</span></div>
+                    <div class="legend-item"><span style="font-weight:bold;color:#fff;">Bold</span><span>= Announced</span></div>
                 </div>
             `;
 
@@ -407,8 +412,8 @@ def generate_html(data):
                         </thead>
                         <tbody id="playersBody">
                             ${players.map((p, idx) => `
-                                <tr data-idx="${idx}" data-team="${p.teamShortName || ''}" data-announced="${p.isAnnounced ? '1' : '0'}">
-                                    <td class="${p.isAnnounced ? 'announced-player' : ''}">${p.isAnnounced ? '✓ ' : ''}${p.fullName || p.shortName}</td>
+                                <tr data-idx="${idx}" data-team="${p.teamShortName || ''}" data-announced="${p.isAnnounced ? '1' : '0'}" data-playing="${p.isPlaying ? '1' : '0'}">
+                                    <td class="${p.isPlaying ? 'playing-player' : ''}${p.isAnnounced ? ' announced-player' : ''}">${p.isPlaying ? '✓ ' : ''}${p.fullName || p.shortName}</td>
                                     <td><span class="team-badge" style="background: ${getTeamColor(p.teamShortName)}; color: #fff;">${p.teamShortName || '-'}</span></td>
                                     <td>${p.skillName || '-'}</td>
                                     <td>${formatNumber(p.value)}</td>
@@ -441,14 +446,14 @@ def generate_html(data):
 
         function applyFilters() {
             const teamFilter = document.getElementById('teamFilter').value;
-            const announcedOnly = document.getElementById('announcedOnly').checked;
+            const playingOnly = document.getElementById('playingOnly').checked;
             const rows = document.querySelectorAll('#playersBody tr');
 
             let visibleCount = 0;
 
             rows.forEach(row => {
                 const team = row.dataset.team;
-                const isAnnounced = row.dataset.announced === '1';
+                const isPlaying = row.dataset.playing === '1';
 
                 let show = true;
 
@@ -457,8 +462,8 @@ def generate_html(data):
                     show = false;
                 }
 
-                // Apply announced filter
-                if (announcedOnly && !isAnnounced) {
+                // Apply playing filter
+                if (playingOnly && !isPlaying) {
                     show = false;
                 }
 
@@ -487,7 +492,7 @@ def generate_html(data):
 
         function resetFilters() {
             document.getElementById('teamFilter').value = '';
-            document.getElementById('announcedOnly').checked = false;
+            document.getElementById('playingOnly').checked = false;
             applyFilters();
         }
 
