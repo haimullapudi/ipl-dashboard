@@ -342,7 +342,7 @@ def generate_html(data):
                         <option value="KKR">KKR</option>
                         <option value="LSG">LSG</option>
                         <option value="MI">MI</option>
-                        <option value="PK">PK</option>
+                        <option value="PBKS">PBKS</option>
                         <option value="RCB">RCB</option>
                         <option value="RR">RR</option>
                         <option value="SRH">SRH</option>
@@ -368,7 +368,7 @@ def generate_html(data):
         const teamColors = {
             'CSK': '#f9cd08', 'DC': '#004c93', 'GT': '#1c2e4a',
             'KKR': '#3a225a', 'LSG': '#a6192e', 'MI': '#004ba0',
-            'PK': '#ed1b24', 'RCB': '#ec1c24', 'RR': '#254aa5', 'SRH': '#f7a721'
+            'PBKS': '#ed1b24', 'RCB': '#ec1c24', 'RR': '#254aa5', 'SRH': '#f7a721'
         };
 
         function getTeamColor(team) { return teamColors[team] || '#666'; }
