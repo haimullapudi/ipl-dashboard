@@ -1,5 +1,5 @@
 {
-  "_fetched_at": "2026-03-31T19:42:30.483264",
+  "_fetched_at": "2026-03-31T19:47:33.176966",
   "_tourgamedayId": 4,
   "gamedayPlayers": [
     {
@@ -18,7 +18,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 4.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -37,7 +37,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 110.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -56,8 +56,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 11803,
@@ -75,7 +75,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 23.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -94,7 +94,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 64.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -113,8 +113,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 27.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 63751,
@@ -132,7 +132,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 56.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -151,7 +151,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 38.0,
       "overallPoints": 38.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -170,7 +170,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 13.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -189,7 +189,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 116.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -208,8 +208,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 10094,
@@ -227,8 +227,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 64219,
@@ -246,8 +246,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 4255,
@@ -265,8 +265,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 60122,
@@ -284,7 +284,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -303,8 +303,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 4.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 59736,
@@ -322,8 +322,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 61.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 70761,
@@ -341,7 +341,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 46.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -360,8 +360,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 61.0,
       "overallPoints": 61.0,
-      "isAnnounced": "P",
-      "isPlaying": false
+      "isAnnounced": true,
+      "isPlaying": true
     },
     {
       "id": 66044,
@@ -379,7 +379,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 12.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -398,7 +398,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 59.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -417,7 +417,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": -2.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -436,7 +436,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 114.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -455,7 +455,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 18.0,
       "overallPoints": 18.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -474,7 +474,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 19.0,
       "overallPoints": 19.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -493,8 +493,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 17.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 66818,
@@ -512,7 +512,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 71.0,
       "overallPoints": 71.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -531,7 +531,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 10.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -550,7 +550,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -569,8 +569,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 65756,
@@ -588,7 +588,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -607,7 +607,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -626,7 +626,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -645,7 +645,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 7.0,
       "overallPoints": 7.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -664,8 +664,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 10.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 65867,
@@ -683,7 +683,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 8.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -702,8 +702,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 68.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 65748,
@@ -721,8 +721,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 37.0,
       "overallPoints": 37.0,
-      "isAnnounced": "P",
-      "isPlaying": false
+      "isAnnounced": true,
+      "isPlaying": true
     },
     {
       "id": 62576,
@@ -740,7 +740,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -759,7 +759,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 4.0,
       "overallPoints": 4.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -778,7 +778,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 54.0,
       "overallPoints": 54.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -797,7 +797,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": -2.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -816,8 +816,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 42.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 71366,
@@ -835,7 +835,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 13.0,
       "overallPoints": 13.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -854,8 +854,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 52.0,
       "overallPoints": 52.0,
-      "isAnnounced": "P",
-      "isPlaying": false
+      "isAnnounced": true,
+      "isPlaying": true
     },
     {
       "id": 61837,
@@ -873,7 +873,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 11.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -892,8 +892,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 88677,
@@ -911,7 +911,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -930,7 +930,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -949,7 +949,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -968,8 +968,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 73830,
@@ -987,8 +987,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 5313,
@@ -1006,8 +1006,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 74761,
@@ -1025,8 +1025,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 100574,
@@ -1044,7 +1044,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1063,8 +1063,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 64440,
@@ -1082,7 +1082,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 16.0,
       "overallPoints": 16.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -1101,7 +1101,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1120,8 +1120,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 63940,
@@ -1139,8 +1139,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 66927,
@@ -1158,8 +1158,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 63345,
@@ -1177,7 +1177,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 83.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1196,7 +1196,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1215,7 +1215,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 68.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1234,7 +1234,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 91.0,
       "overallPoints": 91.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -1253,7 +1253,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 48.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1272,7 +1272,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 57.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1291,7 +1291,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 23.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1310,8 +1310,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 64724,
@@ -1329,7 +1329,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 10.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1348,8 +1348,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 27.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 64941,
@@ -1367,8 +1367,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 119.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 74837,
@@ -1386,7 +1386,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 5.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1405,8 +1405,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 2.0,
       "overallPoints": 2.0,
-      "isAnnounced": "P",
-      "isPlaying": false
+      "isAnnounced": true,
+      "isPlaying": true
     },
     {
       "id": 63520,
@@ -1424,7 +1424,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 8.0,
       "overallPoints": 8.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -1443,7 +1443,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 122.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1462,7 +1462,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 79.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1481,7 +1481,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 2.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1500,7 +1500,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 21.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1519,7 +1519,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": -2.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1538,7 +1538,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 96.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1557,7 +1557,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 53.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1576,8 +1576,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": -1.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 5132,
@@ -1595,7 +1595,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 29.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1614,7 +1614,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 58.0,
       "overallPoints": 58.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -1633,7 +1633,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 7.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1652,7 +1652,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 84.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1671,7 +1671,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1690,8 +1690,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 65034,
@@ -1709,8 +1709,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 65723,
@@ -1728,7 +1728,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1747,7 +1747,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1766,7 +1766,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1785,7 +1785,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1804,7 +1804,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "S",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -1823,7 +1823,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 70.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1842,7 +1842,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 36.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1861,7 +1861,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1880,8 +1880,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 3676,
@@ -1899,7 +1899,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1918,7 +1918,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 8.0,
       "overallPoints": 8.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -1937,8 +1937,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": -2.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 28994,
@@ -1956,7 +1956,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -1975,7 +1975,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 57.0,
       "overallPoints": 57.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -1994,8 +1994,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 77.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 71288,
@@ -2013,7 +2013,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 49.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2032,7 +2032,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2051,7 +2051,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2070,8 +2070,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 59067,
@@ -2089,8 +2089,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 63865,
@@ -2108,8 +2108,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 82839,
@@ -2127,7 +2127,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2146,7 +2146,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2165,7 +2165,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2184,7 +2184,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2203,7 +2203,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2222,7 +2222,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2241,7 +2241,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2260,8 +2260,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 4276,
@@ -2279,7 +2279,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2298,7 +2298,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2317,8 +2317,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 64511,
@@ -2336,7 +2336,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2355,8 +2355,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 57.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 98636,
@@ -2374,7 +2374,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2393,8 +2393,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "S",
-      "isPlaying": false
+      "isAnnounced": true,
+      "isPlaying": true
     },
     {
       "id": 64225,
@@ -2412,8 +2412,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 67285,
@@ -2431,8 +2431,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 12.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 70155,
@@ -2450,7 +2450,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2469,7 +2469,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 83.0,
       "overallPoints": 83.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -2488,8 +2488,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 10116,
@@ -2507,7 +2507,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 29.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2526,7 +2526,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 29.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2545,8 +2545,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 34.0,
       "overallPoints": 34.0,
-      "isAnnounced": "P",
-      "isPlaying": false
+      "isAnnounced": true,
+      "isPlaying": true
     },
     {
       "id": 66870,
@@ -2564,8 +2564,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 31.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 66558,
@@ -2583,7 +2583,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2602,7 +2602,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2621,8 +2621,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 90635,
@@ -2640,7 +2640,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2659,7 +2659,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2678,7 +2678,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2697,7 +2697,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2716,7 +2716,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2735,7 +2735,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2754,7 +2754,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2773,8 +2773,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 129988,
@@ -2792,7 +2792,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2811,7 +2811,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2830,7 +2830,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2849,7 +2849,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2868,7 +2868,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2887,8 +2887,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 64448,
@@ -2906,7 +2906,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2925,7 +2925,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2944,7 +2944,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2963,7 +2963,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -2982,7 +2982,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3001,7 +3001,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "S",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -3020,7 +3020,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3039,7 +3039,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3058,7 +3058,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3077,8 +3077,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 23487,
@@ -3096,8 +3096,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 81813,
@@ -3115,8 +3115,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 67887,
@@ -3134,7 +3134,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3153,7 +3153,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3172,8 +3172,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 70324,
@@ -3191,8 +3191,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 83453,
@@ -3210,7 +3210,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3229,7 +3229,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3248,8 +3248,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 71447,
@@ -3267,7 +3267,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3286,7 +3286,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 24.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3305,7 +3305,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3324,7 +3324,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3343,7 +3343,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3362,7 +3362,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3381,7 +3381,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3400,7 +3400,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3419,8 +3419,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 6.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 66812,
@@ -3438,7 +3438,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3457,7 +3457,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 24.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3476,8 +3476,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 63867,
@@ -3495,8 +3495,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 66953,
@@ -3514,7 +3514,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 8.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3533,7 +3533,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 4.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3552,8 +3552,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 111.0,
       "overallPoints": 111.0,
-      "isAnnounced": "P",
-      "isPlaying": false
+      "isAnnounced": true,
+      "isPlaying": true
     },
     {
       "id": 60544,
@@ -3571,8 +3571,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 4.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 85736,
@@ -3590,8 +3590,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 63611,
@@ -3609,8 +3609,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 25.0,
       "overallPoints": 25.0,
-      "isAnnounced": "P",
-      "isPlaying": false
+      "isAnnounced": true,
+      "isPlaying": true
     },
     {
       "id": 67136,
@@ -3628,7 +3628,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3647,7 +3647,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3666,7 +3666,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3685,8 +3685,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 56.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 71380,
@@ -3704,7 +3704,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3723,7 +3723,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3742,7 +3742,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3761,7 +3761,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "S",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -3780,7 +3780,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3799,7 +3799,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3818,7 +3818,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3837,8 +3837,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 137547,
@@ -3856,7 +3856,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3875,8 +3875,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 129333,
@@ -3894,7 +3894,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3913,8 +3913,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 67726,
@@ -3932,7 +3932,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3951,8 +3951,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 74123,
@@ -3970,7 +3970,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -3989,7 +3989,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4008,7 +4008,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4027,8 +4027,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 63550,
@@ -4046,7 +4046,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "S",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -4065,7 +4065,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "S",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -4084,7 +4084,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4103,7 +4103,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4122,7 +4122,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4141,8 +4141,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 81356,
@@ -4160,7 +4160,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4179,7 +4179,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4198,7 +4198,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4217,7 +4217,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4236,8 +4236,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 65618,
@@ -4255,8 +4255,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 74097,
@@ -4274,7 +4274,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "S",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -4293,7 +4293,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4312,7 +4312,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4331,7 +4331,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 41.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4350,7 +4350,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4369,7 +4369,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4388,7 +4388,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4407,7 +4407,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4426,7 +4426,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4445,7 +4445,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "S",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -4464,7 +4464,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4483,8 +4483,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 81901,
@@ -4502,7 +4502,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4521,7 +4521,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4540,8 +4540,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 65090,
@@ -4559,8 +4559,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 96648,
@@ -4578,8 +4578,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": -2.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 66819,
@@ -4597,7 +4597,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "NP",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4616,8 +4616,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 66195,
@@ -4635,8 +4635,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 64.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 73152,
@@ -4654,7 +4654,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 15.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4673,7 +4673,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 31.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4692,7 +4692,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 27.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4711,7 +4711,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4730,7 +4730,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4749,7 +4749,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 0.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4768,7 +4768,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 35.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4787,8 +4787,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 25.0,
       "overallPoints": 25.0,
-      "isAnnounced": "P",
-      "isPlaying": false
+      "isAnnounced": true,
+      "isPlaying": true
     },
     {
       "id": 91316,
@@ -4806,7 +4806,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 35.0,
       "overallPoints": 35.0,
-      "isAnnounced": "P",
+      "isAnnounced": true,
       "isPlaying": false
     },
     {
@@ -4825,8 +4825,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 87.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     },
     {
       "id": 5448,
@@ -4844,7 +4844,7 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 41.0,
-      "isAnnounced": "",
+      "isAnnounced": false,
       "isPlaying": false
     },
     {
@@ -4863,8 +4863,8 @@
       "vCapSelectedPer": 0,
       "gamedayPoints": 0.0,
       "overallPoints": 61.0,
-      "isAnnounced": "",
-      "isPlaying": false
+      "isAnnounced": false,
+      "isPlaying": true
     }
   ]
 }

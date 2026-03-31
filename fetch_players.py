@@ -56,8 +56,8 @@ def fetch_players():
                     'vCapSelectedPer': p.get('vCapSelectedPer', 0),
                     'gamedayPoints': p.get('GamedayPoints', 0),
                     'overallPoints': p.get('OverallPoints', 0),
-                    'isAnnounced': p.get('IsAnnounced', False),
-                    'isPlaying': p.get('IS_FP', 0) == 1,
+                    'isAnnounced': p.get('IsAnnounced') in ['P', 'S'],
+                    'isPlaying': p.get('IS_FP') == '1',
                 }
                 data['gamedayPlayers'].append(player)
 
@@ -355,7 +355,7 @@ def generate_html(data):
                     <label>Display Options</label>
                     <label class="checkbox-group" style="cursor: pointer;">
                         <input type="checkbox" id="playingOnly" onchange="applyFilters()">
-                        <span>Show Playing XI Only</span>
+                        <span>Show playing XI only</span>
                     </label>
                 </div>
                 <div class="filter-stats">
