@@ -100,7 +100,12 @@ def generate_html(data):
             padding: 20px;
             color: #fff;
         }
-        .container { max-width: 1400px; margin: 0 auto; }
+        .container { max-width: 1600px; margin: 0 auto; }
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 20px;
+        }
         header {
             text-align: center;
             margin-bottom: 30px;
@@ -118,6 +123,100 @@ def generate_html(data):
             margin-bottom: 20px;
             text-align: center;
             color: #fbbf24;
+        }
+        .filter-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        .filter-panel h3 {
+            color: #f0a500;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .filter-group {
+            margin-bottom: 20px;
+        }
+        .filter-group label {
+            display: block;
+            color: #aaa;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+        .filter-group select {
+            width: 100%;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            cursor: pointer;
+        }
+        .filter-group select:focus {
+            outline: none;
+            border-color: #f0a500;
+        }
+        .filter-group select option {
+            background: #1a1a2e;
+            color: #fff;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #4ade80;
+        }
+        .checkbox-group span {
+            color: #fff;
+            font-size: 0.95rem;
+        }
+        .filter-stats {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .filter-stats p {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+        .filter-stats .count {
+            color: #f0a500;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        .reset-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #f0a500, #ff8c00);
+            border: none;
+            border-radius: 8px;
+            color: #1a1a2e;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .reset-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(240, 165, 0, 0.4);
         }
         .table-container {
             overflow-x: auto;
@@ -143,6 +242,7 @@ def generate_html(data):
             transition: background 0.3s ease;
         }
         tbody tr:hover { background: rgba(255, 255, 255, 0.1); }
+        tbody tr.hidden { display: none; }
         td { padding: 12px; vertical-align: middle; }
         .team-badge {
             display: inline-block;
@@ -200,6 +300,20 @@ def generate_html(data):
             box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
         }
         .legend-color.normal { background: #fff; }
+        .no-results {
+            text-align: center;
+            padding: 40px;
+            color: #aaa;
+            font-size: 1.1rem;
+        }
+        @media (max-width: 1024px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+            .filter-panel {
+                position: static;
+            }
+        }
         @media (max-width: 768px) {
             header h1 { font-size: 1.5rem; }
             th, td { padding: 8px 6px; font-size: 0.85rem; }
@@ -214,7 +328,39 @@ def generate_html(data):
             <p>Today's Squad & Player Statistics</p>
         </header>
         <div class="data-info">Data fetched: ''' + fetched_at + ''' | Game Day ID: ''' + str(data['_tourgamedayId']) + '''</div>
-        <div id="content"></div>
+        <div class="main-layout">
+            <div id="content"></div>
+            <div class="filter-panel">
+                <h3>Filters</h3>
+                <div class="filter-group">
+                    <label for="teamFilter">Filter by Team</label>
+                    <select id="teamFilter" onchange="applyFilters()">
+                        <option value="">All Teams</option>
+                        <option value="CSK">CSK</option>
+                        <option value="DC">DC</option>
+                        <option value="GT">GT</option>
+                        <option value="KKR">KKR</option>
+                        <option value="LSG">LSG</option>
+                        <option value="MI">MI</option>
+                        <option value="PK">PK</option>
+                        <option value="RCB">RCB</option>
+                        <option value="RR">RR</option>
+                        <option value="SRH">SRH</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Display Options</label>
+                    <label class="checkbox-group" style="cursor: pointer;">
+                        <input type="checkbox" id="announcedOnly" onchange="applyFilters()">
+                        <span>Show Announced Only</span>
+                    </label>
+                </div>
+                <div class="filter-stats">
+                    <p>Showing <span class="count" id="filteredCount">0</span> of <span class="count" id="totalCount">0</span> players</p>
+                </div>
+                <button class="reset-btn" onclick="resetFilters()">Reset Filters</button>
+            </div>
+        </div>
     </div>
     <script>
         window.playersData = ''' + players_json + ''';
@@ -251,7 +397,7 @@ def generate_html(data):
 
             const tableHTML = `
                 <div class="table-container">
-                    <table>
+                    <table id="playersTable">
                         <thead>
                             <tr>
                                 <th>Name</th><th>Team</th><th>Skill</th><th>Value (Cr)</th>
@@ -259,9 +405,9 @@ def generate_html(data):
                                 <th>VCaptain %</th><th>Game Points</th><th>Overall Points</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            ${players.map(p => `
-                                <tr>
+                        <tbody id="playersBody">
+                            ${players.map((p, idx) => `
+                                <tr data-idx="${idx}" data-team="${p.teamShortName || ''}" data-announced="${p.isAnnounced ? '1' : '0'}">
                                     <td class="${p.isAnnounced ? 'announced-player' : ''}">${p.isAnnounced ? '✓ ' : ''}${p.fullName || p.shortName}</td>
                                     <td><span class="team-badge" style="background: ${getTeamColor(p.teamShortName)}; color: #fff;">${p.teamShortName || '-'}</span></td>
                                     <td>${p.skillName || '-'}</td>
@@ -287,6 +433,62 @@ def generate_html(data):
             `;
 
             document.getElementById('content').innerHTML = summaryHTML + tableHTML;
+
+            // Initialize filter stats
+            document.getElementById('totalCount').textContent = players.length;
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const teamFilter = document.getElementById('teamFilter').value;
+            const announcedOnly = document.getElementById('announcedOnly').checked;
+            const rows = document.querySelectorAll('#playersBody tr');
+
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const team = row.dataset.team;
+                const isAnnounced = row.dataset.announced === '1';
+
+                let show = true;
+
+                // Apply team filter
+                if (teamFilter && team !== teamFilter) {
+                    show = false;
+                }
+
+                // Apply announced filter
+                if (announcedOnly && !isAnnounced) {
+                    show = false;
+                }
+
+                row.classList.toggle('hidden', !show);
+                if (show) visibleCount++;
+            });
+
+            // Update count
+            document.getElementById('filteredCount').textContent = visibleCount;
+
+            // Show no results message if needed
+            const table = document.getElementById('playersTable');
+            if (visibleCount === 0) {
+                let existingMsg = table.querySelector('.no-results');
+                if (!existingMsg) {
+                    existingMsg = document.createElement('div');
+                    existingMsg.className = 'no-results';
+                    existingMsg.textContent = 'No players match the selected filters';
+                    table.appendChild(existingMsg);
+                }
+            } else {
+                const existingMsg = table.querySelector('.no-results');
+                if (existingMsg) existingMsg.remove();
+            }
+        }
+
+        function resetFilters() {
+            document.getElementById('teamFilter').value = '';
+            document.getElementById('announcedOnly').checked = false;
+            applyFilters();
         }
 
         renderTable(window.playersData);
