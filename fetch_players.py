@@ -487,7 +487,7 @@ def generate_html(data):
                 </div>
             `;
 
-            document.getElementById('content').innerHTML = summaryHTML + tableHTML;
+            document.getElementById('content').innerHTML = tableHTML;
 
             // Initialize filter stats
             document.getElementById('totalCount').textContent = players.length;
