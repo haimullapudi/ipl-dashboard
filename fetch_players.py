@@ -521,8 +521,8 @@ def generate_html(data):
             white-space: nowrap;
         }
         .transfers-table th {
-            background: rgba(240, 165, 0, 0.2);
-            color: #f0a500;
+            background: linear-gradient(135deg, #f0a500 0%, #ff8c00 100%);
+            color: #1a1a2e;
             font-weight: 600;
             cursor: pointer;
             text-transform: uppercase;
