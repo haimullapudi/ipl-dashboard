@@ -9,7 +9,7 @@ import urllib.request
 import csv
 from datetime import datetime, date
 
-API_URL = "https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=en&tourgamedayId=4"
+API_URL = "https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=en&tourgamedayId=5"
 PLAYERS_DATA_FILE = "players_data.json"
 OUTPUT_HTML_FILE = "players.html"
 SCHEDULE_FILE = "ipl26.csv"
@@ -123,7 +123,7 @@ def fetch_players():
             # Normalize the data structure to match expected format
             data = {
                 '_fetched_at': datetime.now().isoformat(),
-                '_tourgamedayId': 4,
+                '_tourgamedayId': 5,
                 'gamedayPlayers': []
             }
 
