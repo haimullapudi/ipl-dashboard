@@ -1,0 +1,46 @@
+name: Update IPL Players Data
+
+on:
+  schedule:
+    # Run daily at 6:00 AM IST (12:30 AM UTC) - before IPL matches typically start
+    - cron: '30 0 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Fetch latest players data
+        run: |
+          python3 fetch_players.py
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --quiet players.html players_data.json || echo "has_changes=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.has_changes == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add players.html players_data.json
+          git commit -m "chore: auto-update players data $(date +%Y-%m-%d)
+
+          Automated daily update from IPL Fantasy API
+          Triggered by: GitHub Actions schedule"
+          git push
