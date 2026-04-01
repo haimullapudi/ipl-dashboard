@@ -1,9 +1,14 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Run daily at 10 AM UTC to fetch fresh data
+  # Run every 2 minutes from 9:30 to 9:40 UTC (during match updates)
   schedule:
-    - cron: '0 10 * * *'
+    - cron: '30 9 * * *'   # 9:30
+    - cron: '32 9 * * *'   # 9:32
+    - cron: '34 9 * * *'   # 9:34
+    - cron: '36 9 * * *'   # 9:36
+    - cron: '38 9 * * *'   # 9:38
+    - cron: '40 9 * * *'   # 9:40
   # Allow manual trigger
   workflow_dispatch:
   # Deploy on push to main branch
