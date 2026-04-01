@@ -185,7 +185,9 @@ body {
     display: none;
 }
 .tab-content.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 120px);
 }
 .table-container {
     background: rgba(255, 255, 255, 0.05);
