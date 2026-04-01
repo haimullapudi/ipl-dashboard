@@ -15,7 +15,9 @@
       "Bash(venv/bin/python3:*)",
       "Bash(grep:*)",
       "Bash(do:*)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(gh run:*)",
+      "Bash(open:*)"
     ]
   }
 }

@@ -5,3 +5,4 @@ venv/
 .DS_Store
 players_data.json
 *.log
+static/
