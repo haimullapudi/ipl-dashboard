@@ -143,8 +143,8 @@ def generate_html(data):
             text-align: center;
             color: #fbbf24;
         }
-        .data-info .date { display: block; margin-bottom: 4px; }
-        .data-info .gameday { display: block; font-size: 0.85rem; opacity: 0.8; }
+        .data-info .date { display: block; margin-bottom: 4px; font-size: 0.9rem; }
+        .data-info .gameday { display: block; font-size: 0.9rem; opacity: 0.8; }
         .sidebar {
             display: flex;
             flex-direction: column;
