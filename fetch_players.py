@@ -404,6 +404,8 @@ def generate_html(data):
             });
         }
 
+        let sortedPlayers = [];
+
         function renderTable(data) {
             const players = data.gamedayPlayers || [];
             const announcedCount = players.filter(p => p.isAnnounced).length;
@@ -412,7 +414,7 @@ def generate_html(data):
             const topScorer = players.reduce((max, p) => p.gamedayPoints > max.gamedayPoints ? p : max, players[0]);
 
             // Default sort by playing XI (descending)
-            let sortedPlayers = sortPlayers(players, currentSort.field, 'boolean');
+            sortedPlayers = sortPlayers(players, currentSort.field, 'boolean');
 
             const summaryHTML = `
                 <div class="stats-summary">
