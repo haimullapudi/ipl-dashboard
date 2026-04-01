@@ -2,13 +2,13 @@
 
 ## Overview
 
-Add a "Transfers" tab to the IPL Fantasy Players Dashboard that displays the complete transfer history from `ipl26_computed.csv` with visual indicators for match status.
+Add a "Transfers" tab to the IPL Fantasy Players Dashboard that displays the complete transfer history from `src/transfer_optimizer/ipl26_computed.csv` with visual indicators for match status.
 
 ## Architecture
 
 ### Data Source
 
-**File:** `ipl26_computed.csv`
+**File:** `src/transfer_optimizer/ipl26_computed.csv`
 
 | Column | Name | Description |
 |--------|------|-------------|
@@ -26,7 +26,7 @@ Add a "Transfers" tab to the IPL Fantasy Players Dashboard that displays the com
 ### Implementation
 
 1. **Python Script (fetch_players.py)**
-   - Add `load_transfers_data()` function to read `ipl26_computed.csv`
+   - Add `load_transfers_data()` function to read `src/transfer_optimizer/ipl26_computed.csv`
    - Convert CSV data to JSON and embed in HTML
    - Determine today's match number for highlighting
 

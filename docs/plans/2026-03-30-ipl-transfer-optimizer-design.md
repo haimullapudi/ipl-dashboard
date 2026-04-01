@@ -6,11 +6,11 @@ A Python program that generates optimal transfer plans across the 70-match IPL l
 
 ## Input/Output
 
-### Input: `ipl26.csv`
+### Input: `src/transfer_optimizer/ipl26.csv`
 - 70 matches with columns: Match No, Date, Home, Away, Gap columns (5-6), Team columns (7-16), Total, Transfers, Scoring Players
 - Initial squad data may be present for Match 1
 
-### Output: `ipl26_computed.csv`
+### Output: `src/transfer_optimizer/ipl26_computed.csv`
 - Same structure with columns 5-19 fully populated:
   - Columns 5-6: Team-1 Gap, Team-2 Gap (matches until next game)
   - Columns 7-16: Player count per team
@@ -116,5 +116,5 @@ python3 ipl_optimizer.py --max-transfers 5
 |------|---------|
 | `ipl_optimizer.py` | Main optimizer |
 | `test_optimizer.py` | Test suite |
-| `ipl26.csv` | Input |
-| `ipl26_computed.csv` | Output |
+| `src/transfer_optimizer/ipl26.csv` | Input |
+| `src/transfer_optimizer/ipl26_computed.csv` | Output |

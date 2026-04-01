@@ -2,7 +2,20 @@
   "permissions": {
     "allow": [
       "Bash(git init:*)",
-      "Bash(git:*)"
+      "Bash(git:*)",
+      "Bash(lsof:*)",
+      "Bash(pip3 install:*)",
+      "Bash(python3:*)",
+      "Bash(pkill:*)",
+      "Bash(gh repo:*)",
+      "Read(//Users/seeku/code/**)",
+      "Bash(mv ipl ipl-dashboard)",
+      "Bash(curl:*)",
+      "Bash(source:*)",
+      "Bash(venv/bin/python3:*)",
+      "Bash(grep:*)",
+      "Bash(do:*)",
+      "WebSearch"
     ]
   }
 }

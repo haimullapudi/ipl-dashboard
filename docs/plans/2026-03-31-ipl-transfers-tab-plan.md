@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Add a "Transfers" tab to the IPL Fantasy Players Dashboard that displays match-by-match transfer data from `ipl26_computed.csv` with visual indicators for today's matches (highlighted) and past matches (greyed out).
+**Goal:** Add a "Transfers" tab to the IPL Fantasy Players Dashboard that displays match-by-match transfer data from `src/transfer_optimizer/ipl26_computed.csv` with visual indicators for today's matches (highlighted) and past matches (greyed out).
 
 **Architecture:** Python script reads CSV and embeds data as JSON in HTML, JavaScript renders the table with sorting and match status highlighting.
 

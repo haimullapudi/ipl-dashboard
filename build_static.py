@@ -1,32 +1,40 @@
 #!/usr/bin/env python3
 """
-Flask server for IPL Fantasy Players Dashboard.
-Serves static HTML and proxies API requests to bypass CORS.
+Build static site for GitHub Pages deployment.
+Fetches data from IPL API and generates static JSON files.
 """
 
-from flask import Flask, jsonify, send_from_directory
 import json
 import urllib.request
 import csv
 from datetime import datetime, date
+import os
+import shutil
 
-app = Flask(__name__, static_folder='.', static_url_path='')
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_DIR = os.path.join(SCRIPT_DIR, 'static')
+API_URL = "https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=en"
+SCHEDULE_FILE = os.path.join(SCRIPT_DIR, 'transfer_optimizer', 'ipl26.csv')
+TRANSFERS_FILE = os.path.join(SCRIPT_DIR, 'transfer_optimizer', 'ipl26_computed.csv')
 
-API_URL = "https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=en&tourgamedayId=5"
-SCHEDULE_FILE = "ipl26.csv"
-TRANSFERS_FILE = "ipl26_computed.csv"
+# IPL 2026 season start date
+SEASON_START_DATE = date(2026, 3, 28)
 
+def get_current_gameday():
+    """Calculate the current game day based on days since season start."""
+    today = date.today()
+    if today < SEASON_START_DATE:
+        return 1
+    delta = today - SEASON_START_DATE
+    return delta.days + 1
 
 def parse_date(date_str):
-    """Parse date string like '28-Mar-26' to date object."""
     try:
         return datetime.strptime(date_str, '%d-%b-%y').date()
     except:
         return None
 
-
 def load_match_schedule():
-    """Load match schedule from CSV and return matches grouped by date."""
     matches_by_date = {}
     try:
         with open(SCHEDULE_FILE, 'r', encoding='utf-8-sig') as f:
@@ -45,17 +53,13 @@ def load_match_schedule():
         print(f"Warning: Could not load schedule: {e}")
     return matches_by_date
 
-
 def get_today_and_next_match():
-    """Get today's matches and next match day teams from schedule."""
     matches_by_date = load_match_schedule()
     today = date.today()
 
-    # Find all today's matches
     today_matches = matches_by_date.get(today, [])
     today_teams_list = [[m['home'], m['away']] for m in today_matches]
 
-    # Find all matches on the next match day
     next_teams_list = []
     for match_date in sorted(matches_by_date.keys()):
         if match_date > today:
@@ -64,17 +68,13 @@ def get_today_and_next_match():
 
     return today_teams_list, next_teams_list
 
-
 def get_today_match_nos():
-    """Get today's match numbers from schedule."""
     matches_by_date = load_match_schedule()
     today = date.today()
     today_matches = matches_by_date.get(today, [])
     return [m['match_no'] for m in today_matches]
 
-
 def load_transfers_data():
-    """Load transfers data from ipl26_computed.csv."""
     transfers = []
     try:
         with open(TRANSFERS_FILE, 'r', encoding='utf-8-sig') as f:
@@ -105,28 +105,20 @@ def load_transfers_data():
         print(f"Warning: Could not load transfers data: {e}")
     return transfers
 
+def fetch_players():
+    gameday = get_current_gameday()
+    url = f"{API_URL}&tourgamedayId={gameday}"
+    print(f"Fetching players from {url}...")
 
-@app.route('/')
-def index():
-    """Serve main HTML page."""
-    return send_from_directory('.', 'players.html')
-
-
-@app.route('/api/players')
-def get_players():
-    """Fetch players data from IPL Fantasy API."""
-    req = urllib.request.Request(
-        API_URL,
-        headers={'User-Agent': 'Mozilla/5.0'}
-    )
     try:
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
         with urllib.request.urlopen(req, timeout=30) as response:
             data = json.loads(response.read().decode('utf-8'))
-            # Transform API response to match frontend expectations
             raw_players = data.get('Data', {}).get('Value', {}).get('Players', [])
-            gameday_players = []
+
+            players = []
             for p in raw_players:
-                gameday_players.append({
+                players.append({
                     'id': p.get('Id'),
                     'fullName': p.get('Name'),
                     'shortName': p.get('ShortName'),
@@ -140,47 +132,68 @@ def get_players():
                     'vCapSelectedPer': p.get('VCapSelectedPer'),
                     'overallPoints': p.get('OverallPoints'),
                     'gamedayPoints': p.get('GamedayPoints'),
-                    'isAnnounced': p.get('IsAnnounced') == '1',
-                    'isPlaying': p.get('IS_FP') == '1',
+                    'isAnnounced': p.get('IsAnnounced') in ['P', 'NP'],
+                    'isPlaying': p.get('IsAnnounced') == 'P',
                     'isInjured': p.get('isInjured') == '1',
                     'isActive': p.get('IsActive') == 1,
                     'playerDesc': p.get('PlayerDesc'),
                     'isImpactPlayer': p.get('isImpactPlayer') == 1
                 })
-            return jsonify({'gamedayPlayers': gameday_players})
+            return {'gamedayPlayers': players}
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        print(f"Error fetching players: {e}")
+        return None
 
+def main():
+    # Create static directory
+    if os.path.exists(STATIC_DIR):
+        shutil.rmtree(STATIC_DIR)
+    os.makedirs(STATIC_DIR)
 
-@app.route('/api/today-matches')
-def get_today_matches():
-    """Get today's and next match day matches from schedule."""
-    try:
-        today_matches, next_matches = get_today_and_next_match()
-        return jsonify({
-            'today': today_matches,
-            'next': next_matches,
-            'today_match_nos': get_today_match_nos()
-        })
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    # Copy client files
+    client_dir = os.path.join(SCRIPT_DIR, 'src', 'client')
+    for item in os.listdir(client_dir):
+        src = os.path.join(client_dir, item)
+        dst = os.path.join(STATIC_DIR, item)
+        if os.path.isdir(src):
+            shutil.copytree(src, dst)
+        else:
+            shutil.copy2(src, dst)
 
+    # Create API directory and fetch data
+    api_dir = os.path.join(STATIC_DIR, 'api')
+    os.makedirs(api_dir, exist_ok=True)
 
-@app.route('/api/transfers')
-def get_transfers():
-    """Load transfers data from ipl26_computed.csv."""
-    try:
-        transfers = load_transfers_data()
-        return jsonify(transfers)
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    # Fetch and save players data
+    players_data = fetch_players()
+    if players_data:
+        with open(os.path.join(api_dir, 'players.json'), 'w') as f:
+            json.dump(players_data, f, indent=2)
+        print(f"Saved {len(players_data.get('gamedayPlayers', []))} players")
 
+    # Save match data
+    today_matches, next_matches = get_today_and_next_match()
+    matches_data = {
+        'today': today_matches,
+        'next': next_matches,
+        'today_match_nos': get_today_match_nos()
+    }
+    with open(os.path.join(api_dir, 'today-matches.json'), 'w') as f:
+        json.dump(matches_data, f, indent=2)
+    print(f"Saved matches: {len(today_matches)} today, {len(next_matches)} next")
 
-@app.route('/api/health')
-def health():
-    """Health check endpoint."""
-    return jsonify({'status': 'healthy', 'timestamp': datetime.now().isoformat()})
+    # Save transfers data
+    transfers = load_transfers_data()
+    with open(os.path.join(api_dir, 'transfers.json'), 'w') as f:
+        json.dump(transfers, f, indent=2)
+    print(f"Saved {len(transfers)} transfer records")
 
+    # Update JS to use static JSON
+    print("\nBuild complete! Static files in:", STATIC_DIR)
+    print("\nTo deploy to GitHub Pages:")
+    print("1. Configure GitHub Pages to serve from /static folder")
+    print("   OR")
+    print("2. Move contents of /static to root and push to gh-pages branch")
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8000)
+    main()

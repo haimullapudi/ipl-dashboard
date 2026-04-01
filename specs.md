@@ -6,7 +6,7 @@ Create a Python program that generates the optimal transfer plan across the 70-m
 
 ## Input
 
-**File:** `ipl26.csv`
+**File:** `src/transfer_optimizer/ipl26.csv`
 
 | Column | Name | Description |
 |--------|------|-------------|
@@ -18,7 +18,7 @@ Create a Python program that generates the optimal transfer plan across the 70-m
 
 ## Output
 
-**File:** `ipl26_computed.csv` - The original schedule with columns 5-19 fully populated.
+**File:** `src/transfer_optimizer/ipl26_computed.csv` - The original schedule with columns 5-19 fully populated.
 
 | Column | Name | Description |
 |--------|------|-------------|
@@ -238,7 +238,7 @@ The beam search optimizer achieves:
 ## Implementation Notes
 
 ### Initial Squad (Match 1)
-- If the initial squad for Match 1 is provided in the input file (`ipl26.csv`)
+- If the initial squad for Match 1 is provided in the input file (`src/transfer_optimizer/ipl26.csv`)
 - Do NOT regenerate - use the existing squad data from columns 7-16
 - Transfers for Match 1 still do NOT count toward the 160 cap
 
@@ -314,8 +314,8 @@ Running beam search optimization...
 |------|-------------|
 | `ipl_optimizer.py` | Main optimizer script with beam search algorithm |
 | `test_optimizer.py` | Test suite with validation rules |
-| `ipl26.csv` | Input file (match schedule + initial squad) |
-| `ipl26_computed.csv` | Output file (fully populated) |
+| `src/transfer_optimizer/ipl26.csv` | Input file (match schedule + initial squad) |
+| `src/transfer_optimizer/ipl26_computed.csv` | Output file (fully populated) |
 | `fetch_players.py` | IPL Fantasy API fetcher and dashboard generator |
 | `players.html` | Generated static dashboard |
 | `players_data.json` | Raw API data backup |
@@ -363,11 +363,11 @@ API Endpoint: `https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=e
   - Green text for playing players
 - **Next Match Tab**:
   - Same layout as Today's Match
-  - Teams determined from `ipl26.csv` schedule file
+  - Teams determined from `src/transfer_optimizer/ipl26.csv` schedule file
   - Shows home/away teams for the next match date after today
   - Useful for planning transfers for upcoming matches
 - **Transfers Tab**:
-  - Displays all 70 matches with complete transfer data from `ipl26_computed.csv`
+  - Displays all 70 matches with complete transfer data from `src/transfer_optimizer/ipl26_computed.csv`
   - Columns: Match No, Date, Home, Away, Gap-1, Gap-2, CSK, DC, GT, KKR, LSG, MI, PBKS, RCB, RR, SRH, Total, Transfers, Scoring Players
   - Today's matches highlighted with gold left border and background
   - Past matches greyed out (50% opacity)
