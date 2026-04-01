@@ -150,6 +150,9 @@ def generate_html(data):
             margin-bottom: 8px;
             text-transform: uppercase;
         }
+        .filter-group .checkbox-group label {
+            text-transform: none;
+        }
         .filter-group select {
             width: 100%;
             padding: 10px 12px;
@@ -362,7 +365,7 @@ def generate_html(data):
                     <label>Display Options</label>
                     <label class="checkbox-group" style="cursor: pointer;">
                         <input type="checkbox" id="playingXi" onchange="applyFilters()">
-                        <span>Show playing Xi only</span>
+                        <span>Show Playing XI Only</span>
                     </label>
                 </div>
                 <div class="filter-stats">
