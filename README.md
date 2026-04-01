@@ -44,38 +44,23 @@ The application will be available at `http://localhost:8000`
 | Game Points | Points scored in current game day |
 | Overall Points | Total season points |
 
-## Deployment Options
+## Deployment
 
-### Option 1: GitHub Pages (Static Site)
+### GitHub Pages (Recommended)
 
-Deploy to GitHub Pages for free hosting. The site will fetch fresh data daily via GitHub Actions.
+Deploy to GitHub Pages for free hosting. The site fetches fresh data via GitHub Actions.
 
 1. **Enable GitHub Pages**:
-   - Go to your repository Settings > Pages
-   - Under "Source", select "GitHub Actions"
+   - Go to your repository **Settings > Pages**
+   - Under "Source", select **GitHub Actions**
 
 2. **Deploy**:
    - The workflow automatically deploys on push to `main`
-   - Daily data updates run at 10:00 UTC
+   - Scheduled data updates run daily at 9:30-9:40 UTC (every 2 minutes)
    - Your site will be available at `https://your-username.github.io/ipl-dashboard/`
 
 3. **Manual trigger**:
-   - Go to Actions > "Deploy to GitHub Pages" > "Run workflow"
-
-### Option 2: Railway/Render (Dynamic Backend)
-
-For real-time API fetching with a Python backend:
-
-1. **Railway**:
-   - Connect your GitHub repository
-   - Railway auto-detects the Procfile and deploys
-   - Set environment variables if needed
-
-2. **Render**:
-   - Create a new Web Service
-   - Connect your GitHub repository
-   - Build command: `pip install -r requirements.txt`
-   - Start command: `gunicorn src.server.server:app --workers 2 --threads 4`
+   - Go to **Actions** > "Deploy to GitHub Pages" > "Run workflow"
 
 ## Project Structure
 
@@ -83,7 +68,6 @@ For real-time API fetching with a Python backend:
 ipl-dashboard/
 ├── README.md                          # This file
 ├── requirements.txt                   # Python dependencies
-├── Procfile                           # Deployment configuration
 ├── specs.md                           # Functional specifications
 ├── .github/                           # GitHub Actions workflows
 └── src/
