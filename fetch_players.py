@@ -139,10 +139,12 @@ def generate_html(data):
             background: rgba(240, 165, 0, 0.2);
             padding: 10px 20px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 0;
             text-align: center;
             color: #fbbf24;
         }
+        .data-info .date { display: block; margin-bottom: 4px; }
+        .data-info .gameday { display: block; font-size: 0.85rem; opacity: 0.8; }
         .sidebar {
             display: flex;
             flex-direction: column;
@@ -354,7 +356,10 @@ def generate_html(data):
         <div class="main-layout">
             <div id="content"></div>
             <div class="sidebar">
-                <div class="data-info">Data fetched: ''' + fetched_at + ''' | Game Day ID: ''' + str(data['_tourgamedayId']) + '''</div>
+                <div class="data-info">
+                    <span class="date">Data fetched: ''' + fetched_at + '''</span>
+                    <span class="gameday">Game Day ID: ''' + str(data['_tourgamedayId']) + '''</span>
+                </div>
                 <div class="filter-panel">
                     <h3>Filters</h3>
                 <div class="filter-group">
