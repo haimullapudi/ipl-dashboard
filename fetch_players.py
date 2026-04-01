@@ -344,7 +344,8 @@ def generate_html(data):
                 <h3>Filters</h3>
                 <div class="filter-group">
                     <label for="teamFilter">Filter by Team</label>
-                    <select id="teamFilter" multiple onchange="applyFilters()" style="height: 200px;">
+                    <select id="teamFilter" onchange="applyFilters()">
+                        <option value="">All Teams</option>
                         <option value="CSK">CSK</option>
                         <option value="DC">DC</option>
                         <option value="GT">GT</option>
@@ -356,13 +357,12 @@ def generate_html(data):
                         <option value="RR">RR</option>
                         <option value="SRH">SRH</option>
                     </select>
-                    <p style="font-size:0.75rem;color:#aaa;margin-top:5px;">Hold Ctrl/Cmd to select multiple</p>
                 </div>
                 <div class="filter-group">
                     <label>Display Options</label>
                     <label class="checkbox-group" style="cursor: pointer;">
-                        <input type="checkbox" id="playingXI" onchange="applyFilters()">
-                        <span>Show playing XI only</span>
+                        <input type="checkbox" id="playingXi" onchange="applyFilters()">
+                        <span>Show playing Xi only</span>
                     </label>
                 </div>
                 <div class="filter-stats">
@@ -538,9 +538,8 @@ def generate_html(data):
         }
 
         function applyFilters() {
-            const teamFilterSelect = document.getElementById('teamFilter');
-            const selectedTeams = Array.from(teamFilterSelect.selectedOptions).map(opt => opt.value);
-            const playingXI = document.getElementById('playingXI').checked;
+            const teamFilter = document.getElementById('teamFilter').value;
+            const playingXi = document.getElementById('playingXi').checked;
             const rows = document.querySelectorAll('#playersBody tr');
 
             let visibleCount = 0;
@@ -551,13 +550,13 @@ def generate_html(data):
 
                 let show = true;
 
-                // Apply team filter (multiselect)
-                if (selectedTeams.length > 0 && !selectedTeams.includes(team)) {
+                // Apply team filter
+                if (teamFilter && team !== teamFilter) {
                     show = false;
                 }
 
                 // Apply playing XI filter
-                if (playingXI && !isPlaying) {
+                if (playingXi && !isPlaying) {
                     show = false;
                 }
 
@@ -585,8 +584,8 @@ def generate_html(data):
         }
 
         function resetFilters() {
-            document.getElementById('teamFilter').selectedIndex = -1;
-            document.getElementById('playingXI').checked = false;
+            document.getElementById('teamFilter').value = '';
+            document.getElementById('playingXi').checked = false;
             applyFilters();
         }
 
