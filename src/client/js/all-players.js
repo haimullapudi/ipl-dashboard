@@ -5,13 +5,8 @@ let sortedPlayers = [];
 
 async function loadData() {
     try {
-        // Try API first, fall back to static JSON for GitHub Pages
-        let response;
-        try {
-            response = await fetch('/api/players');
-        } catch (e) {
-            response = await fetch('api/players.json');
-        }
+        // Fetch from static JSON (for GitHub Pages)
+        const response = await fetch('api/players.json');
         if (!response.ok) throw new Error('Failed to fetch players');
 
         playersData = await response.json();
