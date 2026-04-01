@@ -14,8 +14,8 @@ import shutil
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 STATIC_DIR = os.path.join(SCRIPT_DIR, 'static')
 API_URL = "https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=en"
-SCHEDULE_FILE = os.path.join(SCRIPT_DIR, 'transfer_optimizer', 'ipl26.csv')
-TRANSFERS_FILE = os.path.join(SCRIPT_DIR, 'transfer_optimizer', 'ipl26_computed.csv')
+SCHEDULE_FILE = os.path.join(SCRIPT_DIR, 'src', 'transfer_optimizer', 'ipl26.csv')
+TRANSFERS_FILE = os.path.join(SCRIPT_DIR, 'src', 'transfer_optimizer', 'ipl26_computed.csv')
 
 # IPL 2026 season start date
 SEASON_START_DATE = date(2026, 3, 28)
