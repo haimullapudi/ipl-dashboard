@@ -2,8 +2,15 @@ name: Update IPL Players Data
 
 on:
   schedule:
-    # Run daily at 9:40 AM EST (14:40 UTC) - before IPL matches typically start
-    - cron: '40 14 * * *'
+    # Run every 5 minutes from 9:30 AM to 10:00 AM EST (14:30-15:00 UTC)
+    # During IPL match season, this captures frequent data updates around match time
+    - cron: '30 14 * * *'  # 9:30 AM EST
+    - cron: '35 14 * * *'  # 9:35 AM EST
+    - cron: '40 14 * * *'  # 9:40 AM EST
+    - cron: '45 14 * * *'  # 9:45 AM EST
+    - cron: '50 14 * * *'  # 9:50 AM EST
+    - cron: '55 14 * * *'  # 9:55 AM EST
+    - cron: '0 15 * * *'   # 10:00 AM EST
   workflow_dispatch: # Allow manual trigger
 
 permissions:
