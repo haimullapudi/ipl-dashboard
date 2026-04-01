@@ -318,7 +318,7 @@ th.sorted .sort-icon {
     background: rgba(74, 222, 128, 0.1) !important;
 }
 .match-past {
-    opacity: 0.6;
+    opacity: 0.3;
 }
 .transfers-table th, .transfers-table td {
     font-size: 0.85rem;
