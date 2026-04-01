@@ -344,7 +344,6 @@ def generate_html(data):
             <div id="content"></div>
             <div class="sidebar">
                 <div class="data-info">Data fetched: ''' + fetched_at + ''' | Game Day ID: ''' + str(data['_tourgamedayId']) + '''</div>
-                <div class="stats-summary" id="statsSummary"></div>
                 <div class="filter-panel">
                     <h3>Filters</h3>
                 <div class="filter-group">
@@ -375,6 +374,7 @@ def generate_html(data):
                 </div>
                 <button class="reset-btn" onclick="resetFilters()">Reset Filters</button>
             </div>
+                <div class="stats-summary" id="statsSummary"></div>
                 <div class="legend" id="legend"></div>
             </div>
         </div>
@@ -429,16 +429,15 @@ def generate_html(data):
             // Render stats to sidebar
             document.getElementById('statsSummary').innerHTML = `
                 <div class="stat-card"><h3>${players.length}</h3><p>Total Players</p></div>
-                <div class="stat-card"><h3>${announcedCount}</h3><p>Announced Squad (Bold)</p></div>
+                <div class="stat-card"><h3>${announcedCount}</h3><p>Announced Squad</p></div>
                 <div class="stat-card"><h3>${avgPoints.toFixed(1)}</h3><p>Avg Game Day Points</p></div>
-                <div class="stat-card"><h3>${playingCount}</h3><p>Playing XI (Green + ✓)</p></div>
+                <div class="stat-card"><h3>${playingCount}</h3><p>Playing XI</p></div>
             `;
 
             // Render legend to sidebar
             document.getElementById('legend').innerHTML = `
-                <div class="legend-item"><div class="legend-color announced"></div><span>Playing (Green + ✓)</span></div>
+                <div class="legend-item"><div class="legend-color announced"></div><span>Playing XI</span></div>
                 <div class="legend-item"><div class="legend-color normal"></div><span>Not Playing</span></div>
-                <div class="legend-item"><span style="font-weight:bold;color:#fff;">Bold</span><span>= Announced</span></div>
             `;
 
             const tableHTML = `
