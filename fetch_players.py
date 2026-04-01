@@ -449,8 +449,7 @@ def generate_html(data):
                                 <th data-sort="fullName" data-type="string">Name <span class="sort-icon">⇅</span></th>
                                 <th data-sort="teamShortName" data-type="string">Team <span class="sort-icon">⇅</span></th>
                                 <th data-sort="skillName" data-type="string">Skill <span class="sort-icon">⇅</span></th>
-                                <th data-sort="value" data-type="number">Value (Cr) <span class="sort-icon">⇅</span></th>
-                                <th data-sort="isActive" data-type="boolean">Active <span class="sort-icon">⇅</span></th>
+                                <th data-sort="value" data-type="number">Value <span class="sort-icon">⇅</span></th>
                                 <th data-sort="selectedPer" data-type="number">Sel By (%) <span class="sort-icon">⇅</span></th>
                                 <th data-sort="capSelectedPer" data-type="number">Cap (%) <span class="sort-icon">⇅</span></th>
                                 <th data-sort="vCapSelectedPer" data-type="number">VCap (%) <span class="sort-icon">⇅</span></th>
@@ -466,7 +465,6 @@ def generate_html(data):
                                     <td><span class="team-badge" style="background: ${getTeamColor(p.teamShortName)}; color: #fff;">${p.teamShortName || '-'}</span></td>
                                     <td>${p.skillName || '-'}</td>
                                     <td>${formatNumber(p.value)}</td>
-                                    <td>${p.isActive ? 'Yes' : 'No'}</td>
                                     <td>
                                         <div class="selected-per-bar">
                                             <span>${formatPercent(p.selectedPer)}</span>
@@ -521,7 +519,6 @@ def generate_html(data):
                             <td><span class="team-badge" style="background: ${getTeamColor(p.teamShortName)}; color: #fff;">${p.teamShortName || '-'}</span></td>
                             <td>${p.skillName || '-'}</td>
                             <td>${formatNumber(p.value)}</td>
-                            <td>${p.isActive ? 'Yes' : 'No'}</td>
                             <td>
                                 <div class="selected-per-bar">
                                     <span>${formatPercent(p.selectedPer)}</span>
