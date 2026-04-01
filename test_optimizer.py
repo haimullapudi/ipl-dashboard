@@ -9,7 +9,7 @@ import csv
 import unittest
 from datetime import datetime
 
-TEAMS = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PK", "RCB", "RR", "SRH"]
+TEAMS = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PBKS", "RCB", "RR", "SRH"]
 TOTAL_MATCHES = 70
 TOTAL_TRANSFERS_CAP = 160
 MIN_PLAYERS_PER_MATCH = 11
@@ -172,7 +172,7 @@ class TestTransferConstraints(unittest.TestCase):
 
     def test_transfers_calculation_correct(self):
         """Verify transfers are calculated correctly from squad changes."""
-        TEAMS = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PK", "RCB", "RR", "SRH"]
+        TEAMS = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PBKS", "RCB", "RR", "SRH"]
 
         # Get previous squad (Match 1)
         prev_squad = {}

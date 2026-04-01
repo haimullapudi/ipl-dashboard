@@ -6,11 +6,61 @@ Run this daily to update the player data.
 
 import json
 import urllib.request
-from datetime import datetime
+import csv
+from datetime import datetime, date
 
 API_URL = "https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=en&tourgamedayId=4"
 PLAYERS_DATA_FILE = "players_data.json"
 OUTPUT_HTML_FILE = "players.html"
+SCHEDULE_FILE = "ipl26.csv"
+
+def parse_date(date_str):
+    """Parse date string like '28-Mar-26' to date object."""
+    try:
+        return datetime.strptime(date_str, '%d-%b-%y').date()
+    except:
+        return None
+
+def load_match_schedule():
+    """Load match schedule from CSV and return matches grouped by date."""
+    matches_by_date = {}
+    try:
+        with open(SCHEDULE_FILE, 'r', encoding='utf-8-sig') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                match_date = parse_date(row['Date'])
+                if match_date:
+                    if match_date not in matches_by_date:
+                        matches_by_date[match_date] = []
+                    matches_by_date[match_date].append({
+                        'home': row['Home'],
+                        'away': row['Away'],
+                        'match_no': int(row['Match No'])
+                    })
+    except Exception as e:
+        print(f"Warning: Could not load schedule: {e}")
+    return matches_by_date
+
+def get_today_and_next_match():
+    """Get today's matches and next match day teams from schedule."""
+    matches_by_date = load_match_schedule()
+    today = date.today()
+
+    # Find all today's matches
+    today_matches = matches_by_date.get(today, [])
+    today_teams_list = []
+    for match in today_matches:
+        today_teams_list.append([match['home'], match['away']])
+
+    # Find all matches on the next match day (first date after today with matches)
+    next_teams_list = []
+    for match_date in sorted(matches_by_date.keys()):
+        if match_date > today:
+            for match in matches_by_date[match_date]:
+                next_teams_list.append([match['home'], match['away']])
+            break
+
+    return today_teams_list, next_teams_list
 
 def fetch_players():
     """Fetch players data from IPL Fantasy API."""
@@ -85,6 +135,11 @@ def generate_html(data):
     players_json = json.dumps(data, ensure_ascii=False)
     fetched_at = datetime.fromisoformat(data['_fetched_at']).strftime('%B %d, %Y at %I:%M %p')
 
+    # Get today's and next match teams from schedule
+    today_matches, next_matches = get_today_and_next_match()
+    today_matches_json = json.dumps(today_matches)
+    next_matches_json = json.dumps(next_matches)
+
     html_content = '''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -105,6 +160,9 @@ def generate_html(data):
             display: grid;
             grid-template-columns: 1fr 320px;
             gap: 20px;
+        }
+        .main-layout.no-sidebar {
+            grid-template-columns: 1fr;
         }
         .sidebar {
             display: flex;
@@ -322,12 +380,97 @@ def generate_html(data):
             color: #aaa;
             font-size: 1.1rem;
         }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 10px;
+        }
+        .sidebar.hidden {
+            display: none;
+        }
+        .tab-btn {
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: #aaa;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, #f0a500, #ff8c00);
+            color: #1a1a2e;
+            font-weight: 600;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .match-players-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .team-table-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            overflow: hidden;
+        }
+        .team-table-header {
+            background: linear-gradient(135deg, #f0a500 0%, #ff8c00 100%);
+            padding: 15px;
+            text-align: center;
+        }
+        .team-table-header h3 {
+            color: #1a1a2e;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .team-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+        }
+        .team-table thead {
+            background: rgba(240, 165, 0, 0.2);
+        }
+        .team-table th {
+            padding: 10px 8px;
+            text-align: left;
+            font-weight: 600;
+            color: #f0a500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+        .team-table td {
+            padding: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            vertical-align: middle;
+        }
+        .team-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .team-table .playing-player {
+            font-weight: 700 !important;
+            color: #4ade80 !important;
+            text-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
+        }
         @media (max-width: 1024px) {
             .main-layout {
                 grid-template-columns: 1fr;
             }
             .sidebar {
                 order: 2;
+            }
+            .match-players-layout {
+                grid-template-columns: 1fr;
             }
         }
         @media (max-width: 768px) {
@@ -339,8 +482,15 @@ def generate_html(data):
 </head>
 <body>
     <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('all')">All Players</button>
+            <button class="tab-btn" onclick="switchTab('match')">Today's Match</button>
+            <button class="tab-btn" onclick="switchTab('next')">Next Match</button>
+        </div>
         <div class="main-layout">
-            <div id="content"></div>
+            <div id="content" class="tab-content active"></div>
+            <div id="match-content" class="tab-content"></div>
+            <div id="next-match-content" class="tab-content"></div>
             <div class="sidebar">
                 <div class="data-info">
                     <span class="date">Data fetched: ''' + fetched_at + '''</span>
@@ -383,6 +533,8 @@ def generate_html(data):
     </div>
     <script>
         window.playersData = ''' + players_json + ''';
+        window.todayMatches = ''' + today_matches_json + ''';
+        window.nextMatches = ''' + next_matches_json + ''';
 
         const teamColors = {
             'CSK': '#f9cd08', 'DC': '#004c93', 'GT': '#1c2e4a',
@@ -595,7 +747,156 @@ def generate_html(data):
             applyFilters();
         }
 
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Hide sidebar for match tabs (no filters needed)
+            const sidebar = document.querySelector('.sidebar');
+            const mainLayout = document.querySelector('.main-layout');
+            if (tab === 'match' || tab === 'next') {
+                sidebar.classList.add('hidden');
+                mainLayout.classList.add('no-sidebar');
+            } else {
+                sidebar.classList.remove('hidden');
+                mainLayout.classList.remove('no-sidebar');
+            }
+
+            // Show appropriate content
+            if (tab === 'all') {
+                document.getElementById('content').classList.add('active');
+            } else if (tab === 'match') {
+                document.getElementById('match-content').classList.add('active');
+            } else if (tab === 'next') {
+                document.getElementById('next-match-content').classList.add('active');
+            }
+        }
+
+        function renderSingleMatchTable(data, homeTeam, awayTeam) {
+            const players = data.gamedayPlayers || [];
+
+            // Group players by team
+            const playersByTeam = {};
+            players.forEach(p => {
+                const team = p.teamShortName;
+                if (team) {
+                    if (!playersByTeam[team]) playersByTeam[team] = [];
+                    playersByTeam[team].push(p);
+                }
+            });
+
+            // Get players for both teams
+            const homePlayers = playersByTeam[homeTeam] || [];
+            const awayPlayers = playersByTeam[awayTeam] || [];
+
+            // Check if playing XI is announced for these specific teams
+            const homePlayingCount = homePlayers.filter(p => p.isPlaying).length;
+            const awayPlayingCount = awayPlayers.filter(p => p.isPlaying).length;
+            const playingXiAnnounced = homePlayingCount > 0 || awayPlayingCount > 0;
+
+            const renderTeamTable = (teamName, teamPlayers, filterPlayingOnly) => {
+                let displayPlayers = teamPlayers;
+                if (filterPlayingOnly) {
+                    displayPlayers = teamPlayers.filter(p => p.isPlaying);
+                }
+
+                const sortedPlayers = displayPlayers.sort((a, b) => {
+                    if (a.isPlaying && !b.isPlaying) return -1;
+                    if (!a.isPlaying && b.isPlaying) return 1;
+                    return (b.overallPoints || 0) - (a.overallPoints || 0);
+                });
+
+                if (sortedPlayers.length === 0) {
+                    return `
+                        <div class="team-table-container">
+                            <div class="team-table-header">
+                                <h3>${teamName}</h3>
+                            </div>
+                            <div class="no-results" style="padding: 20px;">No players available</div>
+                        </div>
+                    `;
+                }
+
+                return `
+                    <div class="team-table-container">
+                        <div class="team-table-header">
+                            <h3>${teamName}</h3>
+                        </div>
+                        <table class="team-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Skill</th>
+                                    <th>Value</th>
+                                    <th>Sel By (%)</th>
+                                    <th>Cap (%)</th>
+                                    <th>VCap (%)</th>
+                                    <th>Overall Points</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${sortedPlayers.map(p => `
+                                    <tr>
+                                        <td class="${p.isPlaying ? 'playing-player' : ''}">${p.fullName || p.shortName}</td>
+                                        <td>${p.skillName || '-'}</td>
+                                        <td>${formatNumber(p.value)}</td>
+                                        <td>${formatPercent(p.selectedPer)}</td>
+                                        <td>${formatPercent(p.capSelectedPer)}</td>
+                                        <td>${formatPercent(p.vCapSelectedPer)}</td>
+                                        <td class="${getPointsClass(p.overallPoints)}">${formatNumber(p.overallPoints)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            };
+
+            return `
+                <div class="match-players-layout">
+                    ${renderTeamTable(homeTeam, homePlayers, playingXiAnnounced)}
+                    ${renderTeamTable(awayTeam, awayPlayers, playingXiAnnounced)}
+                </div>
+            `;
+        }
+
+        function renderTodayMatchTables(data) {
+            const matches = window.todayMatches || [];
+            if (matches.length === 0) {
+                document.getElementById('match-content').innerHTML = `
+                    <div class="table-container">
+                        <div class="no-results">No matches scheduled for today</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = matches.map(match => renderSingleMatchTable(data, match[0], match[1])).join('<hr style="border: 1px solid rgba(255,255,255,0.1); margin: 30px 0;">');
+            document.getElementById('match-content').innerHTML = html;
+        }
+
+        function renderNextMatchTables(data) {
+            const matches = window.nextMatches || [];
+            if (matches.length === 0) {
+                document.getElementById('next-match-content').innerHTML = `
+                    <div class="table-container">
+                        <div class="no-results">No upcoming matches found</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = matches.map(match => renderSingleMatchTable(data, match[0], match[1])).join('<hr style="border: 1px solid rgba(255,255,255,0.1); margin: 30px 0;">');
+            document.getElementById('next-match-content').innerHTML = html;
+        }
+
+        // Initialize with default tab
+        const players = window.playersData.gamedayPlayers || [];
+        sortedPlayers = sortPlayers(players, currentSort.field, 'boolean');
         renderTable(window.playersData);
+        renderTodayMatchTables(window.playersData);
+        renderNextMatchTables(window.playersData);
     </script>
 </body>
 </html>

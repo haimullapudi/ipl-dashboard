@@ -149,7 +149,7 @@ state = (
 
 ```python
 # Team names (fixed order for columns)
-TEAMS = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PK", "RCB", "RR", "SRH"]
+TEAMS = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PBKS", "RCB", "RR", "SRH"]
 
 # Match data structure
 match = {
@@ -344,9 +344,25 @@ API Endpoint: `https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=e
 
 ### Dashboard Features
 
+- **Three Tabs**:
+  - **All Players** - Full player list with filters, sorting, and stats sidebar
+  - **Today's Match** - Side-by-side home/away team tables (sidebar hidden)
+  - **Next Match** - Side-by-side tables for all teams (sidebar hidden)
 - **Playing XI Detection**: Players with `IsAnnounced='P'` shown with green text and checkmark
 - **Announced Squad**: Players with `IsAnnounced='P'` or `'NP'` shown in bold
 - **Sortable Columns**: Click any header to sort (default: Playing XI first)
-- **Team Filter**: Dropdown to filter by team
-- **Playing XI Filter**: Checkbox to show only playing XI members
+- **Team Filter**: Dropdown to filter by team (All Players tab only)
+- **Playing XI Filter**: Checkbox to show only playing XI members (All Players tab only)
+- **Today's Match Tab**:
+  - Side-by-side tables for home and away teams
+  - Columns: Name, Skill, Value, Sel By (%), Cap (%), VCap (%), Overall Points
+  - Compact styling (0.8rem font) for side-by-side display
+  - If Playing XI announced: shows only playing XI members (isPlaying=true)
+  - If only squad announced: shows all team members
+  - Green text for playing players
+- **Next Match Tab**:
+  - Same layout as Today's Match
+  - Teams determined from `ipl26.csv` schedule file
+  - Shows home/away teams for the next match date after today
+  - Useful for planning transfers for upcoming matches
 - **Responsive Layout**: Sidebar with stats, filters, and legend; main table area

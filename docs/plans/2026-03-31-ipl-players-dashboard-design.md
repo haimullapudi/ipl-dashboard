@@ -38,6 +38,9 @@ A static webpage that displays IPL Fantasy players data fetched from the officia
 3. **renderTable(data)** - JavaScript function to render player table
 4. **sortPlayers()** - JavaScript function for column sorting
 5. **applyFilters()** - JavaScript function for filtering
+6. **renderMatchTables(data, containerId, matchTeams)** - JavaScript function to render home/away team tables
+7. **switchTab(tab)** - JavaScript function to switch between tabs
+8. **get_today_and_next_match()** - Python function to load match schedule from `ipl26.csv` and determine today's and next match teams
 
 ### Data Flow
 
@@ -53,7 +56,25 @@ IPL Fantasy API → urllib.request → Python dict → JSON → Embedded in HTML
 
 ## Features
 
-### Table Columns
+### Tabs
+
+Three tabs at the top of the page:
+
+1. **All Players** (default) - Shows all players with full filtering capabilities
+2. **Today's Match** - Shows side-by-side tables for home and away teams
+   - Automatically hides sidebar when active
+   - Columns: Name, Skill, Value, Sel By (%), Cap (%), VCap (%), Overall Points
+   - Compact styling (0.8rem font) for side-by-side display
+   - If Playing XI announced: shows only playing XI members (isPlaying=true)
+   - If only squad announced: shows all team members
+   - Green text for playing players
+3. **Next Match** - Shows side-by-side tables for the next scheduled match
+   - Same layout and columns as Today's Match
+   - Teams determined from `ipl26.csv` schedule file
+   - Shows the home/away teams for the next match date after today
+   - Green text for playing players (if any)
+
+### Table Columns (All Players tab)
 
 | Column | Sortable | Description |
 |--------|----------|-------------|
@@ -68,6 +89,18 @@ IPL Fantasy API → urllib.request → Python dict → JSON → Embedded in HTML
 | Game Points | Yes (number) | Current game day points |
 | Overall Points | Yes (number) | Total season points |
 
+### Table Columns (Today's Match tab)
+
+| Column | Description |
+|--------|-------------|
+| Name | Player name (green if playing) |
+| Skill | Player role |
+| Value | Player value in credits |
+| Sel By (%) | Selection percentage |
+| Cap (%) | Captain selection percentage |
+| VCap (%) | Vice-captain selection percentage |
+| Overall Points | Total season points |
+
 ### Visual Indicators
 
 | Indicator | Meaning |
@@ -76,7 +109,7 @@ IPL Fantasy API → urllib.request → Python dict → JSON → Embedded in HTML
 | Bold text | Player in Announced Squad (IsAnnounced='P' or 'NP') |
 | Team badge color | Team-specific color coding |
 
-### Filters
+### Filters (All Players tab only)
 
 1. **Team Filter** - Dropdown (single select)
    - All Teams (default)
@@ -86,14 +119,14 @@ IPL Fantasy API → urllib.request → Python dict → JSON → Embedded in HTML
    - "Show Playing XI Only"
    - Filters to show only players with IsAnnounced='P'
 
-### Sorting
+### Sorting (All Players tab)
 
 - Default sort: Playing XI (descending) - playing players first
 - Click any header to sort by that column
 - Click again to toggle ascending/descending
 - Visual indicator shows current sort column
 
-### Sidebar Layout
+### Sidebar Layout (All Players tab only)
 
 Right sidebar (320px, sticky):
 1. Data fetched banner (date + Game Day ID)
@@ -163,6 +196,48 @@ function applyFilters() {
         row.classList.toggle('hidden', !show);
     });
 }
+
+// Switch tabs
+function switchTab(tab) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+    event.target.classList.add('active');
+    document.getElementById(tab === 'all' ? 'content' : 'match-content').classList.add('active');
+
+    // Hide sidebar for match tab
+    const sidebar = document.querySelector('.sidebar');
+    const mainLayout = document.querySelector('.main-layout');
+    if (tab === 'match') {
+        sidebar.classList.add('hidden');
+        mainLayout.classList.add('no-sidebar');
+    } else {
+        sidebar.classList.remove('hidden');
+        mainLayout.classList.remove('no-sidebar');
+    }
+}
+
+// Render match tables
+function renderMatchTables(data) {
+    const players = data.gamedayPlayers || [];
+    const playersByTeam = {};
+    players.forEach(p => {
+        const team = p.teamShortName;
+        if (team) {
+            if (!playersByTeam[team]) playersByTeam[team] = [];
+            playersByTeam[team].push(p);
+        }
+    });
+
+    const announcedTeams = [...new Set(players.filter(p => p.isAnnounced).map(p => p.teamShortName))];
+    const homeTeam = announcedTeams[0];
+    const awayTeam = announcedTeams[1];
+
+    // Check if playing XI is announced
+    const playingXiAnnounced = players.some(p => p.isPlaying);
+
+    // Render tables with filtered players if playing XI announced
+    // ...
+}
 ```
 
 ## CSS Styling
@@ -171,7 +246,8 @@ function applyFilters() {
 - **Gold accents** - Primary color #f0a500
 - **Glassmorphism** - backdrop-filter: blur(10px) on cards
 - **Team colors** - Specific hex codes for each IPL team
-- **Responsive** - Sidebar stacks on mobile (<1024px)
+- **Responsive** - Sidebar stacks on mobile (<1024px), match tables stack on mobile
+- **Tabs styling** - Active tab with gold gradient background
 
 ## Usage
 
@@ -202,3 +278,4 @@ python3 fetch_players.py
 - [ ] Export to CSV functionality
 - [ ] Dark/light theme toggle
 - [ ] Mobile-optimized view improvements
+- [ ] Fetch actual match schedule to identify home/away teams accurately

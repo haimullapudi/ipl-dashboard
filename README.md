@@ -199,6 +199,10 @@ This fetches data from the IPL Fantasy API and generates:
 
 ### Features
 
+- **Three tabs**:
+  - **All Players** - Full player list with filters and sorting
+  - **Today's Match** - Side-by-side home/away team tables
+  - **Next Match** - Side-by-side tables for all teams (upcoming match planning)
 - **Sortable columns** - Click any header to sort (default: Playing XI first)
 - **Team filter** - Filter players by team
 - **Playing XI filter** - Show only players in today's squad
@@ -206,6 +210,18 @@ This fetches data from the IPL Fantasy API and generates:
   - Green checkmark (✓) + green text = Playing XI
   - Bold text = Announced squad
 - **Stats cards** - Total players, announced squad, avg points, playing XI count
+- **Today's Match tab**:
+  - Shows home and away teams side-by-side
+  - Columns: Name, Skill, Value, Sel By (%), Cap (%), VCap (%), Overall Points
+  - If Playing XI announced: shows only playing XI members
+  - If only squad announced: shows all team members
+  - Green text for playing players
+  - Compact styling for side-by-side display
+- **Next Match tab**:
+  - Same layout as Today's Match
+  - Teams determined from `ipl26.csv` schedule file
+  - Shows home/away teams for the next match date after today
+  - Useful for planning transfers for upcoming matches
 
 ### Dashboard Columns
 

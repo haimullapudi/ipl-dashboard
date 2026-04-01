@@ -12,7 +12,7 @@ import sys
 from typing import Dict, List, Optional, Tuple
 
 # Constants
-TEAMS = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PK", "RCB", "RR", "SRH"]
+TEAMS = ["CSK", "DC", "GT", "KKR", "LSG", "MI", "PBKS", "RCB", "RR", "SRH"]
 BEAM_WIDTH = 100
 TOTAL_TRANSFERS_CAP = 160
 TOTAL_MATCHES = 70
