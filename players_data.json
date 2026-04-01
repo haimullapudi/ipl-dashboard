@@ -1,5 +1,5 @@
 {
-  "_fetched_at": "2026-04-01T16:01:07.064201",
+  "_fetched_at": "2026-04-01T16:08:38.558989",
   "_tourgamedayId": 5,
   "gamedayPlayers": [
     {
@@ -1992,8 +1992,8 @@
       "selectedPer": 15.64,
       "capSelectedPer": 0.71,
       "vCapSelectedPer": 0,
-      "gamedayPoints": 4.0,
-      "overallPoints": 4.0,
+      "gamedayPoints": 14.0,
+      "overallPoints": 14.0,
       "isPlaying": true,
       "isAnnounced": true
     },
@@ -4804,8 +4804,8 @@
       "selectedPer": 12.1,
       "capSelectedPer": 1.07,
       "vCapSelectedPer": 0,
-      "gamedayPoints": 4.0,
-      "overallPoints": 4.0,
+      "gamedayPoints": 5.0,
+      "overallPoints": 5.0,
       "isPlaying": true,
       "isAnnounced": true
     },
