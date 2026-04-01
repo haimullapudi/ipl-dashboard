@@ -122,7 +122,32 @@ def get_players():
     try:
         with urllib.request.urlopen(req, timeout=30) as response:
             data = json.loads(response.read().decode('utf-8'))
-            return jsonify(data)
+            # Transform API response to match frontend expectations
+            raw_players = data.get('Data', {}).get('Value', {}).get('Players', [])
+            gameday_players = []
+            for p in raw_players:
+                gameday_players.append({
+                    'id': p.get('Id'),
+                    'fullName': p.get('Name'),
+                    'shortName': p.get('ShortName'),
+                    'teamId': p.get('TeamId'),
+                    'teamShortName': p.get('TeamShortName'),
+                    'skillName': p.get('SkillName'),
+                    'skillId': p.get('SkillId'),
+                    'value': p.get('Value'),
+                    'selectedPer': p.get('SelectedPer'),
+                    'capSelectedPer': p.get('CapSelectedPer'),
+                    'vCapSelectedPer': p.get('VCapSelectedPer'),
+                    'overallPoints': p.get('OverallPoints'),
+                    'gamedayPoints': p.get('GamedayPoints'),
+                    'isAnnounced': p.get('IsAnnounced') == '1',
+                    'isPlaying': p.get('IS_FP') == '1',
+                    'isInjured': p.get('isInjured') == '1',
+                    'isActive': p.get('IsActive') == 1,
+                    'playerDesc': p.get('PlayerDesc'),
+                    'isImpactPlayer': p.get('isImpactPlayer') == 1
+                })
+            return jsonify({'gamedayPlayers': gameday_players})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
@@ -158,4 +183,4 @@ def health():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=8000)
