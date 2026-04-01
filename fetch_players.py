@@ -143,14 +143,25 @@ def generate_html(data):
             text-align: center;
             color: #fbbf24;
         }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: sticky;
+            top: 20px;
+            align-self: start;
+        }
         .filter-panel {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 15px;
             padding: 20px;
             backdrop-filter: blur(10px);
-            height: fit-content;
-            position: sticky;
-            top: 20px;
+        }
+        .stats-summary {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
         }
         .filter-panel h3 {
             color: #f0a500;
