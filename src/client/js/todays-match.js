@@ -6,9 +6,18 @@ let matchSortDir = 'desc';
 
 async function loadData() {
     try {
-        // Fetch from static JSON (for GitHub Pages)
-        const playersRes = await fetch('api/players.json');
-        const matchesRes = await fetch('api/today-matches.json');
+        // Try API first (for local dev server), fall back to static JSON (for GitHub Pages)
+        let playersRes, matchesRes;
+        try {
+            playersRes = await fetch('/api/players');
+            matchesRes = await fetch('/api/today-matches');
+            if (!playersRes.ok || !matchesRes.ok) {
+                throw new Error('API not available');
+            }
+        } catch (e) {
+            playersRes = await fetch('api/players.json');
+            matchesRes = await fetch('api/today-matches.json');
+        }
 
         if (!playersRes.ok || !matchesRes.ok) throw new Error('Failed to fetch data');
 

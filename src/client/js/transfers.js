@@ -4,9 +4,18 @@ let todayMatchNos = [];
 
 async function loadData() {
     try {
-        // Fetch from static JSON (for GitHub Pages)
-        const transfersRes = await fetch('api/transfers.json');
-        const matchesRes = await fetch('api/today-matches.json');
+        // Try API first (for local dev server), fall back to static JSON (for GitHub Pages)
+        let transfersRes, matchesRes;
+        try {
+            transfersRes = await fetch('/api/transfers');
+            matchesRes = await fetch('/api/today-matches');
+            if (!transfersRes.ok || !matchesRes.ok) {
+                throw new Error('API not available');
+            }
+        } catch (e) {
+            transfersRes = await fetch('api/transfers.json');
+            matchesRes = await fetch('api/today-matches.json');
+        }
 
         if (!transfersRes.ok || !matchesRes.ok) throw new Error('Failed to fetch data');
 
