@@ -125,16 +125,6 @@ def generate_html(data):
         }
         .stat-card h3 { font-size: 2rem; color: #f0a500; margin-bottom: 5px; }
         .stat-card p { color: #aaa; font-size: 0.9rem; }
-        header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            backdrop-filter: blur(10px);
-        }
-        header h1 { font-size: 2.5rem; margin-bottom: 10px; color: #f0a500; }
-        header p { color: #aaa; font-size: 1.1rem; }
         .data-info {
             background: rgba(240, 165, 0, 0.2);
             padding: 10px 20px;
@@ -349,10 +339,6 @@ def generate_html(data):
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>🏏 IPL Fantasy Players</h1>
-            <p>Today's Squad & Player Statistics</p>
-        </header>
         <div class="main-layout">
             <div id="content"></div>
             <div class="sidebar">
