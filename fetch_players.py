@@ -433,15 +433,15 @@ def generate_html(data):
                     <table id="playersTable">
                         <thead>
                             <tr>
-                                <th data-sort="isPlaying" data-type="boolean">Playing <span class="sort-icon">⇅</span></th>
+                                <th data-sort="isPlaying" data-type="boolean" style="text-align:center;"><span style="color:#4ade80;">✓</span> <span class="sort-icon">⇅</span></th>
                                 <th data-sort="fullName" data-type="string">Name <span class="sort-icon">⇅</span></th>
                                 <th data-sort="teamShortName" data-type="string">Team <span class="sort-icon">⇅</span></th>
                                 <th data-sort="skillName" data-type="string">Skill <span class="sort-icon">⇅</span></th>
                                 <th data-sort="value" data-type="number">Value (Cr) <span class="sort-icon">⇅</span></th>
                                 <th data-sort="isActive" data-type="boolean">Active <span class="sort-icon">⇅</span></th>
-                                <th data-sort="selectedPer" data-type="number">Selected % <span class="sort-icon">⇅</span></th>
-                                <th data-sort="capSelectedPer" data-type="number">Captain % <span class="sort-icon">⇅</span></th>
-                                <th data-sort="vCapSelectedPer" data-type="number">VCaptain % <span class="sort-icon">⇅</span></th>
+                                <th data-sort="selectedPer" data-type="number">Sel By (%) <span class="sort-icon">⇅</span></th>
+                                <th data-sort="capSelectedPer" data-type="number">Cap (%) <span class="sort-icon">⇅</span></th>
+                                <th data-sort="vCapSelectedPer" data-type="number">VCap (%) <span class="sort-icon">⇅</span></th>
                                 <th data-sort="gamedayPoints" data-type="number">Game Points <span class="sort-icon">⇅</span></th>
                                 <th data-sort="overallPoints" data-type="number">Overall Points <span class="sort-icon">⇅</span></th>
                             </tr>
@@ -449,7 +449,8 @@ def generate_html(data):
                         <tbody id="playersBody">
                             ${sortedPlayers.map((p, idx) => `
                                 <tr data-idx="${idx}" data-team="${p.teamShortName || ''}" data-announced="${p.isAnnounced ? '1' : '0'}" data-playing="${p.isPlaying ? '1' : '0'}">
-                                    <td class="${p.isPlaying ? 'playing-player' : ''}${p.isAnnounced ? ' announced-player' : ''}">${p.isPlaying ? '✓ ' : ''}${p.fullName || p.shortName}</td>
+                                    <td style="text-align:center;" class="${p.isPlaying ? 'playing-player' : ''}">${p.isPlaying ? '✓' : ''}</td>
+                                    <td class="${p.isPlaying ? 'playing-player' : ''}${p.isAnnounced ? ' announced-player' : ''}">${p.fullName || p.shortName}</td>
                                     <td><span class="team-badge" style="background: ${getTeamColor(p.teamShortName)}; color: #fff;">${p.teamShortName || '-'}</span></td>
                                     <td>${p.skillName || '-'}</td>
                                     <td>${formatNumber(p.value)}</td>
@@ -503,7 +504,8 @@ def generate_html(data):
                     const tbody = document.getElementById('playersBody');
                     tbody.innerHTML = sortedPlayers.map((p, idx) => `
                         <tr data-idx="${idx}" data-team="${p.teamShortName || ''}" data-announced="${p.isAnnounced ? '1' : '0'}" data-playing="${p.isPlaying ? '1' : '0'}">
-                            <td class="${p.isPlaying ? 'playing-player' : ''}${p.isAnnounced ? ' announced-player' : ''}">${p.isPlaying ? '✓ ' : ''}${p.fullName || p.shortName}</td>
+                            <td style="text-align:center;" class="${p.isPlaying ? 'playing-player' : ''}">${p.isPlaying ? '✓' : ''}</td>
+                            <td class="${p.isPlaying ? 'playing-player' : ''}${p.isAnnounced ? ' announced-player' : ''}">${p.fullName || p.shortName}</td>
                             <td><span class="team-badge" style="background: ${getTeamColor(p.teamShortName)}; color: #fff;">${p.teamShortName || '-'}</span></td>
                             <td>${p.skillName || '-'}</td>
                             <td>${formatNumber(p.value)}</td>
