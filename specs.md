@@ -344,10 +344,11 @@ API Endpoint: `https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=e
 
 ### Dashboard Features
 
-- **Three Tabs**:
+- **Four Tabs**:
   - **All Players** - Full player list with filters, sorting, and stats sidebar
   - **Today's Match** - Side-by-side home/away team tables (sidebar hidden)
   - **Next Match** - Side-by-side tables for all teams (sidebar hidden)
+  - **Transfers** - Complete match-by-match transfer history with team-wise player counts (sidebar hidden)
 - **Playing XI Detection**: Players with `IsAnnounced='P'` shown with green text and checkmark
 - **Announced Squad**: Players with `IsAnnounced='P'` or `'NP'` shown in bold
 - **Sortable Columns**: Click any header to sort (default: Playing XI first)
@@ -365,4 +366,11 @@ API Endpoint: `https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=e
   - Teams determined from `ipl26.csv` schedule file
   - Shows home/away teams for the next match date after today
   - Useful for planning transfers for upcoming matches
+- **Transfers Tab**:
+  - Displays all 70 matches with complete transfer data from `ipl26_computed.csv`
+  - Columns: Match No, Date, Home, Away, Gap-1, Gap-2, CSK, DC, GT, KKR, LSG, MI, PBKS, RCB, RR, SRH, Total, Transfers, Scoring Players
+  - Today's matches highlighted with gold left border and background
+  - Past matches greyed out (50% opacity)
+  - All columns sortable by clicking header
+  - Horizontal scroll for mobile responsiveness
 - **Responsive Layout**: Sidebar with stats, filters, and legend; main table area

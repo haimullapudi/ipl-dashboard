@@ -41,6 +41,11 @@ A static webpage that displays IPL Fantasy players data fetched from the officia
 6. **renderMatchTables(data, containerId, matchTeams)** - JavaScript function to render home/away team tables
 7. **switchTab(tab)** - JavaScript function to switch between tabs
 8. **get_today_and_next_match()** - Python function to load match schedule from `ipl26.csv` and determine today's and next match teams
+9. **load_transfers_data()** - Python function to load transfer data from `ipl26_computed.csv`
+10. **get_today_match_nos()** - Python function to get today's match numbers for highlighting
+11. **renderTransfersTable(data)** - JavaScript function to render transfers table
+12. **sortTransfers(field)** - JavaScript function for transfers column sorting
+13. **isMatchPast(dateStr)** - JavaScript function to check if a match date is in the past
 
 ### Data Flow
 
@@ -58,7 +63,7 @@ IPL Fantasy API → urllib.request → Python dict → JSON → Embedded in HTML
 
 ### Tabs
 
-Three tabs at the top of the page:
+Four tabs at the top of the page:
 
 1. **All Players** (default) - Shows all players with full filtering capabilities
 2. **Today's Match** - Shows side-by-side tables for home and away teams
@@ -73,6 +78,14 @@ Three tabs at the top of the page:
    - Teams determined from `ipl26.csv` schedule file
    - Shows the home/away teams for the next match date after today
    - Green text for playing players (if any)
+4. **Transfers** - Shows complete match-by-match transfer history
+   - Automatically hides sidebar when active
+   - Data source: `ipl26_computed.csv`
+   - Columns: Match No, Date, Home, Away, Gap-1, Gap-2, CSK, DC, GT, KKR, LSG, MI, PBKS, RCB, RR, SRH, Total, Transfers, Scoring Players
+   - Today's matches highlighted with gold left border and background
+   - Past matches greyed out (50% opacity)
+   - All columns sortable by clicking header
+   - Horizontal scroll for mobile responsiveness
 
 ### Table Columns (All Players tab)
 

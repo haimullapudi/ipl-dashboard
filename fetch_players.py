@@ -62,6 +62,45 @@ def get_today_and_next_match():
 
     return today_teams_list, next_teams_list
 
+def load_transfers_data():
+    """Load transfers data from ipl26_computed.csv."""
+    transfers = []
+    try:
+        with open('ipl26_computed.csv', 'r', encoding='utf-8-sig') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                transfers.append({
+                    'match_no': int(row['Match No']),
+                    'date': row['Date'],
+                    'home': row['Home'],
+                    'away': row['Away'],
+                    'team1_gap': row['Team-1 Gap'] if row['Team-1 Gap'] else '',
+                    'team2_gap': row['Team-2 Gap'] if row['Team-2 Gap'] else '',
+                    'CSK': row.get('CSK', ''),
+                    'DC': row.get('DC', ''),
+                    'GT': row.get('GT', ''),
+                    'KKR': row.get('KKR', ''),
+                    'LSG': row.get('LSG', ''),
+                    'MI': row.get('MI', ''),
+                    'PBKS': row.get('PBKS', ''),
+                    'RCB': row.get('RCB', ''),
+                    'RR': row.get('RR', ''),
+                    'SRH': row.get('SRH', ''),
+                    'total': row.get('Total', '11'),
+                    'transfers': row.get('Transfers', ''),
+                    'scoring_players': row.get('Scoring Players', '')
+                })
+    except Exception as e:
+        print(f"Warning: Could not load transfers data: {e}")
+    return transfers
+
+def get_today_match_nos():
+    """Get today's match number(s) from schedule."""
+    matches_by_date = load_match_schedule()
+    today = date.today()
+    today_matches = matches_by_date.get(today, [])
+    return [m['match_no'] for m in today_matches]
+
 def fetch_players():
     """Fetch players data from IPL Fantasy API."""
     print(f"Fetching data from {API_URL}...")
@@ -139,6 +178,12 @@ def generate_html(data):
     today_matches, next_matches = get_today_and_next_match()
     today_matches_json = json.dumps(today_matches)
     next_matches_json = json.dumps(next_matches)
+
+    # Load transfers data and today's match numbers
+    transfers_data = load_transfers_data()
+    transfers_json = json.dumps(transfers_data)
+    today_match_nos = get_today_match_nos()
+    today_match_nos_json = json.dumps(today_match_nos)
 
     html_content = '''<!DOCTYPE html>
 <html lang="en">
@@ -462,6 +507,48 @@ def generate_html(data):
             color: #4ade80 !important;
             text-shadow: 0 0 8px rgba(74, 222, 128, 0.4);
         }
+        /* Transfers tab table */
+        .transfers-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .transfers-table th,
+        .transfers-table td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+        }
+        .transfers-table th {
+            background: rgba(240, 165, 0, 0.2);
+            color: #f0a500;
+            font-weight: 600;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        .transfers-table th:hover {
+            background: rgba(240, 165, 0, 0.3);
+        }
+        .transfers-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+        /* Match status indicators */
+        .match-today {
+            border-left: 4px solid #f0a500 !important;
+            background: rgba(240, 165, 0, 0.15) !important;
+        }
+        .match-today td {
+            border-left: 1px solid rgba(240, 165, 0, 0.3);
+        }
+        .match-past {
+            opacity: 0.5;
+        }
+        .match-past td {
+            color: rgba(255, 255, 255, 0.6);
+        }
         @media (max-width: 1024px) {
             .main-layout {
                 grid-template-columns: 1fr;
@@ -486,11 +573,13 @@ def generate_html(data):
             <button class="tab-btn active" onclick="switchTab('all')">All Players</button>
             <button class="tab-btn" onclick="switchTab('match')">Today's Match</button>
             <button class="tab-btn" onclick="switchTab('next')">Next Match</button>
+            <button class="tab-btn" onclick="switchTab('transfers')">Transfers</button>
         </div>
         <div class="main-layout">
             <div id="content" class="tab-content active"></div>
             <div id="match-content" class="tab-content"></div>
             <div id="next-match-content" class="tab-content"></div>
+            <div id="transfers-content" class="tab-content"></div>
             <div class="sidebar">
                 <div class="data-info">
                     <span class="date">Data fetched: ''' + fetched_at + '''</span>
@@ -535,6 +624,8 @@ def generate_html(data):
         window.playersData = ''' + players_json + ''';
         window.todayMatches = ''' + today_matches_json + ''';
         window.nextMatches = ''' + next_matches_json + ''';
+        window.transfersData = ''' + transfers_json + ''';
+        window.todayMatchNos = ''' + today_match_nos_json + ''';
 
         const teamColors = {
             'CSK': '#f9cd08', 'DC': '#004c93', 'GT': '#1c2e4a',
@@ -752,10 +843,10 @@ def generate_html(data):
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             event.target.classList.add('active');
 
-            // Hide sidebar for match tabs (no filters needed)
+            // Hide sidebar for match and transfers tabs (no filters needed)
             const sidebar = document.querySelector('.sidebar');
             const mainLayout = document.querySelector('.main-layout');
-            if (tab === 'match' || tab === 'next') {
+            if (tab === 'match' || tab === 'next' || tab === 'transfers') {
                 sidebar.classList.add('hidden');
                 mainLayout.classList.add('no-sidebar');
             } else {
@@ -763,13 +854,19 @@ def generate_html(data):
                 mainLayout.classList.remove('no-sidebar');
             }
 
-            // Show appropriate content
+            // Show appropriate content and render
             if (tab === 'all') {
                 document.getElementById('content').classList.add('active');
+                renderTable(window.playersData);
             } else if (tab === 'match') {
                 document.getElementById('match-content').classList.add('active');
+                renderTodayMatchTables(window.playersData);
             } else if (tab === 'next') {
                 document.getElementById('next-match-content').classList.add('active');
+                renderNextMatchTables(window.playersData);
+            } else if (tab === 'transfers') {
+                document.getElementById('transfers-content').classList.add('active');
+                renderTransfersTable(window.transfersData);
             }
         }
 
@@ -891,12 +988,138 @@ def generate_html(data):
             document.getElementById('next-match-content').innerHTML = html;
         }
 
+        function parseMatchDate(dateStr) {
+            // Parse "28-Mar-26" format
+            const months = { 'Jan': 0, 'Feb': 1, 'Mar': 2, 'Apr': 3, 'May': 4, 'Jun': 5,
+                             'Jul': 6, 'Aug': 7, 'Sep': 8, 'Oct': 9, 'Nov': 10, 'Dec': 11 };
+            const parts = dateStr.split('-');
+            const day = parseInt(parts[0]);
+            const month = months[parts[1]];
+            const year = 2000 + parseInt(parts[2]);
+            return new Date(year, month, day);
+        }
+
+        function isMatchPast(dateStr) {
+            const matchDate = parseMatchDate(dateStr);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            return matchDate < today;
+        }
+
+        let transfersSortField = 'match_no';
+        let transfersSortDir = 'asc';
+
+        function sortTransfers(field) {
+            if (transfersSortField === field) {
+                transfersSortDir = transfersSortDir === 'asc' ? 'desc' : 'asc';
+            } else {
+                transfersSortField = field;
+                transfersSortDir = 'asc';
+            }
+
+            const data = window.transfersData || [];
+            const sorted = [...data].sort((a, b) => {
+                let aVal = a[field];
+                let bVal = b[field];
+
+                // Handle numeric vs string comparison
+                if (field === 'match_no' || field === 'total' || field === 'transfers' || field === 'scoring_players') {
+                    aVal = parseInt(aVal) || 0;
+                    bVal = parseInt(bVal) || 0;
+                    return transfersSortDir === 'asc' ? aVal - bVal : bVal - aVal;
+                }
+
+                aVal = (aVal || '').toString().toLowerCase();
+                bVal = (bVal || '').toString().toLowerCase();
+                return transfersSortDir === 'asc' ? aVal.localeCompare(bVal) : bVal.localeCompare(aVal);
+            });
+
+            window.transfersData = sorted;
+            renderTransfersTable(sorted);
+        }
+
+        function renderTransfersTable(data) {
+            const tbody = document.getElementById('transfers-content');
+            const todayMatchNos = window.todayMatchNos || [];
+
+            if (!data || data.length === 0) {
+                tbody.innerHTML = `
+                    <div class="table-container">
+                        <div class="no-results">No transfer data available</div>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = `
+                <div class="table-container">
+                    <table class="transfers-table">
+                        <thead>
+                            <tr>
+                                <th onclick="sortTransfers('match_no')">Match No <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('date')">Date <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('home')">Home <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('away')">Away <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('team1_gap')">Gap-1 <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('team2_gap')">Gap-2 <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('CSK')">CSK <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('DC')">DC <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('GT')">GT <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('KKR')">KKR <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('LSG')">LSG <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('MI')">MI <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('PBKS')">PBKS <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('RCB')">RCB <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('RR')">RR <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('SRH')">SRH <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('total')">Total <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('transfers')">Transfers <span class="sort-icon">⇅</span></th>
+                                <th onclick="sortTransfers('scoring_players')">Scoring <span class="sort-icon">⇅</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${data.map(match => {
+                                const isToday = todayMatchNos.includes(match.match_no);
+                                const isPast = isMatchPast(match.date);
+                                const rowClass = isToday ? 'match-today' : (isPast ? 'match-past' : '');
+
+                                return `<tr class="${rowClass}">
+                                    <td>${match.match_no}</td>
+                                    <td>${match.date}</td>
+                                    <td>${match.home}</td>
+                                    <td>${match.away}</td>
+                                    <td>${match.team1_gap}</td>
+                                    <td>${match.team2_gap}</td>
+                                    <td>${match.CSK || ''}</td>
+                                    <td>${match.DC || ''}</td>
+                                    <td>${match.GT || ''}</td>
+                                    <td>${match.KKR || ''}</td>
+                                    <td>${match.LSG || ''}</td>
+                                    <td>${match.MI || ''}</td>
+                                    <td>${match.PBKS || ''}</td>
+                                    <td>${match.RCB || ''}</td>
+                                    <td>${match.RR || ''}</td>
+                                    <td>${match.SRH || ''}</td>
+                                    <td>${match.total}</td>
+                                    <td>${match.transfers}</td>
+                                    <td>${match.scoring_players}</td>
+                                </tr>`;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+
+            tbody.innerHTML = html;
+        }
+
         // Initialize with default tab
         const players = window.playersData.gamedayPlayers || [];
         sortedPlayers = sortPlayers(players, currentSort.field, 'boolean');
         renderTable(window.playersData);
         renderTodayMatchTables(window.playersData);
         renderNextMatchTables(window.playersData);
+        renderTransfersTable(window.transfersData);
     </script>
 </body>
 </html>

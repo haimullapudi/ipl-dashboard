@@ -199,10 +199,11 @@ This fetches data from the IPL Fantasy API and generates:
 
 ### Features
 
-- **Three tabs**:
+- **Four tabs**:
   - **All Players** - Full player list with filters and sorting
   - **Today's Match** - Side-by-side home/away team tables
   - **Next Match** - Side-by-side tables for all teams (upcoming match planning)
+  - **Transfers** - Complete match-by-match transfer history with team-wise player counts
 - **Sortable columns** - Click any header to sort (default: Playing XI first)
 - **Team filter** - Filter players by team
 - **Playing XI filter** - Show only players in today's squad
