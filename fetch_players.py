@@ -148,10 +148,6 @@ def generate_html(data):
             color: #aaa;
             font-size: 0.85rem;
             margin-bottom: 8px;
-            text-transform: uppercase;
-        }
-        .filter-group .checkbox-group label {
-            text-transform: none;
         }
         .filter-group select {
             width: 100%;
