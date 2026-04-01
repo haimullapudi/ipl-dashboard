@@ -398,7 +398,10 @@ def generate_html(data):
                 } else if (type === 'number') {
                     return dir * ((aVal || 0) - (bVal || 0));
                 } else if (type === 'boolean') {
-                    return dir * ((bVal ? 1 : 0) - (aVal ? 1 : 0));
+                    // For boolean: true (playing) should come first in desc mode
+                    const aNum = aVal ? 1 : 0;
+                    const bNum = bVal ? 1 : 0;
+                    return dir === -1 ? (bNum - aNum) : (aNum - bNum);
                 }
                 return 0;
             });
