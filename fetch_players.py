@@ -100,12 +100,31 @@ def generate_html(data):
             padding: 20px;
             color: #fff;
         }
-        .container { max-width: 1600px; margin: 0 auto; }
+        .container { max-width: 1800px; margin: 0 auto; }
         .main-layout {
             display: grid;
-            grid-template-columns: 1fr 280px;
+            grid-template-columns: 1fr 320px;
             gap: 20px;
         }
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+        .stat-card h3 { font-size: 2rem; color: #f0a500; margin-bottom: 5px; }
+        .stat-card p { color: #aaa; font-size: 0.9rem; }
         header {
             text-align: center;
             margin-bottom: 30px;
@@ -281,21 +300,6 @@ def generate_html(data):
             background: linear-gradient(90deg, #f0a500, #ff8c00);
             border-radius: 4px;
         }
-        .stats-summary {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .stat-card {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-            backdrop-filter: blur(10px);
-        }
-        .stat-card h3 { font-size: 2rem; color: #f0a500; margin-bottom: 5px; }
-        .stat-card p { color: #aaa; font-size: 0.9rem; }
         .legend {
             display: flex;
             gap: 20px;
@@ -319,8 +323,8 @@ def generate_html(data):
             .main-layout {
                 grid-template-columns: 1fr;
             }
-            .filter-panel {
-                position: static;
+            .sidebar {
+                order: 2;
             }
         }
         @media (max-width: 768px) {
@@ -336,11 +340,13 @@ def generate_html(data):
             <h1>🏏 IPL Fantasy Players</h1>
             <p>Today's Squad & Player Statistics</p>
         </header>
-        <div class="data-info">Data fetched: ''' + fetched_at + ''' | Game Day ID: ''' + str(data['_tourgamedayId']) + '''</div>
         <div class="main-layout">
             <div id="content"></div>
-            <div class="filter-panel">
-                <h3>Filters</h3>
+            <div class="sidebar">
+                <div class="data-info">Data fetched: ''' + fetched_at + ''' | Game Day ID: ''' + str(data['_tourgamedayId']) + '''</div>
+                <div class="stats-summary" id="statsSummary"></div>
+                <div class="filter-panel">
+                    <h3>Filters</h3>
                 <div class="filter-group">
                     <label for="teamFilter">Filter by Team</label>
                     <select id="teamFilter" onchange="applyFilters()">
@@ -368,6 +374,8 @@ def generate_html(data):
                     <p>Showing <span class="count" id="filteredCount">0</span> of <span class="count" id="totalCount">0</span> players</p>
                 </div>
                 <button class="reset-btn" onclick="resetFilters()">Reset Filters</button>
+            </div>
+                <div class="legend" id="legend"></div>
             </div>
         </div>
     </div>
@@ -418,18 +426,19 @@ def generate_html(data):
             // Default sort by playing XI (descending)
             sortedPlayers = sortPlayers(players, currentSort.field, 'boolean');
 
-            const summaryHTML = `
-                <div class="stats-summary">
-                    <div class="stat-card"><h3>${players.length}</h3><p>Total Players</p></div>
-                    <div class="stat-card"><h3>${announcedCount}</h3><p>Announced Squad (Bold)</p></div>
-                    <div class="stat-card"><h3>${avgPoints.toFixed(1)}</h3><p>Avg Game Day Points</p></div>
-                    <div class="stat-card"><h3>${playingCount}</h3><p>Playing XI (Green + ✓)</p></div>
-                </div>
-                <div class="legend">
-                    <div class="legend-item"><div class="legend-color announced"></div><span>Playing (Green + ✓)</span></div>
-                    <div class="legend-item"><div class="legend-color normal"></div><span>Not Playing</span></div>
-                    <div class="legend-item"><span style="font-weight:bold;color:#fff;">Bold</span><span>= Announced</span></div>
-                </div>
+            // Render stats to sidebar
+            document.getElementById('statsSummary').innerHTML = `
+                <div class="stat-card"><h3>${players.length}</h3><p>Total Players</p></div>
+                <div class="stat-card"><h3>${announcedCount}</h3><p>Announced Squad (Bold)</p></div>
+                <div class="stat-card"><h3>${avgPoints.toFixed(1)}</h3><p>Avg Game Day Points</p></div>
+                <div class="stat-card"><h3>${playingCount}</h3><p>Playing XI (Green + ✓)</p></div>
+            `;
+
+            // Render legend to sidebar
+            document.getElementById('legend').innerHTML = `
+                <div class="legend-item"><div class="legend-color announced"></div><span>Playing (Green + ✓)</span></div>
+                <div class="legend-item"><div class="legend-color normal"></div><span>Not Playing</span></div>
+                <div class="legend-item"><span style="font-weight:bold;color:#fff;">Bold</span><span>= Announced</span></div>
             `;
 
             const tableHTML = `
