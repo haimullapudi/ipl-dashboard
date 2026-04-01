@@ -182,20 +182,47 @@ ipl/
         └── 2026-03-30-ipl-transfer-optimizer-design.md
 ```
 
-## IPL Fantasy Players Dashboard
+## IPL Fantasy Players Dashboard - Web Application
 
-A static webpage that displays IPL Fantasy players data fetched from the official API.
+A Flask web application that displays IPL Fantasy players data fetched in real-time from the official API.
 
-### Usage
+### Quick Start
 
 ```bash
-# Fetch latest data and generate dashboard
-python3 fetch_players.py
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the development server
+python3 server.py
 ```
 
-This fetches data from the IPL Fantasy API and generates:
-- `players_data.json` - Raw API data backup
-- `players.html` - Interactive dashboard
+The application will be available at `http://localhost:5000`
+
+### Deployment (Railway/Render)
+
+The application is configured for deployment on Railway or Render:
+
+1. **Railway**:
+   - Connect your GitHub repository
+   - Railway auto-detects the Procfile and deploys
+   - Set environment variables if needed
+
+2. **Render**:
+   - Create a new Web Service
+   - Connect your GitHub repository
+   - Build command: `pip install -r requirements.txt`
+   - Start command: `gunicorn server:app --workers 2 --threads 4`
+
+### Features
+
+- **Real-time API fetching** - Data fetched on-demand from IPL Fantasy API
+- **Three tabs**:
+  - **All Players** - Full player list with filters and sorting
+  - **Today's Match** - Side-by-side home/away team tables
+  - **Transfers** - Complete match-by-match transfer history
+- **Auto-refresh** - GitHub Actions fetch fresh data every 5 minutes (9:30-10:00 AM EST)
+- **Loading/Error states** - Better UX with spinners and retry options
+- **Last updated timestamp** - Shows when data was last fetched
 
 ### Features
 
