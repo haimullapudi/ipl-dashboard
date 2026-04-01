@@ -316,5 +316,37 @@ Running beam search optimization...
 | `test_optimizer.py` | Test suite with validation rules |
 | `ipl26.csv` | Input file (match schedule + initial squad) |
 | `ipl26_computed.csv` | Output file (fully populated) |
+| `fetch_players.py` | IPL Fantasy API fetcher and dashboard generator |
+| `players.html` | Generated static dashboard |
+| `players_data.json` | Raw API data backup |
 | `docs/plans/2026-03-29-ipl-transfer-optimizer.md` | Implementation plan |
 | `specs.md` | This design document |
+
+## IPL Fantasy Players Dashboard
+
+A static webpage that displays IPL Fantasy players data from the official API.
+
+### Data Source
+
+API Endpoint: `https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=en&tourgamedayId=4`
+
+### Key Fields
+
+| Field | Description |
+|-------|-------------|
+| IsAnnounced | 'P' = Playing, 'NP' = Not Playing, 'S' = Substitute, '' = Not announced |
+| IS_FP | '1' = In final playing XI, '0' = Not in playing XI |
+| SelectedPer | Percentage of users who selected the player |
+| CapSelectedPer | Percentage who made this player captain |
+| VCapSelectedPer | Percentage who made this player vice-captain |
+| GamedayPoints | Points scored in current game day |
+| OverallPoints | Total season points |
+
+### Dashboard Features
+
+- **Playing XI Detection**: Players with `IsAnnounced='P'` shown with green text and checkmark
+- **Announced Squad**: Players with `IsAnnounced='P'` or `'NP'` shown in bold
+- **Sortable Columns**: Click any header to sort (default: Playing XI first)
+- **Team Filter**: Dropdown to filter by team
+- **Playing XI Filter**: Checkbox to show only playing XI members
+- **Responsive Layout**: Sidebar with stats, filters, and legend; main table area

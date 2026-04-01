@@ -1,6 +1,6 @@
-# IPL Fantasy League Transfer Optimizer
+# IPL Fantasy League - Transfer Optimizer & Players Dashboard
 
-A Python program that generates optimal transfer plans across the 70-match IPL league stage using a total budget of 160 transfers.
+A Python program that generates optimal transfer plans across the 70-match IPL league stage using a total budget of 160 transfers, plus a static webpage for viewing IPL Fantasy players data.
 
 ## Overview
 
@@ -174,10 +174,53 @@ ipl/
 ├── test_optimizer.py                  # Test suite
 ├── ipl26.csv                          # Input file (match schedule)
 ├── ipl26_computed.csv                 # Output file (computed)
+├── fetch_players.py                   # IPL Fantasy API fetcher
+├── players.html                       # Generated players dashboard
+├── players_data.json                  # Raw API data backup
 └── docs/
     └── plans/
         └── 2026-03-30-ipl-transfer-optimizer-design.md
 ```
+
+## IPL Fantasy Players Dashboard
+
+A static webpage that displays IPL Fantasy players data fetched from the official API.
+
+### Usage
+
+```bash
+# Fetch latest data and generate dashboard
+python3 fetch_players.py
+```
+
+This fetches data from the IPL Fantasy API and generates:
+- `players_data.json` - Raw API data backup
+- `players.html` - Interactive dashboard
+
+### Features
+
+- **Sortable columns** - Click any header to sort (default: Playing XI first)
+- **Team filter** - Filter players by team
+- **Playing XI filter** - Show only players in today's squad
+- **Visual indicators**:
+  - Green checkmark (✓) + green text = Playing XI
+  - Bold text = Announced squad
+- **Stats cards** - Total players, announced squad, avg points, playing XI count
+
+### Dashboard Columns
+
+| Column | Description |
+|--------|-------------|
+| ✓ | Playing XI indicator (green checkmark) |
+| Name | Player name (bold if announced, green if playing) |
+| Team | Team badge with team color |
+| Skill | Player role (Batsman, Bowler, All Rounder, WK) |
+| Value | Player value in credits |
+| Sel By (%) | Percentage of users who selected this player |
+| Cap (%) | Percentage who made this player captain |
+| VCap (%) | Percentage who made this player vice-captain |
+| Game Points | Points scored in current game day |
+| Overall Points | Total season points |
 
 ## License
 
