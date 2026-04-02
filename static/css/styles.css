@@ -290,6 +290,24 @@ th.sorted .sort-icon {
     border-collapse: separate;
     border-spacing: 0;
 }
+.team-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.team-table thead tr:first-child th.team-name-header {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 12 !important;
+    background: #2a2a4e !important;
+    padding: 15px 20px !important;
+    text-align: center !important;
+    color: #f0a500 !important;
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
 .team-table thead tr th {
     position: sticky;
     top: 0;
