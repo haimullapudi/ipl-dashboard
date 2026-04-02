@@ -175,7 +175,7 @@ function renderMyTeam() {
                             <thead>
                                 <tr><th colspan="7" class="team-name-header">${teamName}</th></tr>
                                 <tr>
-                                    <th class="sortable" onclick="sortMatchPlayers('fullName')">Name <span class="sort-icon">⇅</span></th>
+                                    <th>Name</th>
                                     <th>Skill</th>
                                     <th class="sortable" onclick="sortMatchPlayers('value')">Value <span class="sort-icon">⇅</span></th>
                                     <th>Sel By (%)</th>
