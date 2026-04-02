@@ -267,10 +267,22 @@ th.sorted .sort-icon {
     grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
     gap: 20px;
 }
-.team-table-container {
+.team-table-wrapper {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
-    max-height: calc(100vh - 120px);
+    overflow: hidden;
+}
+.team-table-title {
+    text-align: center;
+    color: #f0a500;
+    font-size: 1.3rem;
+    font-weight: 700;
+    padding: 15px 20px;
+    margin: 0;
+    background: #2a2a4e;
+}
+.team-table-container {
+    max-height: calc(100vh - 180px);
     overflow: auto;
 }
 .team-table {
@@ -278,28 +290,10 @@ th.sorted .sort-icon {
     border-collapse: separate;
     border-spacing: 0;
 }
-.team-table thead {
+.team-table thead tr th {
     position: sticky;
     top: 0;
     z-index: 10;
-}
-.team-table thead tr:first-child th {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 12 !important;
-    background: #2a2a4e !important;
-    padding: 15px 20px !important;
-    text-align: center !important;
-    color: #f0a500 !important;
-    font-size: 1.3rem !important;
-    font-weight: 700 !important;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-}
-.team-table thead tr:nth-child(2) th {
-    position: sticky !important;
-    top: 0 !important;
-    z-index: 11 !important;
     background: #f0a500 !important;
 }
 .team-table th {
