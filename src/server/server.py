@@ -248,6 +248,13 @@ def health():
     return jsonify({'status': 'healthy', 'timestamp': datetime.now().isoformat()})
 
 
+@app.route('/api/gameday')
+def get_gameday():
+    """Get the current gameday."""
+    gameday = get_current_gameday()
+    return jsonify({'gameday': gameday})
+
+
 @app.route('/api/my-team')
 def get_my_team():
     """Fetch user's fantasy team from authenticated IPL API."""

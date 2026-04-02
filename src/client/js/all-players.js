@@ -26,6 +26,17 @@ async function loadData() {
                 month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'
             });
 
+        // Fetch and display current gameday
+        try {
+            const gamedayRes = await fetch('/api/gameday');
+            if (gamedayRes.ok) {
+                const gamedayData = await gamedayRes.json();
+                document.getElementById('gamedayDisplay').textContent = `Game Day ${gamedayData.gameday}`;
+            }
+        } catch (e) {
+            console.log('Could not fetch gameday:', e);
+        }
+
         initStats();
         initLegend();
         refreshPlayers();
