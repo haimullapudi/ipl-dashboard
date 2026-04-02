@@ -4,7 +4,6 @@
 from flask import Flask, jsonify, send_from_directory
 import json
 import urllib.request
-import http.cookiejar
 from urllib.parse import unquote
 import csv
 from datetime import datetime, date, timedelta
@@ -16,11 +15,14 @@ PROJECT_ROOT = os.path.dirname(os.path.dirname(SERVER_DIR))  # Go up two levels 
 
 # Set up paths relative to project root
 CLIENT_DIR = os.path.join(PROJECT_ROOT, 'src', 'client')
-SCHEDULE_FILE = os.path.join(PROJECT_ROOT, 'src', 'transfer_optimizer', 'ipl26.csv')
 TRANSFERS_FILE = os.path.join(PROJECT_ROOT, 'src', 'transfer_optimizer', 'ipl26_computed.csv')
 
 # IPL 2026 season start date
 SEASON_START_DATE = date(2026, 3, 28)
+
+# Cache for tour fixtures
+_tour_fixtures_cache = None
+_fixtures_last_fetched = None
 
 def load_env_vars():
     """Load environment variables from .env file."""
@@ -43,12 +45,44 @@ MY11_CLASSIC_GAME = ENV.get('MY11_CLASSIC_GAME', '')
 USER_GUID = '70b39912-2a45-11f1-af7d-02ce50028faf'  # From MY11_CLASSIC_GAME
 
 def get_current_gameday():
-    """Calculate the current game day based on days since season start."""
-    today = date.today()
-    if today < SEASON_START_DATE:
-        return 1
-    delta = today - SEASON_START_DATE
-    return delta.days + 1  # Day 1 is the start date itself
+    """Get the current TourGamedayId based on UTC time and match fixtures."""
+    global _tour_fixtures_cache, _fixtures_last_fetched
+
+    now = datetime.utcnow()
+
+    # Refresh cache every 5 minutes
+    if _tour_fixtures_cache is None or (_fixtures_last_fetched and (now - _fixtures_last_fetched).total_seconds() > 300):
+        try:
+            url = "https://fantasy.iplt20.com/classic/api/feed/tour-fixtures"
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=30) as response:
+                data = json.loads(response.read().decode('utf-8'))
+                # Value is a list directly, not a dict with Matches
+                _tour_fixtures_cache = data.get('Data', {}).get('Value', [])
+                _fixtures_last_fetched = now
+        except Exception as e:
+            print(f"Warning: Could not fetch tour-fixtures: {e}")
+            _tour_fixtures_cache = []
+
+    # Find the current gameday based on match dateTime (UTC)
+    # MatchdateTime format: "03/28/2026 14:00:00"
+    current_gameday = 1
+
+    for match in _tour_fixtures_cache:
+        match_dt_str = match.get('MatchdateTime', '')
+        if match_dt_str:
+            try:
+                # Parse datetime in MM/DD/YYYY HH:MM:SS format
+                match_dt = datetime.strptime(match_dt_str, '%m/%d/%Y %H:%M:%S')
+                # If match has started or is in the past, this is the current gameday
+                if match_dt <= now:
+                    tour_gameday_id = match.get('TourGamedayId', 1)
+                    if tour_gameday_id and tour_gameday_id > current_gameday:
+                        current_gameday = tour_gameday_id
+            except Exception as e:
+                print(f"Warning: Could not parse match dateTime: {e}")
+
+    return current_gameday
 
 def get_players_api_url():
     """Get the API URL with dynamic tourgamedayId."""
@@ -66,22 +100,44 @@ def parse_date(date_str):
 
 
 def load_match_schedule():
+    """Load matches from tour-fixtures API."""
+    global _tour_fixtures_cache, _fixtures_last_fetched
+
+    now = datetime.utcnow()
+
+    # Refresh cache every 5 minutes
+    if _tour_fixtures_cache is None or (_fixtures_last_fetched and (now - _fixtures_last_fetched).total_seconds() > 300):
+        try:
+            url = "https://fantasy.iplt20.com/classic/api/feed/tour-fixtures"
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=30) as response:
+                data = json.loads(response.read().decode('utf-8'))
+                _tour_fixtures_cache = data.get('Data', {}).get('Value', [])
+                _fixtures_last_fetched = now
+        except Exception as e:
+            print(f"Warning: Could not fetch tour-fixtures: {e}")
+            _tour_fixtures_cache = []
+
+    # Convert to match schedule format
+    # MatchdateTime format: "03/28/2026 14:00:00" (UTC)
     matches_by_date = {}
-    try:
-        with open(SCHEDULE_FILE, 'r', encoding='utf-8-sig') as f:
-            reader = csv.DictReader(f)
-            for row in reader:
-                match_date = parse_date(row['Date'])
-                if match_date:
-                    if match_date not in matches_by_date:
-                        matches_by_date[match_date] = []
-                    matches_by_date[match_date].append({
-                        'home': row['Home'],
-                        'away': row['Away'],
-                        'match_no': int(row['Match No'])
-                    })
-    except Exception as e:
-        print(f"Warning: Could not load schedule: {e}")
+    for match in _tour_fixtures_cache:
+        match_dt_str = match.get('MatchdateTime', '')
+        if match_dt_str:
+            try:
+                match_dt = datetime.strptime(match_dt_str, '%m/%d/%Y %H:%M:%S')
+                match_date = match_dt.date()
+                if match_date not in matches_by_date:
+                    matches_by_date[match_date] = []
+                matches_by_date[match_date].append({
+                    'home': match.get('HomeTeamShortName', 'Unknown'),
+                    'away': match.get('AwayTeamShortName', 'Unknown'),
+                    'match_no': match.get('TourGamedayId', 0),
+                    'dateTime': match_dt
+                })
+            except Exception as e:
+                print(f"Warning: Could not parse match dateTime: {e}")
+
     return matches_by_date
 
 
@@ -105,7 +161,7 @@ def get_today_match_nos():
     matches_by_date = load_match_schedule()
     today = date.today()
     today_matches = matches_by_date.get(today, [])
-    return [m['match_no'] for m in today_matches]
+    return [m['match_no'] for m in today_matches if m.get('match_no', 0) > 0]
 
 
 def load_transfers_data():
