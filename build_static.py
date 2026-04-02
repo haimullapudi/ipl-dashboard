@@ -6,12 +6,14 @@ Fetches data from IPL API and generates static JSON files.
 
 import json
 import urllib.request
+import http.cookiejar
 import csv
 from datetime import datetime, date
 import os
 import shutil
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+PROJECT_ROOT = SCRIPT_DIR
 STATIC_DIR = os.path.join(SCRIPT_DIR, 'static')
 API_URL = "https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=en"
 SCHEDULE_FILE = os.path.join(SCRIPT_DIR, 'src', 'transfer_optimizer', 'ipl26.csv')
@@ -105,6 +107,53 @@ def load_transfers_data():
         print(f"Warning: Could not load transfers data: {e}")
     return transfers
 
+
+def fetch_my_team_data():
+    """Fetch user's fantasy team data."""
+    # First try environment variables (for GitHub Actions), then fall back to .env file
+    auth_token = os.environ.get('MY11C_AUTH_TOKEN', '')
+    my11_classic_game = os.environ.get('MY11_CLASSIC_GAME', '')
+    user_guid = '70b39912-2a45-11f1-af7d-02ce50028faf'
+
+    # If not in environment, try loading from .env file (for local builds)
+    if not auth_token:
+        env_path = os.path.join(PROJECT_ROOT, '.env')
+        env_vars = {}
+        try:
+            with open(env_path, 'r') as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith('#') and '=' in line:
+                        key, value = line.split('=', 1)
+                        env_vars[key.strip()] = value.strip()
+            auth_token = env_vars.get('MY11C_AUTH_TOKEN', '')
+            my11_classic_game = env_vars.get('MY11_CLASSIC_GAME', '')
+        except Exception as e:
+            print(f"Warning: Could not load .env: {e}")
+
+    if not auth_token:
+        print("Warning: MY11C_AUTH_TOKEN not found")
+        return None
+
+    gameday = get_current_gameday()
+    url = f"https://fantasy.iplt20.com/classic/api/user/{user_guid}/team-get?gamedayId={gameday}"
+
+    # Build cookie header manually for reliability
+    cookie_header = f"my11c-authToken={auth_token}; my11_classic_game={my11_classic_game}"
+
+    req = urllib.request.Request(url, headers={
+        'User-Agent': 'Mozilla/5.0',
+        'Cookie': cookie_header
+    })
+
+    try:
+        with urllib.request.urlopen(req, timeout=30) as response:
+            data = json.loads(response.read().decode('utf-8'))
+            return data
+    except Exception as e:
+        print(f"Warning: Could not fetch my-team: {e}")
+        return None
+
 def fetch_players():
     gameday = get_current_gameday()
     url = f"{API_URL}&tourgamedayId={gameday}"
@@ -187,6 +236,15 @@ def main():
     with open(os.path.join(api_dir, 'transfers.json'), 'w') as f:
         json.dump(transfers, f, indent=2)
     print(f"Saved {len(transfers)} transfer records")
+
+    # Save my-team data
+    my_team_data = fetch_my_team_data()
+    if my_team_data:
+        with open(os.path.join(api_dir, 'my-team.json'), 'w') as f:
+            json.dump(my_team_data, f, indent=2)
+        print("Saved my-team.json")
+    else:
+        print("Warning: my-team.json not generated")
 
     # Update JS to use static JSON
     print("\nBuild complete! Static files in:", STATIC_DIR)

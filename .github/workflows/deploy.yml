@@ -1,0 +1,44 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    # Runs at 9:30, 9:35, 9:40 AM EST (14:30, 14:35, 14:40 UTC)
+    # Captures the 10AM EST IPL API data update
+    - cron: '30 14 * * *'
+    - cron: '35 14 * * *'
+    - cron: '40 14 * * *'
+  workflow_dispatch:  # Allow manual trigger
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install flask
+
+      - name: Build static site with secrets
+        env:
+          MY11C_AUTH_TOKEN: ${{ secrets.MY11C_AUTH_TOKEN }}
+          MY11_CLASSIC_GAME: ${{ secrets.MY11_CLASSIC_GAME }}
+        run: |
+          set +x  # Disable command echoing to protect secrets
+          python build_static.py
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./static
+          publish_branch: gh-pages
