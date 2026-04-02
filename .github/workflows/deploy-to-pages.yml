@@ -5,6 +5,7 @@ on:
   # Plus at 10:00 AM EDT (14:00 UTC) for final capture
   # Note: Data is ~15 hours old (updates at 10AM IST / 4:30AM UTC)
   schedule:
+    - cron: '0 0 * * *'     # 12:00 AM UTC (8:00 PM EDT previous day)
     - cron: '30 13 * * *'   # 9:30 AM EDT (13:30 UTC)
     - cron: '32 13 * * *'   # 9:32 AM EDT (13:32 UTC)
     - cron: '34 13 * * *'   # 9:34 AM EDT (13:34 UTC)
