@@ -255,6 +255,16 @@ def get_gameday():
     return jsonify({'gameday': gameday})
 
 
+@app.route('/api/tour-fixtures')
+def get_tour_fixtures():
+    """Get tour fixtures data."""
+    try:
+        fixtures = _fetch_tour_fixtures()
+        return jsonify(fixtures)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/my-team')
 def get_my_team():
     """Fetch user's fantasy team from authenticated IPL API."""
