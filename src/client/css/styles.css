@@ -6,7 +6,7 @@ body {
     padding: 20px;
     color: #fff;
 }
-.container { max-width: 95vw; margin: 0 auto; }
+.container { margin: 0 auto; }
 .main-layout {
     display: grid;
     grid-template-columns: 1fr 280px;
@@ -270,21 +270,37 @@ th.sorted .sort-icon {
 .team-table-container {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 12px;
-    max-height: calc(100vh - 180px);
-    overflow-y: auto;
-}
-.team-table-header {
-    background: rgba(240, 165, 0, 0.2);
-    padding: 15px 20px;
-}
-.team-table-header h3 {
-    color: #f0a500;
-    font-size: 1.3rem;
-    text-align: center;
-    margin: 0;
+    max-height: calc(100vh - 120px);
+    overflow: auto;
 }
 .team-table {
     width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+}
+.team-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.team-table thead tr:first-child th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 12 !important;
+    background: #2a2a4e !important;
+    padding: 15px 20px !important;
+    text-align: center !important;
+    color: #f0a500 !important;
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+.team-table thead tr:nth-child(2) th {
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 11 !important;
+    background: #f0a500 !important;
 }
 .team-table th {
     padding: 15px 12px;
@@ -294,9 +310,6 @@ th.sorted .sort-icon {
     background: #f0a500;
     font-size: 0.9rem;
     white-space: nowrap;
-    position: sticky;
-    top: 0;
-    z-index: 10;
 }
 .team-table th.sortable {
     cursor: pointer;
@@ -404,4 +417,110 @@ th.sorted .sort-icon {
 }
 .back-link:hover {
     color: #f0a500;
+}
+
+/* My Team Layout */
+.my-team-layout {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    gap: 20px;
+}
+
+.my-team-list {
+    padding: 15px;
+}
+
+.skill-group h4 {
+    color: #f0a500;
+    margin: 15px 0 10px 0;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.skill-group h4:first-child {
+    margin-top: 0;
+}
+
+.my-team-player {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+
+.my-team-player:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.player-name {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.team-tag {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-left: 4px;
+}
+
+/* IPL Team Colors - Bright distinct colors for dark background */
+.team-CSK { background: rgba(255, 220, 0, 0.2); color: #ffe000; border: 1px solid #ffe000; }
+.team-DC { background: rgba(0, 200, 200, 0.2); color: #00c8c8; border: 1px solid #00c8c8; }
+.team-GT { background: rgba(180, 180, 180, 0.2); color: #b4b4b4; border: 1px solid #b4b4b4; }
+.team-KKR { background: rgba(160, 120, 220, 0.2); color: #a078dc; border: 1px solid #a078dc; }
+.team-LSG { background: rgba(100, 255, 150, 0.2); color: #64ff96; border: 1px solid #64ff96; }
+.team-MI { background: rgba(68, 120, 255, 0.2); color: #4478ff; border: 1px solid #4478ff; }
+.team-PBKS { background: rgba(255, 80, 80, 0.2); color: #ff5050; border: 1px solid #ff5050; }
+.team-RCB { background: rgba(255, 100, 100, 0.2); color: #ff6464; border: 1px solid #ff6464; }
+.team-RR { background: rgba(255, 100, 150, 0.2); color: #ff6496; border: 1px solid #ff6496; }
+.team-SRH { background: rgba(255, 140, 50, 0.2); color: #ff8c32; border: 1px solid #ff8c32; }
+
+.cv-tag {
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin: 0 8px;
+}
+
+.cv-tag.captain {
+    background: rgba(240, 165, 0, 0.3);
+    color: #f0a500;
+    border: 1px solid #f0a500;
+}
+
+.cv-tag.vice-captain {
+    background: rgba(240, 165, 0, 0.2);
+    color: #fbbf24;
+    border: 1px solid #fbbf24;
+}
+
+.player-value {
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+.match-teams-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+@media (max-width: 1200px) {
+    .my-team-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .match-teams-row {
+        grid-template-columns: 1fr;
+    }
 }

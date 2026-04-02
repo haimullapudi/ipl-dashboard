@@ -4,21 +4,43 @@
 from flask import Flask, jsonify, send_from_directory
 import json
 import urllib.request
+import http.cookiejar
+from urllib.parse import unquote
 import csv
 from datetime import datetime, date, timedelta
 import os
 
 # Get the directory containing this script
 SERVER_DIR = os.path.dirname(os.path.abspath(__file__))
-PROJECT_ROOT = os.path.dirname(SERVER_DIR)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(SERVER_DIR))  # Go up two levels to project root
 
 # Set up paths relative to project root
-CLIENT_DIR = os.path.join(PROJECT_ROOT, 'client')
-SCHEDULE_FILE = os.path.join(PROJECT_ROOT, 'transfer_optimizer', 'ipl26.csv')
-TRANSFERS_FILE = os.path.join(PROJECT_ROOT, 'transfer_optimizer', 'ipl26_computed.csv')
+CLIENT_DIR = os.path.join(PROJECT_ROOT, 'src', 'client')
+SCHEDULE_FILE = os.path.join(PROJECT_ROOT, 'src', 'transfer_optimizer', 'ipl26.csv')
+TRANSFERS_FILE = os.path.join(PROJECT_ROOT, 'src', 'transfer_optimizer', 'ipl26_computed.csv')
 
 # IPL 2026 season start date
 SEASON_START_DATE = date(2026, 3, 28)
+
+def load_env_vars():
+    """Load environment variables from .env file."""
+    env_path = os.path.join(PROJECT_ROOT, '.env')
+    env_vars = {}
+    try:
+        with open(env_path, 'r') as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith('#') and '=' in line:
+                    key, value = line.split('=', 1)
+                    env_vars[key.strip()] = value.strip()
+    except Exception as e:
+        print(f"Warning: Could not load .env: {e}")
+    return env_vars
+
+ENV = load_env_vars()
+AUTH_TOKEN = ENV.get('MY11C_AUTH_TOKEN', '')
+MY11_CLASSIC_GAME = ENV.get('MY11_CLASSIC_GAME', '')
+USER_GUID = '70b39912-2a45-11f1-af7d-02ce50028faf'  # From MY11_CLASSIC_GAME
 
 def get_current_gameday():
     """Calculate the current game day based on days since season start."""
@@ -184,6 +206,28 @@ def get_transfers():
 @app.route('/api/health')
 def health():
     return jsonify({'status': 'healthy', 'timestamp': datetime.now().isoformat()})
+
+
+@app.route('/api/my-team')
+def get_my_team():
+    """Fetch user's fantasy team from authenticated IPL API."""
+    gameday = get_current_gameday()
+    url = f"https://fantasy.iplt20.com/classic/api/user/{USER_GUID}/team-get?gamedayId={gameday}"
+
+    # Build cookie header manually for reliability
+    cookie_header = f"my11c-authToken={AUTH_TOKEN}; my11_classic_game={MY11_CLASSIC_GAME}"
+
+    req = urllib.request.Request(url, headers={
+        'User-Agent': 'Mozilla/5.0',
+        'Cookie': cookie_header
+    })
+
+    try:
+        with urllib.request.urlopen(req, timeout=30) as response:
+            data = json.loads(response.read().decode('utf-8'))
+            return jsonify(data)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 if __name__ == '__main__':

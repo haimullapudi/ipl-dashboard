@@ -57,27 +57,11 @@ function renderSingleMatchTable(homeTeam, awayTeam) {
     const homePlayers = playersByTeam[homeTeam] || [];
     const awayPlayers = playersByTeam[awayTeam] || [];
 
-    const homePlayingCount = homePlayers.filter(p => p.isPlaying).length;
-    const awayPlayingCount = awayPlayers.filter(p => p.isPlaying).length;
-    const homeHasPlaying = homePlayingCount > 0;
-    const awayHasPlaying = awayPlayingCount > 0;
-
-    const renderTeamTable = (teamName, teamPlayers, showPlayingOnly) => {
-        let displayPlayers = teamPlayers;
-        if (showPlayingOnly) {
-            // Show only playing XI players (IsAnnounced = 'P')
-            displayPlayers = teamPlayers.filter(p => p.isPlaying);
-        } else {
-            // Fall back to all announced players if no playing XI available
-            displayPlayers = teamPlayers.filter(p => p.isAnnounced);
-        }
+    const renderTeamTable = (teamName, teamPlayers) => {
+        // Show only playing XI players (P)
+        const displayPlayers = teamPlayers.filter(p => p.isPlaying);
 
         const sorted = [...displayPlayers].sort((a, b) => {
-            // Playing XI always first
-            if (a.isPlaying && !b.isPlaying) return -1;
-            if (!a.isPlaying && b.isPlaying) return 1;
-
-            // Then sort by selected field
             let aVal = a[matchSortField] || 0;
             let bVal = b[matchSortField] || 0;
             return matchSortDir === 'desc' ? bVal - aVal : aVal - bVal;
@@ -86,29 +70,29 @@ function renderSingleMatchTable(homeTeam, awayTeam) {
         if (sorted.length === 0) {
             return `
                 <div class="team-table-container">
-                    <div class="team-table-header">
-                        <h3>${teamName}</h3>
-                    </div>
-                    <div class="no-results" style="padding: 20px;">No players available</div>
+                    <table class="team-table">
+                        <thead>
+                            <tr><th colspan="7" class="team-name-header">${teamName}</th></tr>
+                        </thead>
+                    </table>
+                    <div class="no-results" style="padding: 20px; text-align: center;">No players available</div>
                 </div>
             `;
         }
 
         return `
             <div class="team-table-container">
-                <div class="team-table-header">
-                    <h3>${teamName}</h3>
-                </div>
                 <table class="team-table">
                     <thead>
+                        <tr><th colspan="7" class="team-name-header">${teamName}</th></tr>
                         <tr>
-                            <th>Name</th>
+                            <th class="sortable" onclick="sortMatchPlayers('fullName')">Name <span class="sort-icon">⇅</span></th>
                             <th>Skill</th>
                             <th class="sortable" onclick="sortMatchPlayers('value')">Value <span class="sort-icon">⇅</span></th>
                             <th>Sel By (%)</th>
                             <th>Cap (%)</th>
                             <th>VCap (%)</th>
-                            <th class="sortable" onclick="sortMatchPlayers('overallPoints')">Overall Points <span class="sort-icon">⇅</span></th>
+                            <th class="sortable" onclick="sortMatchPlayers('overallPoints')">Points <span class="sort-icon">⇅</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -134,8 +118,8 @@ function renderSingleMatchTable(homeTeam, awayTeam) {
 
     return `
         <div class="match-players-layout">
-            ${renderTeamTable(homeTeam, homePlayers, homeHasPlaying)}
-            ${renderTeamTable(awayTeam, awayPlayers, awayHasPlaying)}
+            ${renderTeamTable(homeTeam, homePlayers)}
+            ${renderTeamTable(awayTeam, awayPlayers)}
         </div>
     `;
 }
