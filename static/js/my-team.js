@@ -108,7 +108,7 @@ function renderMyTeam() {
                     const teamTag = p.teamShortName ? `<span class="team-tag team-${p.teamShortName}">${p.teamShortName}</span>` : '';
                     html += `
                         <div class="my-team-player">
-                            <span class="player-name">${p.fullName || p.shortName}${teamTag}</span>
+                            <span class="player-name">${teamTag}${p.fullName || p.shortName}</span>
                             ${cvTag}
                             <span class="player-value">${formatNumber(p.value)}</span>
                         </div>
