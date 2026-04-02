@@ -1,16 +1,17 @@
 name: Deploy to GitHub Pages
 
 on:
-  # IPL API updates daily at 10:00 AM IST (4:30 AM UTC)
-  # Run every 2 minutes from 4:30 to 5:00 AM UTC to capture the update
+  # Run every 2 minutes from 9:30 to 9:40 AM EDT (13:30-13:40 UTC)
+  # Plus at 10:00 AM EDT (14:00 UTC) for final capture
+  # Note: Data is ~15 hours old (updates at 10AM IST / 4:30AM UTC)
   schedule:
-    - cron: '30 4 * * *'    # 4:30 AM UTC (10:00 AM IST)
-    - cron: '32 4 * * *'    # 4:32 AM UTC (10:02 AM IST)
-    - cron: '34 4 * * *'    # 4:34 AM UTC (10:04 AM IST)
-    - cron: '36 4 * * *'    # 4:36 AM UTC (10:06 AM IST)
-    - cron: '38 4 * * *'    # 4:38 AM UTC (10:08 AM IST)
-    - cron: '40 4 * * *'    # 4:40 AM UTC (10:10 AM IST)
-    - cron: '0 5 * * *'     # 5:00 AM UTC (10:30 AM IST) - final capture
+    - cron: '30 13 * * *'   # 9:30 AM EDT (13:30 UTC)
+    - cron: '32 13 * * *'   # 9:32 AM EDT (13:32 UTC)
+    - cron: '34 13 * * *'   # 9:34 AM EDT (13:34 UTC)
+    - cron: '36 13 * * *'   # 9:36 AM EDT (13:36 UTC)
+    - cron: '38 13 * * *'   # 9:38 AM EDT (13:38 UTC)
+    - cron: '40 13 * * *'   # 9:40 AM EDT (13:40 UTC)
+    - cron: '0 14 * * *'    # 10:00 AM EDT (14:00 UTC) - final capture
   # Allow manual trigger
   workflow_dispatch:
   # Deploy on push to main branch
