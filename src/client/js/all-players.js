@@ -26,20 +26,21 @@ async function loadData() {
                 month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'
             });
 
-        // Fetch and display current gameday
+        // Fetch and display current gameday from tour-fixtures
         try {
-            let gamedayRes;
+            let fixturesRes;
             try {
-                gamedayRes = await fetch('/api/gameday');
-                if (!gamedayRes.ok) {
-                    gamedayRes = await fetch('api/gameday.json');
+                fixturesRes = await fetch('/api/tour-fixtures');
+                if (!fixturesRes.ok) {
+                    fixturesRes = await fetch('api/tour-fixtures.json');
                 }
             } catch (e) {
-                gamedayRes = await fetch('api/gameday.json');
+                fixturesRes = await fetch('api/tour-fixtures.json');
             }
-            if (gamedayRes.ok) {
-                const gamedayData = await gamedayRes.json();
-                document.getElementById('gamedayDisplay').textContent = `Game Day ${gamedayData.gameday}`;
+            if (fixturesRes.ok) {
+                const fixtures = await fixturesRes.json();
+                const gameday = getCurrentGamedayFromFixtures(fixtures);
+                document.getElementById('gamedayDisplay').textContent = `Game Day ${gameday}`;
             }
         } catch (e) {
             console.log('Could not fetch gameday:', e);

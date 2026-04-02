@@ -7,23 +7,26 @@ let matchSortDir = 'desc';
 async function loadData() {
     try {
         // Try API first (for local dev server), fall back to static JSON (for GitHub Pages)
-        let playersRes, matchesRes;
+        let playersRes, fixturesRes;
         try {
             playersRes = await fetch('/api/players');
-            matchesRes = await fetch('/api/today-matches');
-            if (!playersRes.ok || !matchesRes.ok) {
+            fixturesRes = await fetch('/api/tour-fixtures');
+            if (!playersRes.ok || !fixturesRes.ok) {
                 throw new Error('API not available');
             }
         } catch (e) {
             playersRes = await fetch('api/players.json');
-            matchesRes = await fetch('api/today-matches.json');
+            fixturesRes = await fetch('api/tour-fixtures.json');
         }
 
-        if (!playersRes.ok || !matchesRes.ok) throw new Error('Failed to fetch data');
+        if (!playersRes.ok || !fixturesRes.ok) throw new Error('Failed to fetch data');
 
         playersData = await playersRes.json();
-        const matchesData = await matchesRes.json();
-        todayMatches = matchesData.today || [];
+        const fixtures = await fixturesRes.json();
+
+        // Calculate today's matches from fixtures
+        const { today } = getTodayAndNextMatches(fixtures);
+        todayMatches = today;
 
         renderTodayMatchTables();
     } catch (error) {

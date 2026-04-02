@@ -258,6 +258,15 @@ def main():
     print("BUILD SUMMARY - API Data Fetch")
     print("="*60)
 
+    # Fetch and save tour-fixtures first (source of truth for matches and gameday)
+    global _tour_fixtures_cache
+    _tour_fixtures_cache = None  # Reset cache
+    _ = get_current_gameday()  # This populates _tour_fixtures_cache
+    if _tour_fixtures_cache:
+        with open(os.path.join(api_dir, 'tour-fixtures.json'), 'w') as f:
+            json.dump(_tour_fixtures_cache, f, indent=2)
+        print(f"[SAVE] tour-fixtures.json - {len(_tour_fixtures_cache)} fixtures")
+
     # Fetch and save players data
     players_data = fetch_players()
     if players_data:
@@ -282,12 +291,6 @@ def main():
     with open(os.path.join(api_dir, 'transfers.json'), 'w') as f:
         json.dump(transfers, f, indent=2)
     print(f"[SAVE] transfers.json - {len(transfers)} records")
-
-    # Save gameday value
-    gameday = get_current_gameday()
-    with open(os.path.join(api_dir, 'gameday.json'), 'w') as f:
-        json.dump({'gameday': gameday}, f, indent=2)
-    print(f"[SAVE] gameday.json - Game Day {gameday}")
 
     # Save my-team data
     my_team_data = fetch_my_team_data()
