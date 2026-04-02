@@ -94,7 +94,7 @@ function renderMyTeam() {
     const renderMyTeamSection = () => {
         // Calculate total team value
         const totalValue = myTeamPlayers.reduce((sum, p) => sum + (p.value || 0), 0);
-        let html = `<div class="team-table-container"><table class="team-table"><thead><tr><th colspan="4" class="team-name-header">${teamName} (${totalValue})</th></tr></thead></table><div class="my-team-list">`;
+        let html = `<div class="team-table-wrapper"><h3 class="team-table-title">${teamName} (${totalValue})</h3><div class="team-table-container"><div class="my-team-list">`;
 
         skillOrder.forEach(skill => {
             const players = playersBySkill[skill] || [];
@@ -118,7 +118,7 @@ function renderMyTeam() {
             }
         });
 
-        html += '</div></div>';
+        html += '</div></div></div>';
         return html;
     };
 
