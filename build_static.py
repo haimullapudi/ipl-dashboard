@@ -132,11 +132,12 @@ def fetch_my_team_data():
             print(f"Warning: Could not load .env: {e}")
 
     if not auth_token:
-        print("Warning: MY11C_AUTH_TOKEN not found")
+        print("Warning: MY11C_AUTH_TOKEN not found - skipping my-team fetch")
         return None
 
     gameday = get_current_gameday()
     url = f"https://fantasy.iplt20.com/classic/api/user/{user_guid}/team-get?gamedayId={gameday}"
+    print(f"[API] Fetching my-team from: {url}")
 
     # Build cookie header manually for reliability
     cookie_header = f"my11c-authToken={auth_token}; my11_classic_game={my11_classic_game}"
@@ -149,6 +150,9 @@ def fetch_my_team_data():
     try:
         with urllib.request.urlopen(req, timeout=30) as response:
             data = json.loads(response.read().decode('utf-8'))
+            team_info = data.get('Data', {}).get('Value', {})
+            if team_info:
+                print(f"[API] My Team fetched: TeamID={team_info.get('temid')}, Captain={team_info.get('mcapt')}, VC={team_info.get('vcapt')}, Players={len(team_info.get('plyid', []))}")
             return data
     except Exception as e:
         print(f"Warning: Could not fetch my-team: {e}")
@@ -157,7 +161,7 @@ def fetch_my_team_data():
 def fetch_players():
     gameday = get_current_gameday()
     url = f"{API_URL}&tourgamedayId={gameday}"
-    print(f"Fetching players from {url}...")
+    print(f"[API] Fetching players from: {url} (gamedayId={gameday})")
 
     try:
         req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
@@ -213,12 +217,17 @@ def main():
     api_dir = os.path.join(STATIC_DIR, 'api')
     os.makedirs(api_dir, exist_ok=True)
 
+    print("\n" + "="*60)
+    print("BUILD SUMMARY - API Data Fetch")
+    print("="*60)
+
     # Fetch and save players data
     players_data = fetch_players()
     if players_data:
+        player_count = len(players_data.get('gamedayPlayers', []))
         with open(os.path.join(api_dir, 'players.json'), 'w') as f:
             json.dump(players_data, f, indent=2)
-        print(f"Saved {len(players_data.get('gamedayPlayers', []))} players")
+        print(f"[SAVE] players.json - {player_count} players")
 
     # Save match data
     today_matches, next_matches = get_today_and_next_match()
@@ -229,29 +238,30 @@ def main():
     }
     with open(os.path.join(api_dir, 'today-matches.json'), 'w') as f:
         json.dump(matches_data, f, indent=2)
-    print(f"Saved matches: {len(today_matches)} today, {len(next_matches)} next")
+    print(f"[SAVE] today-matches.json - {len(today_matches)} today, {len(next_matches)} next")
 
     # Save transfers data
     transfers = load_transfers_data()
     with open(os.path.join(api_dir, 'transfers.json'), 'w') as f:
         json.dump(transfers, f, indent=2)
-    print(f"Saved {len(transfers)} transfer records")
+    print(f"[SAVE] transfers.json - {len(transfers)} records")
 
     # Save my-team data
     my_team_data = fetch_my_team_data()
     if my_team_data:
         with open(os.path.join(api_dir, 'my-team.json'), 'w') as f:
             json.dump(my_team_data, f, indent=2)
-        print("Saved my-team.json")
+        team_info = my_team_data.get('Data', {}).get('Value', {})
+        if team_info:
+            print(f"[SAVE] my-team.json - TeamID={team_info.get('temid')}, Captain={team_info.get('mcapt')}, VC={team_info.get('vcapt')}")
+        else:
+            print("[SAVE] my-team.json - No team data returned")
     else:
-        print("Warning: my-team.json not generated")
+        print("[SKIP] my-team.json - No authentication token")
 
-    # Update JS to use static JSON
-    print("\nBuild complete! Static files in:", STATIC_DIR)
-    print("\nTo deploy to GitHub Pages:")
-    print("1. Configure GitHub Pages to serve from /static folder")
-    print("   OR")
-    print("2. Move contents of /static to root and push to gh-pages branch")
+    print("="*60)
+    print(f"Build complete! Static files in: {STATIC_DIR}")
+    print("="*60)
 
 if __name__ == '__main__':
     main()
