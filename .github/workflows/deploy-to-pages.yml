@@ -1,12 +1,16 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Run at 9:30, 9:35, 9:40 AM EST (14:30, 14:35, 14:40 UTC)
-  # Captures the 10AM EST IPL API data update
+  # Run every 2 minutes from 9:30 to 9:40 AM EST (14:30-14:40 UTC)
+  # Plus at 10:00 AM EST (15:00 UTC) to capture final data update
   schedule:
     - cron: '30 14 * * *'   # 9:30 AM EST
-    - cron: '35 14 * * *'   # 9:35 AM EST
+    - cron: '32 14 * * *'   # 9:32 AM EST
+    - cron: '34 14 * * *'   # 9:34 AM EST
+    - cron: '36 14 * * *'   # 9:36 AM EST
+    - cron: '38 14 * * *'   # 9:38 AM EST
     - cron: '40 14 * * *'   # 9:40 AM EST
+    - cron: '0 15 * * *'    # 10:00 AM EST (final capture)
   # Allow manual trigger
   workflow_dispatch:
   # Deploy on push to main branch
