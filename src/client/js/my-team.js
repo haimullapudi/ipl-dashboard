@@ -56,6 +56,26 @@ function renderMyTeam() {
         container.innerHTML = '<div class="error-message">No team data available</div>';
         return;
     }
+}
+
+// Sync horizontal scroll between two team tables
+function syncHorizontalScroll() {
+    const containers = document.querySelectorAll('.match-teams-section .team-table-container');
+    if (containers.length !== 2) return;
+
+    let isScrollingLeft = false;
+    let isScrollingRight = false;
+
+    containers.forEach((container, index) => {
+        container.addEventListener('scroll', (e) => {
+            const otherIndex = index === 0 ? 1 : 0;
+            const otherContainer = containers[otherIndex];
+
+            // Sync horizontal scroll only
+            otherContainer.scrollLeft = container.scrollLeft;
+        });
+    });
+}
 
     const teamName = 'My Team';  // Use static name since API doesn't provide it
     const playerIds = teamInfo.plyid || [];
@@ -223,6 +243,9 @@ function renderMyTeam() {
             </div>
         </div>
     `;
+
+    // Sync horizontal scroll between team tables
+    setTimeout(syncHorizontalScroll, 0);
 }
 
 document.addEventListener('DOMContentLoaded', loadData);
