@@ -345,13 +345,16 @@ th.sorted .sort-icon {
 .team-table td:first-child {
     position: sticky;
     left: 0;
-    z-index: 11;
+    z-index: 15;
     background: #1a1a2e;
 }
 .team-table tbody tr:hover td:first-child {
     background: rgba(255, 255, 255, 0.05);
 }
 .team-table tbody tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+.team-table tbody tr:hover td:not(:first-child) {
     background: rgba(255, 255, 255, 0.05);
 }
 .match-today {
