@@ -80,10 +80,10 @@ function renderMyTeam() {
     // Group players by skill (matching API skill names)
     const skillOrder = ['WICKET KEEPER', 'BATSMAN', 'ALL ROUNDER', 'BOWLER'];
     const skillDisplayNames = {
-        'WICKET KEEPER': 'Wicket-Keeper',
-        'BATSMAN': 'Batsman',
-        'ALL ROUNDER': 'All Rounder',
-        'BOWLER': 'Bowler'
+        'WICKET KEEPER': 'Wicket-Keeper (1-4)',
+        'BATSMAN': 'Batsman (3-6)',
+        'ALL ROUNDER': 'All Rounder (1-4)',
+        'BOWLER': 'Bowler (3-6)'
     };
     const playersBySkill = {};
     skillOrder.forEach(skill => {
