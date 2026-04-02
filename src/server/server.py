@@ -44,8 +44,8 @@ AUTH_TOKEN = ENV.get('MY11C_AUTH_TOKEN', '')
 MY11_CLASSIC_GAME = ENV.get('MY11_CLASSIC_GAME', '')
 USER_GUID = '70b39912-2a45-11f1-af7d-02ce50028faf'  # From MY11_CLASSIC_GAME
 
-def get_current_gameday():
-    """Get the current TourGamedayId based on UTC time and match fixtures."""
+def _fetch_tour_fixtures():
+    """Fetch and cache tour fixtures from API. Called internally by get_current_gameday and load_match_schedule."""
     global _tour_fixtures_cache, _fixtures_last_fetched
 
     now = datetime.now(timezone.utc).replace(tzinfo=None)
@@ -57,18 +57,24 @@ def get_current_gameday():
             req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
             with urllib.request.urlopen(req, timeout=30) as response:
                 data = json.loads(response.read().decode('utf-8'))
-                # Value is a list directly, not a dict with Matches
                 _tour_fixtures_cache = data.get('Data', {}).get('Value', [])
                 _fixtures_last_fetched = now
         except Exception as e:
             print(f"Warning: Could not fetch tour-fixtures: {e}")
             _tour_fixtures_cache = []
 
+    return _tour_fixtures_cache
+
+def get_current_gameday():
+    """Get the current TourGamedayId based on UTC time and match fixtures."""
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
+    fixtures = _fetch_tour_fixtures()
+
     # Find the current gameday based on match dateTime (UTC)
     # MatchdateTime format: "03/28/2026 14:00:00"
     current_gameday = 1
 
-    for match in _tour_fixtures_cache:
+    for match in fixtures:
         match_dt_str = match.get('MatchdateTime', '')
         if match_dt_str:
             try:
@@ -94,27 +100,12 @@ app = Flask(__name__, static_folder=CLIENT_DIR, static_url_path='')
 
 def load_match_schedule():
     """Load matches from tour-fixtures API."""
-    global _tour_fixtures_cache, _fixtures_last_fetched
-
-    now = datetime.now(timezone.utc).replace(tzinfo=None)
-
-    # Refresh cache every 5 minutes
-    if _tour_fixtures_cache is None or (_fixtures_last_fetched and (now - _fixtures_last_fetched).total_seconds() > 300):
-        try:
-            url = "https://fantasy.iplt20.com/classic/api/feed/tour-fixtures"
-            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
-            with urllib.request.urlopen(req, timeout=30) as response:
-                data = json.loads(response.read().decode('utf-8'))
-                _tour_fixtures_cache = data.get('Data', {}).get('Value', [])
-                _fixtures_last_fetched = now
-        except Exception as e:
-            print(f"Warning: Could not fetch tour-fixtures: {e}")
-            _tour_fixtures_cache = []
+    fixtures = _fetch_tour_fixtures()
 
     # Convert to match schedule format
     # MatchdateTime format: "03/28/2026 14:00:00" (UTC)
     matches_by_date = {}
-    for match in _tour_fixtures_cache:
+    for match in fixtures:
         match_dt_str = match.get('MatchdateTime', '')
         if match_dt_str:
             try:
