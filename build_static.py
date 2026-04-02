@@ -283,6 +283,12 @@ def main():
         json.dump(transfers, f, indent=2)
     print(f"[SAVE] transfers.json - {len(transfers)} records")
 
+    # Save gameday value
+    gameday = get_current_gameday()
+    with open(os.path.join(api_dir, 'gameday.json'), 'w') as f:
+        json.dump({'gameday': gameday}, f, indent=2)
+    print(f"[SAVE] gameday.json - Game Day {gameday}")
+
     # Save my-team data
     my_team_data = fetch_my_team_data()
     if my_team_data:

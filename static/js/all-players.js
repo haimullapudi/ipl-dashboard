@@ -28,7 +28,15 @@ async function loadData() {
 
         // Fetch and display current gameday
         try {
-            const gamedayRes = await fetch('/api/gameday');
+            let gamedayRes;
+            try {
+                gamedayRes = await fetch('/api/gameday');
+                if (!gamedayRes.ok) {
+                    gamedayRes = await fetch('api/gameday.json');
+                }
+            } catch (e) {
+                gamedayRes = await fetch('api/gameday.json');
+            }
             if (gamedayRes.ok) {
                 const gamedayData = await gamedayRes.json();
                 document.getElementById('gamedayDisplay').textContent = `Game Day ${gamedayData.gameday}`;
