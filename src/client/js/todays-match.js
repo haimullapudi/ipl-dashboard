@@ -61,12 +61,7 @@ function renderSingleMatchTable(homeTeam, awayTeam) {
         // Show only playing XI players (P) first
         let displayPlayers = teamPlayers.filter(p => p.isPlaying);
 
-        // If no playing XI available, show all announced players (P + NP)
-        if (displayPlayers.length === 0) {
-            displayPlayers = teamPlayers.filter(p => p.isAnnounced);
-        }
-
-        // If still no players, show all players for the team
+        // If no playing XI available, show all players (like next-match tab)
         if (displayPlayers.length === 0) {
             displayPlayers = teamPlayers;
         }
