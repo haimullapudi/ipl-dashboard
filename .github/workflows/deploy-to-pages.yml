@@ -1,14 +1,12 @@
 name: Deploy to GitHub Pages
 
 on:
-  # Run every 2 minutes from 9:30 to 9:40 UTC (during match updates)
+  # Run at 9:30, 9:35, 9:40 AM EST (14:30, 14:35, 14:40 UTC)
+  # Captures the 10AM EST IPL API data update
   schedule:
-    - cron: '30 9 * * *'   # 9:30
-    - cron: '32 9 * * *'   # 9:32
-    - cron: '34 9 * * *'   # 9:34
-    - cron: '36 9 * * *'   # 9:36
-    - cron: '38 9 * * *'   # 9:38
-    - cron: '40 9 * * *'   # 9:40
+    - cron: '30 14 * * *'   # 9:30 AM EST
+    - cron: '35 14 * * *'   # 9:35 AM EST
+    - cron: '40 14 * * *'   # 9:40 AM EST
   # Allow manual trigger
   workflow_dispatch:
   # Deploy on push to main branch
@@ -39,8 +37,12 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Build static site
+      - name: Build static site with secrets
+        env:
+          MY11C_AUTH_TOKEN: ${{ secrets.MY11C_AUTH_TOKEN }}
+          MY11_CLASSIC_GAME: ${{ secrets.MY11_CLASSIC_GAME }}
         run: |
+          set +x  # Disable command echoing to protect secrets
           python3 build_static.py
 
       - name: Setup Pages
