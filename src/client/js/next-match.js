@@ -67,49 +67,49 @@ function renderSingleMatchTable(homeTeam, awayTeam) {
 
         if (sorted.length === 0) {
             return `
-                <div class="team-table-container">
-                    <table class="team-table">
-                        <thead>
-                            <tr><th colspan="7" class="team-name-header">${teamName}</th></tr>
-                        </thead>
-                    </table>
-                    <div class="no-results" style="padding: 20px; text-align: center;">No players available</div>
+                <div class="team-table-wrapper">
+                    <h3 class="team-table-title">${teamName}</h3>
+                    <div class="team-table-container">
+                        <div class="no-results" style="padding: 20px; text-align: center;">No players available</div>
+                    </div>
                 </div>
             `;
         }
 
         return `
-            <div class="team-table-container">
-                <table class="team-table">
-                    <thead>
-                        <tr><th colspan="7" class="team-name-header">${teamName}</th></tr>
-                        <tr>
-                            <th class="sortable" onclick="sortMatchPlayers('fullName')">Name <span class="sort-icon">⇅</span></th>
-                            <th>Skill</th>
-                            <th class="sortable" onclick="sortMatchPlayers('value')">Value <span class="sort-icon">⇅</span></th>
-                            <th>Sel By (%)</th>
-                            <th>Cap (%)</th>
-                            <th>VCap (%)</th>
-                            <th class="sortable" onclick="sortMatchPlayers('overallPoints')">Points <span class="sort-icon">⇅</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${sorted.map(p => `
+            <div class="team-table-wrapper">
+                <h3 class="team-table-title">${teamName}</h3>
+                <div class="team-table-container">
+                    <table class="team-table">
+                        <thead>
                             <tr>
-                                <td>
-                                    ${p.fullName || p.shortName}
-                                    ${p.isImpactPlayer ? '<span class="impact-tag">IMP</span>' : ''}
-                                </td>
-                                <td>${p.skillName || '-'}</td>
-                                <td>${formatNumber(p.value)}</td>
-                                <td>${formatPercent(p.selectedPer)}</td>
-                                <td>${formatPercent(p.capSelectedPer)}</td>
-                                <td>${formatPercent(p.vCapSelectedPer)}</td>
-                                <td class="${getPointsClass(p.overallPoints)}">${formatNumber(p.overallPoints)}</td>
+                                <th>Name</th>
+                                <th>Skill</th>
+                                <th class="sortable" onclick="sortMatchPlayers('value')">Value <span class="sort-icon">⇅</span></th>
+                                <th class="sortable" onclick="sortMatchPlayers('overallPoints')">Points <span class="sort-icon">⇅</span></th>
+                                <th>Sel By (%)</th>
+                                <th>Cap (%)</th>
+                                <th>VCap (%)</th>
                             </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            ${sorted.map(p => `
+                                <tr>
+                                    <td>
+                                        ${p.fullName || p.shortName}
+                                        ${p.isImpactPlayer ? '<span class="impact-tag">IMP</span>' : ''}
+                                    </td>
+                                    <td>${p.skillName || '-'}</td>
+                                    <td>${formatNumber(p.value)}</td>
+                                    <td class="${getPointsClass(p.overallPoints)}">${formatNumber(p.overallPoints)}</td>
+                                    <td>${formatPercent(p.selectedPer)}</td>
+                                    <td>${formatPercent(p.capSelectedPer)}</td>
+                                    <td>${formatPercent(p.vCapSelectedPer)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         `;
     };
