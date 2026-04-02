@@ -223,6 +223,23 @@ function renderMyTeam() {
             </div>
         </div>
     `;
+
+    // Sync horizontal scroll between team tables
+    setTimeout(syncHorizontalScroll, 0);
+}
+
+// Sync horizontal scroll between two team tables
+function syncHorizontalScroll() {
+    const containers = document.querySelectorAll('.match-teams-section .team-table-container');
+    if (containers.length !== 2) return;
+
+    containers.forEach((container, index) => {
+        container.addEventListener('scroll', (e) => {
+            const otherIndex = index === 0 ? 1 : 0;
+            const otherContainer = containers[otherIndex];
+            otherContainer.scrollLeft = container.scrollLeft;
+        });
+    });
 }
 
 document.addEventListener('DOMContentLoaded', loadData);
