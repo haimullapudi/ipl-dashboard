@@ -92,7 +92,7 @@ function renderMyTeam() {
 
     // Render My Team section (simplified cards)
     const renderMyTeamSection = () => {
-        let html = `<div class="team-table-container"><div class="team-table-header"><h3>${teamName}</h3></div><div class="my-team-list">`;
+        let html = `<div class="team-table-container"><table class="team-table"><thead><tr><th colspan="4" class="team-name-header">${teamName}</th></tr></thead></table><div class="my-team-list">`;
 
         skillOrder.forEach(skill => {
             const players = playersBySkill[skill] || [];
