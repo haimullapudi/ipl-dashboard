@@ -76,3 +76,90 @@ function showLoading(containerId) {
         </div>
     `;
 }
+
+/**
+ * Get current gameday from tour fixtures data
+ * @param {Array} fixtures - Tour fixtures array
+ * @returns {number} Current gameday ID
+ */
+function getCurrentGamedayFromFixtures(fixtures) {
+    const now = new Date();
+    now.setMilliseconds(0, 0);
+
+    let currentGameday = 1;
+
+    for (const match of fixtures) {
+        const matchDtStr = match.MatchdateTime || '';
+        if (matchDtStr) {
+            try {
+                // Parse "MM/DD/YYYY HH:MM:SS" format (UTC)
+                const matchDt = new Date(matchDtStr + ' UTC');
+                if (matchDt <= now) {
+                    const tourGamedayId = match.TourGamedayId || 1;
+                    if (tourGamedayId && tourGamedayId > currentGameday) {
+                        currentGameday = tourGamedayId;
+                    }
+                }
+            } catch (e) {
+                console.warn('Could not parse match dateTime:', e);
+            }
+        }
+    }
+
+    return currentGameday;
+}
+
+/**
+ * Get today's and next matches from tour fixtures
+ * @param {Array} fixtures - Tour fixtures array
+ * @returns {{today: Array, next: Array}} Today and next matches
+ */
+function getTodayAndNextMatches(fixtures) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const todayMatches = [];
+    const futureMatches = [];
+
+    for (const match of fixtures) {
+        const matchDtStr = match.MatchdateTime || '';
+        if (matchDtStr) {
+            try {
+                const matchDt = new Date(matchDtStr + ' UTC');
+                const matchDate = new Date(matchDt.getFullYear(), matchDt.getMonth(), matchDt.getDate());
+
+                if (matchDate.getTime() === today.getTime()) {
+                    todayMatches.push({
+                        home: match.HomeTeamShortName || 'Unknown',
+                        away: match.AwayTeamShortName || 'Unknown',
+                        match_no: match.TourGamedayId || 0,
+                        dateTime: matchDt
+                    });
+                } else if (matchDate > today) {
+                    futureMatches.push({
+                        home: match.HomeTeamShortName || 'Unknown',
+                        away: match.AwayTeamShortName || 'Unknown',
+                        match_no: match.TourGamedayId || 0,
+                        dateTime: matchDt
+                    });
+                }
+            } catch (e) {
+                console.warn('Could not parse match dateTime:', e);
+            }
+        }
+    }
+
+    // Sort future matches by date and get the earliest ones
+    futureMatches.sort((a, b) => a.dateTime - b.dateTime);
+    const nextDate = futureMatches.length > 0 ? futureMatches[0].dateTime : null;
+    const nextMatches = futureMatches.filter(m =>
+        m.dateTime.getDate() === nextDate?.getDate() &&
+        m.dateTime.getMonth() === nextDate?.getMonth() &&
+        m.dateTime.getFullYear() === nextDate?.getFullYear()
+    );
+
+    return {
+        today: todayMatches.map(m => [m.home, m.away]),
+        next: nextMatches.map(m => [m.home, m.away])
+    };
+}
