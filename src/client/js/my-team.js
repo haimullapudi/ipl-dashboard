@@ -64,11 +64,18 @@ function renderMyTeam() {
 
     // Match player IDs with gameday players data
     const allPlayers = playersData?.gamedayPlayers || [];
-    const myTeamPlayers = allPlayers.filter(p => playerIds.includes(p.id));
+    // Convert playerIds to numbers for comparison (API might return strings)
+    const playerIdSet = new Set(playerIds.map(id => Number(id)));
+    const myTeamPlayers = allPlayers.filter(p => playerIdSet.has(Number(p.id)));
 
-    console.log('Player IDs:', playerIds);
+    console.log('Player IDs from API:', playerIds);
+    console.log('Player ID Set:', playerIdSet);
     console.log('My team players found:', myTeamPlayers.length);
     console.log('Captain ID:', captainId, 'VC ID:', viceCaptainId);
+    if (myTeamPlayers.length === 0) {
+        console.log('Sample player from allPlayers:', allPlayers[0]);
+        console.log('Sample player ID type:', typeof allPlayers[0]?.id);
+    }
 
     // Group players by skill (matching API skill names)
     const skillOrder = ['WICKET KEEPER', 'BATSMAN', 'ALL ROUNDER', 'BOWLER'];
