@@ -150,7 +150,11 @@ function renderMyTeam() {
                     displayPlayers = teamPlayers;
                 }
 
-                const sorted = [...displayPlayers].sort((a, b) => (b.overallPoints || 0) - (a.overallPoints || 0));
+                const sorted = [...displayPlayers].sort((a, b) => {
+                    let aVal = a[matchSortField] || 0;
+                    let bVal = b[matchSortField] || 0;
+                    return matchSortDir === 'desc' ? bVal - aVal : aVal - bVal;
+                });
 
                 if (sorted.length === 0) {
                     return `
