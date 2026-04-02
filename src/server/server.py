@@ -92,13 +92,6 @@ def get_players_api_url():
 app = Flask(__name__, static_folder=CLIENT_DIR, static_url_path='')
 
 
-def parse_date(date_str):
-    try:
-        return datetime.strptime(date_str, '%d-%b-%y').date()
-    except:
-        return None
-
-
 def load_match_schedule():
     """Load matches from tour-fixtures API."""
     global _tour_fixtures_cache, _fixtures_last_fetched
