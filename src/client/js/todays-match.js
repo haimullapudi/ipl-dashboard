@@ -58,8 +58,13 @@ function renderSingleMatchTable(homeTeam, awayTeam) {
     const awayPlayers = playersByTeam[awayTeam] || [];
 
     const renderTeamTable = (teamName, teamPlayers) => {
-        // Show only playing XI players (P)
-        const displayPlayers = teamPlayers.filter(p => p.isPlaying);
+        // Show only playing XI players (P) first
+        let displayPlayers = teamPlayers.filter(p => p.isPlaying);
+
+        // If no playing XI available, show all announced players (P + NP)
+        if (displayPlayers.length === 0) {
+            displayPlayers = teamPlayers.filter(p => p.isAnnounced);
+        }
 
         const sorted = [...displayPlayers].sort((a, b) => {
             let aVal = a[matchSortField] || 0;
@@ -101,6 +106,7 @@ function renderSingleMatchTable(homeTeam, awayTeam) {
                                 <td class="${p.isPlaying ? 'playing-player' : ''}">
                                     ${p.fullName || p.shortName}
                                     ${p.isImpactPlayer ? '<span class="impact-tag">IMP</span>' : ''}
+                                    ${!p.isPlaying && p.isAnnounced ? '<span class="impact-tag" style="background: rgba(255,255,255,0.2); color: #aaa; border: 1px solid #aaa;">NP</span>' : ''}
                                 </td>
                                 <td>${p.skillName || '-'}</td>
                                 <td>${formatNumber(p.value)}</td>
