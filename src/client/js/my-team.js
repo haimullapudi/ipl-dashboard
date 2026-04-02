@@ -141,6 +141,11 @@ function renderMyTeam() {
                     displayPlayers = teamPlayers.filter(p => p.isAnnounced);
                 }
 
+                // If still no players, show all players for the team
+                if (displayPlayers.length === 0) {
+                    displayPlayers = teamPlayers;
+                }
+
                 const sorted = [...displayPlayers].sort((a, b) => (b.overallPoints || 0) - (a.overallPoints || 0));
 
                 if (sorted.length === 0) {

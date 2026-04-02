@@ -66,6 +66,11 @@ function renderSingleMatchTable(homeTeam, awayTeam) {
             displayPlayers = teamPlayers.filter(p => p.isAnnounced);
         }
 
+        // If still no players, show all players for the team
+        if (displayPlayers.length === 0) {
+            displayPlayers = teamPlayers;
+        }
+
         const sorted = [...displayPlayers].sort((a, b) => {
             let aVal = a[matchSortField] || 0;
             let bVal = b[matchSortField] || 0;
