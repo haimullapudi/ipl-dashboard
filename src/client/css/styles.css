@@ -320,7 +320,7 @@ th.sorted .sort-icon {
     font-weight: 600;
     color: #1a1a2e;
     background: #f0a500;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     white-space: nowrap;
 }
 .team-table th.sortable {
@@ -334,7 +334,7 @@ th.sorted .sort-icon {
     padding: 12px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
     white-space: nowrap;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 .team-table tbody tr:hover {
     background: rgba(255, 255, 255, 0.05);
