@@ -178,10 +178,10 @@ function renderMyTeam() {
                                     <th>Name</th>
                                     <th>Skill</th>
                                     <th class="sortable" onclick="sortMatchPlayers('value')">Value <span class="sort-icon">⇅</span></th>
+                                    <th class="sortable" onclick="sortMatchPlayers('overallPoints')">Points <span class="sort-icon">⇅</span></th>
                                     <th>Sel By (%)</th>
                                     <th>Cap (%)</th>
                                     <th>VCap (%)</th>
-                                    <th class="sortable" onclick="sortMatchPlayers('overallPoints')">Points <span class="sort-icon">⇅</span></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -194,10 +194,10 @@ function renderMyTeam() {
                                         </td>
                                         <td>${p.skillName || '-'}</td>
                                         <td>${formatNumber(p.value)}</td>
+                                        <td class="${getPointsClass(p.overallPoints)}">${formatNumber(p.overallPoints)}</td>
                                         <td>${formatPercent(p.selectedPer)}</td>
                                         <td>${formatPercent(p.capSelectedPer)}</td>
                                         <td>${formatPercent(p.vCapSelectedPer)}</td>
-                                        <td class="${getPointsClass(p.overallPoints)}">${formatNumber(p.overallPoints)}</td>
                                     </tr>
                                 `).join('')}
                             </tbody>
