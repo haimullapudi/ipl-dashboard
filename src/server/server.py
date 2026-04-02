@@ -6,7 +6,7 @@ import json
 import urllib.request
 from urllib.parse import unquote
 import csv
-from datetime import datetime, date, timedelta
+from datetime import datetime, date, timedelta, timezone
 import os
 
 # Get the directory containing this script
@@ -48,7 +48,7 @@ def get_current_gameday():
     """Get the current TourGamedayId based on UTC time and match fixtures."""
     global _tour_fixtures_cache, _fixtures_last_fetched
 
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
 
     # Refresh cache every 5 minutes
     if _tour_fixtures_cache is None or (_fixtures_last_fetched and (now - _fixtures_last_fetched).total_seconds() > 300):
@@ -103,7 +103,7 @@ def load_match_schedule():
     """Load matches from tour-fixtures API."""
     global _tour_fixtures_cache, _fixtures_last_fetched
 
-    now = datetime.utcnow()
+    now = datetime.now(timezone.utc).replace(tzinfo=None)
 
     # Refresh cache every 5 minutes
     if _tour_fixtures_cache is None or (_fixtures_last_fetched and (now - _fixtures_last_fetched).total_seconds() > 300):
