@@ -89,13 +89,13 @@ function getCurrentGamedayFromFixtures(fixtures) {
     let currentGameday = 1;
 
     for (const match of fixtures) {
-        const matchDtStr = match.get('MatchdateTime', '');
+        const matchDtStr = match.MatchdateTime || '';
         if (matchDtStr) {
             try {
                 // Parse "MM/DD/YYYY HH:MM:SS" format (UTC)
                 const matchDt = new Date(matchDtStr + ' UTC');
                 if (matchDt <= now) {
-                    const tourGamedayId = match.get('TourGamedayId', 1);
+                    const tourGamedayId = match.TourGamedayId || 1;
                     if (tourGamedayId && tourGamedayId > currentGameday) {
                         currentGameday = tourGamedayId;
                     }
@@ -122,7 +122,7 @@ function getTodayAndNextMatches(fixtures) {
     const futureMatches = [];
 
     for (const match of fixtures) {
-        const matchDtStr = match.get('MatchdateTime', '');
+        const matchDtStr = match.MatchdateTime || '';
         if (matchDtStr) {
             try {
                 const matchDt = new Date(matchDtStr + ' UTC');
@@ -130,16 +130,16 @@ function getTodayAndNextMatches(fixtures) {
 
                 if (matchDate.getTime() === today.getTime()) {
                     todayMatches.push({
-                        home: match.get('HomeTeamShortName', 'Unknown'),
-                        away: match.get('AwayTeamShortName', 'Unknown'),
-                        match_no: match.get('TourGamedayId', 0),
+                        home: match.HomeTeamShortName || 'Unknown',
+                        away: match.AwayTeamShortName || 'Unknown',
+                        match_no: match.TourGamedayId || 0,
                         dateTime: matchDt
                     });
                 } else if (matchDate > today) {
                     futureMatches.push({
-                        home: match.get('HomeTeamShortName', 'Unknown'),
-                        away: match.get('AwayTeamShortName', 'Unknown'),
-                        match_no: match.get('TourGamedayId', 0),
+                        home: match.HomeTeamShortName || 'Unknown',
+                        away: match.AwayTeamShortName || 'Unknown',
+                        match_no: match.TourGamedayId || 0,
                         dateTime: matchDt
                     });
                 }
