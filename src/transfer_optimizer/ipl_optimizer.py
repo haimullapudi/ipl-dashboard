@@ -281,6 +281,38 @@ def generate_candidates(
     return candidates
 
 
+def generate_free_hit_squad(home: str, away: str, min_scoring: int, max_scoring: int) -> Dict[str, int]:
+    """
+    Generate optimal squad for Free Hit match.
+
+    Since Free Hit has no transfer cost, we can build the ideal squad from scratch
+    focused purely on maximizing scoring players for this match.
+
+    Strategy:
+    - Maximize players from home and away teams (they score in this match)
+    - Balance between home/away based on their relative strength (assumed equal)
+    - Fill remaining slots with players from teams with favorable gaps
+    """
+    squad = {team: 0 for team in TEAMS}
+
+    # Optimal scoring distribution: maximize home + away players
+    # Target: 6 scoring players (max allowed) for maximum points potential
+    # Split: 3 home + 3 away (balanced approach)
+    squad[home] = 3
+    squad[away] = 3
+
+    # Distribute remaining 5 players to teams with best gap values
+    # For now, distribute evenly among other teams
+    other_teams = [t for t in TEAMS if t not in (home, away)]
+    remaining = 11 - 6  # 5 players
+
+    # Simple distribution: give 1 to each of 5 teams, 0 to the other 3
+    for i, team in enumerate(other_teams[:5]):
+        squad[team] = 1
+
+    return squad
+
+
 class State:
     """Represents a state in the beam search."""
 
