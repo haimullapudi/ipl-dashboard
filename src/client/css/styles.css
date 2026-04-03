@@ -365,9 +365,34 @@ th.sorted .sort-icon {
 .match-free-hit {
     background: rgba(240, 165, 0, 0.25) !important;
     border: 1px solid rgba(240, 165, 0, 0.5);
+    position: relative;
 }
 .match-free-hit:hover {
     background: rgba(240, 165, 0, 0.35) !important;
+}
+/* Free Hit tooltip - instant appearance with custom styling */
+.match-free-hit::after {
+    content: "🚀 Free Hit: Unlimited transfers (0 cost), all 11 score. Squad resets to Match 37.";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(240, 165, 0, 0.95);
+    color: #1a1a2e;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: none;
+}
+.match-free-hit:hover::after {
+    opacity: 1;
+    visibility: visible;
 }
 .transfers-table th, .transfers-table td {
     font-size: 0.85rem;

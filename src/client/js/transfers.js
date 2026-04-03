@@ -47,7 +47,7 @@ function renderTransfersTable() {
             <table class="transfers-table">
                 <thead>
                     <tr>
-                        <th>Match No</th>
+                        <th>No</th>
                         <th>Date</th>
                         <th>Home</th>
                         <th>Away</th>
@@ -83,9 +83,7 @@ function renderTransfersTable() {
                             rowClass = 'match-past';
                         }
 
-                        const tooltip = isFreeHit ? ' title="🚀 Free Hit Booster: Unlimited transfers (0 cost), all 11 players score. Squad resets to Match 37 lineup after this match."' : '';
-
-                        return `<tr class="${rowClass}"${tooltip}>
+                        return `<tr class="${rowClass}">
                             <td>${match.match_no}</td>
                             <td>${match.date}</td>
                             <td>${match.home}</td>
