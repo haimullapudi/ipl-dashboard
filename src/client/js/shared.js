@@ -134,27 +134,28 @@ function showLoading(containerId) {
  * @returns {number} Current gameday ID
  */
 function getCurrentGamedayFromFixtures(fixtures) {
+    // Use UTC time for comparison (matches are scheduled in UTC)
     const now = new Date();
-    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    today.setHours(23, 59, 59, 999); // End of today
+    const nowUtc = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
+    const todayUtc = new Date(Date.UTC(nowUtc.getUTCFullYear(), nowUtc.getUTCMonth(), nowUtc.getUTCDate()));
+    const endOfTodayUtc = new Date(todayUtc.getTime() + (23 * 60 * 60 * 1000) + (59 * 60 * 1000) + (59 * 1000));
 
     let currentGameday = 1;
     let foundStartedMatch = false;
 
-    // First pass: find the latest match that has already started
     for (const match of fixtures) {
         const matchDtStr = match.MatchdateTime || '';
         if (matchDtStr) {
             try {
                 // Parse "MM/DD/YYYY HH:MM:SS" format (UTC)
                 const matchDt = new Date(matchDtStr + ' UTC');
-                const matchDate = new Date(matchDt.getFullYear(), matchDt.getMonth(), matchDt.getDate());
+                const matchDateUtc = new Date(Date.UTC(matchDt.getUTCFullYear(), matchDt.getUTCMonth(), matchDt.getUTCDate()));
 
-                // Only consider matches scheduled for today or earlier
-                if (matchDate <= today) {
+                // Only consider matches scheduled for today or earlier (UTC comparison)
+                if (matchDateUtc <= endOfTodayUtc) {
                     const tourGamedayId = match.TourGamedayId || 1;
                     if (tourGamedayId) {
-                        if (matchDt <= now) {
+                        if (matchDt <= nowUtc) {
                             // Match has started - use this gameday
                             if (tourGamedayId > currentGameday) {
                                 currentGameday = tourGamedayId;
