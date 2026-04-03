@@ -17,7 +17,8 @@
       "Bash(do:*)",
       "WebSearch",
       "Bash(gh run:*)",
-      "Bash(open:*)"
+      "Bash(open:*)",
+      "Bash(find .worktrees:*)"
     ]
   }
 }
