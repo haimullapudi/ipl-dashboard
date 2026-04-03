@@ -199,7 +199,13 @@ def index():
 
 @app.route('/api/players')
 def get_players():
-    api_url = get_players_api_url()
+    from flask import request
+    # Use tourgamedayId from query param if provided, otherwise calculate dynamically
+    gameday = request.args.get('tourgamedayId', type=int)
+    if gameday is None:
+        gameday = get_current_gameday()
+
+    api_url = f"https://fantasy.iplt20.com/classic/api/feed/gamedayplayers?lang=en&tourgamedayId={gameday}"
     req = urllib.request.Request(api_url, headers={'User-Agent': 'Mozilla/5.0'})
     try:
         with urllib.request.urlopen(req, timeout=30) as response:

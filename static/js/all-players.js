@@ -5,10 +5,27 @@ let sortedPlayers = [];
 
 async function loadData() {
     try {
-        // Try API first (for local dev server), fall back to static JSON (for GitHub Pages)
+        // First fetch tour-fixtures to get current gameday
+        let fixturesRes;
+        try {
+            fixturesRes = await fetch('/api/tour-fixtures');
+            if (!fixturesRes.ok) {
+                fixturesRes = await fetch('api/tour-fixtures.json');
+            }
+        } catch (e) {
+            fixturesRes = await fetch('api/tour-fixtures.json');
+        }
+
+        let gameday = 7; // Default fallback
+        if (fixturesRes.ok) {
+            const fixtures = await fixturesRes.json();
+            gameday = getCurrentGamedayFromFixtures(fixtures);
+        }
+
+        // Fetch players with explicit tourgamedayId
         let response;
         try {
-            response = await fetch('/api/players');
+            response = await fetch(`/api/players?tourgamedayId=${gameday}`);
             if (!response.ok) {
                 response = await fetch('api/players.json');
             }
