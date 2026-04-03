@@ -108,11 +108,42 @@ function initLegend() {
     `;
 }
 
+function sortTable(field, type) {
+    if (currentSort.field === field) {
+        currentSort.dir = currentSort.dir === 'asc' ? 'desc' : 'asc';
+    } else {
+        currentSort.field = field;
+        currentSort.dir = 'desc';
+    }
+    currentSort.type = type;
+    refreshPlayers();
+}
+
 function refreshPlayers() {
     const players = playersData.gamedayPlayers || [];
     sortedPlayers = sortPlayers(players, currentSort.field, currentSort.type);
     renderTable();
+    updateSortIcons();
     document.getElementById('filteredCount').textContent = players.length;
+}
+
+function updateSortIcons() {
+    // Remove sorted class from all sortable headers
+    document.querySelectorAll('.sortable').forEach(th => {
+        th.classList.remove('sorted');
+        const icon = th.querySelector('.sort-icon');
+        if (icon) icon.textContent = '⇅';
+    });
+
+    // Add sorted class to current sort column
+    const currentHeader = document.querySelector(`[data-sort="${currentSort.field}"]`);
+    if (currentHeader) {
+        currentHeader.classList.add('sorted');
+        const icon = currentHeader.querySelector('.sort-icon');
+        if (icon) {
+            icon.textContent = currentSort.dir === 'desc' ? '⇩' : '⇧';
+        }
+    }
 }
 
 function renderTable() {
@@ -121,6 +152,25 @@ function renderTable() {
     if (sortedPlayers.length === 0) {
         tbody.innerHTML = '<tr><td colspan="9" class="no-results">No players found</td></tr>';
         return;
+    }
+
+    // Update table header with sortable columns
+    const thead = document.querySelector('#playersTable thead');
+    if (thead) {
+        thead.innerHTML = `
+            <tr>
+                <th class="sortable" onclick="sortTable('isPlaying', 'boolean')" data-sort="isPlaying">Status <span class="sort-icon">⇅</span></th>
+                <th>Name</th>
+                <th>Team</th>
+                <th>Skill</th>
+                <th class="sortable" onclick="sortTable('value', 'number')" data-sort="value">Value <span class="sort-icon">⇅</span></th>
+                <th>Sel By (%)</th>
+                <th>Cap (%)</th>
+                <th>VCap (%)</th>
+                <th>Game Points</th>
+                <th class="sortable" onclick="sortTable('overallPoints', 'number')" data-sort="overallPoints">Overall Points <span class="sort-icon">⇅</span></th>
+            </tr>
+        `;
     }
 
     tbody.innerHTML = sortedPlayers.map(p => `
