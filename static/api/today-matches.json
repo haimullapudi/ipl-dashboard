@@ -1,17 +1,21 @@
 {
   "today": [
     [
-      "KKR",
-      "SRH"
-    ]
-  ],
-  "next": [
-    [
       "CSK",
       "PBKS"
     ]
   ],
+  "next": [
+    [
+      "DC",
+      "MI"
+    ],
+    [
+      "GT",
+      "RR"
+    ]
+  ],
   "today_match_nos": [
-    6
+    7
   ]
 }

@@ -52,7 +52,7 @@ async function loadData() {
         }
 
         initStats();
-        initLegend();
+        initLegend(); // Called after calculatePointsThresholds so it has correct values
         refreshPlayers();
     } catch (error) {
         console.error('Error loading data:', error);

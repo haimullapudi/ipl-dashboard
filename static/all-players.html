@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Players - IPL Fantasy Players</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="tabs">
+            <a href="index.html" class="tab-btn">My Team</a>
+            <a href="todays-match.html" class="tab-btn">Today's Match</a>
+            <a href="next-match.html" class="tab-btn">Next Match</a>
+            <a href="transfers.html" class="tab-btn">Transfers</a>
+            <a href="all-players.html" class="tab-btn active">All Players</a>
+        </nav>
+
+        <div class="main-layout">
+            <div class="tab-content active">
+                <div class="table-container">
+                    <table id="playersTable">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Team</th>
+                                <th>Skill</th>
+                                <th>Value</th>
+                                <th>Sel By (%)</th>
+                                <th>Cap (%)</th>
+                                <th>VCap (%)</th>
+                                <th>Game Points</th>
+                                <th>Overall Points</th>
+                            </tr>
+                        </thead>
+                        <tbody id="playersBody">
+                            <tr><td colspan="9" class="loading"><div class="spinner"></div>Loading players...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="data-info">
+                    <span class="date" id="lastUpdated">Loading...</span>
+                    <span class="gameday" id="gamedayDisplay">Game Day --</span>
+                </div>
+                <div class="filter-panel">
+                    <h3>Filters</h3>
+                    <div class="filter-group">
+                        <select id="teamFilter" onchange="applyFilters()">
+                            <option value="">All Teams</option>
+                            <option value="CSK">Chennai Super Kings</option>
+                            <option value="DC">Delhi Capitals</option>
+                            <option value="GT">Gujarat Titans</option>
+                            <option value="KKR">Kolkata Knight Riders</option>
+                            <option value="LSG">Lucknow Super Giants</option>
+                            <option value="MI">Mumbai Indians</option>
+                            <option value="PBKS">Punjab Kings</option>
+                            <option value="RCB">Royal Challengers Bengaluru</option>
+                            <option value="RR">Rajasthan Royals</option>
+                            <option value="SRH">Sunrisers Hyderabad</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="checkbox-group" style="cursor: pointer;">
+                            <input type="checkbox" id="playingXi" onchange="applyFilters()">
+                            <span>Show Playing XI Only</span>
+                        </label>
+                    </div>
+                    <div class="filter-stats">
+                        <p>Showing <span class="count" id="filteredCount">0</span> of <span class="count" id="totalCount">0</span> players</p>
+                    </div>
+                    <button class="reset-btn" onclick="resetFilters()">Reset Filters</button>
+                </div>
+                <div class="stats-summary" id="statsSummary"></div>
+                <div class="legend" id="legend"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/shared.js"></script>
+    <script src="js/all-players.js"></script>
+</body>
+</html>
