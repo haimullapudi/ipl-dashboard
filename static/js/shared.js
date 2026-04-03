@@ -14,44 +14,36 @@ function formatPercent(num) {
 let _pointsThresholds = { high: 50, med: 20 };
 
 /**
- * Calculate percentile-based thresholds for points classification
- * Uses 67th percentile for high (top 33%) and 33rd percentile for med (bottom 33%)
+ * Calculate thresholds based on percentage of maximum points
+ * High: > 60% of max points
+ * Med: > 30% of max points
+ * This accounts for players who don't play every match
  * @param {Array} players - Array of player objects with overallPoints
  */
 function calculatePointsThresholds(players) {
     const points = players
         .map(p => p.overallPoints)
-        .filter(p => p !== null && p !== undefined)
-        .sort((a, b) => a - b); // Sort ascending: low to high
+        .filter(p => p !== null && p !== undefined);
 
     if (points.length === 0) {
         _pointsThresholds = { high: 50, med: 20 };
         return _pointsThresholds;
     }
 
-    // Calculate indices for percentiles (ascending order)
-    // 33rd percentile: value below which 33% of data falls (med threshold)
-    // 67th percentile: value below which 67% of data falls (high threshold)
-    const medIdx = Math.floor(points.length * 0.33);
-    const highIdx = Math.floor(points.length * 0.67);
+    const maxPoints = Math.max(...points);
 
-    const medValue = points[medIdx] || 0;
-    const highValue = points[highIdx] || 0;
-
-    // Ensure high > med (in case of skewed data with many zeros)
+    // Thresholds based on percentage of max points
+    // High: > 60% of max (elite performers)
+    // Med: > 30% of max (decent contributors)
     _pointsThresholds = {
-        high: Math.max(highValue, medValue + 1),
-        med: medValue
+        high: Math.round(maxPoints * 0.6),
+        med: Math.round(maxPoints * 0.3)
     };
 
-    console.log('Points distribution:', {
-        total: points.length,
-        min: points[0],
-        max: points[points.length - 1],
-        medIdx: medIdx,
-        highIdx: highIdx,
-        medValue: medValue,
-        highValue: highValue
+    console.log('Points thresholds:', {
+        maxPoints: maxPoints,
+        high: _pointsThresholds.high + ' (>60% of max)',
+        med: _pointsThresholds.med + ' (>30% of max)'
     });
 
     return _pointsThresholds;
