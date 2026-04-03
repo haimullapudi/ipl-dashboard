@@ -29,7 +29,10 @@ FREE_HIT_MATCH = 38  # Optimal: LSG vs KKR (26-Apr-26)
 # - KKR: gap=7 forward, gap=10 backward
 
 # Wildcard configuration
-WILDCARD_MATCH = 1  # Use Wildcard on first match to build optimal squad from start
+WILDCARD_MATCH = 14  # Default: Early strategy (end of first round-robin)
+# Alternative: Match 56 (Late strategy - playoff push)
+# Analysis: Early Wildcard gives 56 matches to benefit from new squad
+#           Late Wildcard optimizes for final 15 matches
 
 
 class Match:
