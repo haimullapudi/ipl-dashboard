@@ -425,21 +425,28 @@ def beam_search(
             reverted_beam = []
             for state in beam:
                 if state.free_hit_used and state.pre_free_hit_squad:
-                    # Create reverted state using pre-Free Hit squad
+                    # Use the pre-Free Hit squad directly for this match
+                    reverted_squad = state.pre_free_hit_squad
+                    scoring = calculate_scoring_players(reverted_squad, match.home, match.away)
+
+                    # Create reverted state - reversion is automatic (0 transfers)
                     reverted_state = State(
-                        squad_tuple=squad_to_tuple(state.pre_free_hit_squad),
-                        transfers_used=state.transfers_used,
-                        total_scoring=state.total_scoring,  # Keep the Free Hit scoring
-                        match_history=state.match_history,
+                        squad_tuple=squad_to_tuple(reverted_squad),
+                        transfers_used=state.transfers_used,  # No additional transfers
+                        total_scoring=state.total_scoring + scoring,
+                        match_history=state.match_history + [
+                            (match.match_no, reverted_squad.copy(), 0, scoring)  # 0 transfers for reversion
+                        ],
                         violations=state.violations,
                         free_hit_used=True,
                         pre_free_hit_squad=None  # Clear after reversion
                     )
                     reverted_beam.append(reverted_state)
 
-            # Use reverted beam for this match
+            # Use reverted beam and skip normal processing for this match
             if reverted_beam:
                 beam = reverted_beam
+                continue  # Skip normal candidate generation
 
         for state in beam:
             prev_squad = tuple_to_squad(state.squad_tuple)
