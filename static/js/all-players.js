@@ -1,6 +1,6 @@
 // All Players Tab
 let playersData = null;
-let currentSort = { field: 'isPlaying', dir: 'desc', type: 'boolean' };
+let currentSort = { field: 'overallPoints', dir: 'desc', type: 'number' };
 let sortedPlayers = [];
 
 async function loadData() {
@@ -159,7 +159,6 @@ function renderTable() {
     if (thead) {
         thead.innerHTML = `
             <tr>
-                <th class="sortable" onclick="sortTable('isPlaying', 'boolean')" data-sort="isPlaying">Status <span class="sort-icon">⇅</span></th>
                 <th>Name</th>
                 <th>Team</th>
                 <th>Skill</th>
