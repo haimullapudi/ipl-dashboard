@@ -768,6 +768,8 @@ def main():
     parser.add_argument('--min-scoring', type=int, default=DEFAULT_MIN_SCORING)
     parser.add_argument('--max-scoring', type=int, default=DEFAULT_MAX_SCORING)
     parser.add_argument('--max-transfers', type=int, default=DEFAULT_MAX_TRANSFERS_PER_MATCH)
+    parser.add_argument('--free-hit', action='store_true', help='Use Free Hit booster at optimal match (match 38)')
+    parser.add_argument('--free-hit-match', type=int, help='Specify custom match number for Free Hit')
     parser.add_argument('--input', default='ipl26.csv')
     parser.add_argument('--output', default='ipl26_computed.csv')
     args = parser.parse_args()
@@ -788,7 +790,9 @@ def main():
         matches,
         min_scoring=args.min_scoring,
         max_scoring=args.max_scoring,
-        max_transfers_per_match=args.max_transfers
+        max_transfers_per_match=args.max_transfers,
+        use_free_hit=args.free_hit or (args.free_hit_match is not None),
+        free_hit_match=args.free_hit_match if args.free_hit_match else FREE_HIT_MATCH
     )
 
     if best_state is None:
