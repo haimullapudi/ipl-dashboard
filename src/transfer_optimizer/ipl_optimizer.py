@@ -802,7 +802,8 @@ def validate_output(matches: List[Match]) -> Tuple[bool, List[str]]:
     return len(errors) == 0, errors
 
 
-def print_summary(matches: List[Match], free_hit_used: bool = False, free_hit_match: int = None) -> None:
+def print_summary(matches: List[Match], free_hit_used: bool = False, free_hit_match: int = None,
+                  wildcard_used: bool = False, wildcard_match: int = None) -> None:
     """Print summary."""
     total_scoring = sum(m.scoring_players for m in matches)
     total_transfers = sum(m.transfers for m in matches[1:])
@@ -819,6 +820,11 @@ def print_summary(matches: List[Match], free_hit_used: bool = False, free_hit_ma
         print(f"\nFREE HIT USED: Match {free_hit_match} ({fh_match.home} vs {fh_match.away})")
         print(f"  Free Hit squad scoring: {fh_match.scoring_players} players")
         print(f"  Transfers saved: Would have cost ~4 transfers, used 0")
+
+    if wildcard_used:
+        wc_match = matches[wildcard_match - 1]
+        print(f"\nWILDCARD USED: Match {wildcard_match} ({wc_match.home} vs {wc_match.away})")
+        print(f"  Wildcard allows unlimited transfers for this match")
 
     print("\nTransfer Distribution:")
     for i in range(0, 70, 10):
@@ -880,7 +886,9 @@ def main():
         print("\nValidation passed!")
 
     print_summary(matches, free_hit_used=args.free_hit or (args.free_hit_match is not None),
-                  free_hit_match=args.free_hit_match if args.free_hit_match else FREE_HIT_MATCH)
+                  free_hit_match=args.free_hit_match if args.free_hit_match else FREE_HIT_MATCH,
+                  wildcard_used=args.wildcard or (args.wildcard_match is not None),
+                  wildcard_match=args.wildcard_match if args.wildcard_match else WILDCARD_MATCH)
 
     print(f"\nSaving results to {args.output}...")
     save_matches(matches, args.output)
