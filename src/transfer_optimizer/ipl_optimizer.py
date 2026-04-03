@@ -96,6 +96,31 @@ def tuple_to_squad(squad_tuple: Tuple[Tuple[str, int], ...]) -> Dict[str, int]:
     return dict(squad_tuple)
 
 
+def get_max_carry(team: str, home: str, away: str, gap: Optional[int]) -> int:
+    """Get max players that can be carried for a team based on gap.
+
+    Gap-based carry limits ensure we don't hold too many players from teams
+    that won't play soon. However, limits are set to ensure we can always
+    stay within the 4-transfer-per-match budget by keeping at least 7 players.
+
+    Args:
+        team: The team to check
+        home: Home team for the current match
+        away: Away team for the current match
+        gap: Gap until the team plays next (None if no more matches)
+
+    Returns:
+        Maximum number of players that can be carried for this team
+    """
+    if team in (home, away):
+        return 7  # Playing teams can have full allocation
+    if gap is None:
+        return 4  # No more matches - keep up to 4
+    if gap <= 3:
+        return 4  # Playing soon - keep up to 4
+    return 4  # Playing later - keep max 4 (ensures we can keep 7+ players)
+
+
 def calculate_transfers(prev_squad: Dict[str, int], curr_squad: Dict[str, int]) -> int:
     """Calculate transfers needed."""
     carried_over = sum(min(prev_squad.get(t, 0), curr_squad.get(t, 0)) for t in TEAMS)
@@ -129,20 +154,6 @@ def generate_candidates(
     candidates = []
     seen = set()
 
-    def get_max_carry(team: str, gap: Optional[int]) -> int:
-        """Get max players that can be carried for a team based on gap.
-
-        Gap-based carry limits ensure we don't hold too many players from teams
-        that won't play soon. However, limits are set to ensure we can always
-        stay within the 4-transfer-per-match budget by keeping at least 7 players.
-        """
-        if team in (home, away):
-            return 7  # Playing teams can have full allocation
-        if gap is None:
-            return 4  # No more matches - keep up to 4
-        if gap <= 3:
-            return 4  # Playing soon - keep up to 4
-        return 4  # Playing later - keep max 4 (ensures we can keep 7+ players)
 
     def add(squad: Dict[str, int]):
         key = squad_to_tuple(squad)
@@ -161,7 +172,7 @@ def generate_candidates(
         # Check gap-based carry limits
         if team_gaps:
             for team in TEAMS:
-                max_carry = get_max_carry(team, team_gaps.get(team))
+                max_carry = get_max_carry(team, home, away, team_gaps.get(team))
                 if squad[team] > max_carry:
                     return
         candidates.append((squad.copy(), transfers, scoring))
@@ -169,7 +180,7 @@ def generate_candidates(
     # Apply gap limits to previous squad to get max allowed per team
     max_per_team = {}
     for team in TEAMS:
-        max_per_team[team] = get_max_carry(team, team_gaps.get(team) if team_gaps else None)
+        max_per_team[team] = get_max_carry(team, home, away, team_gaps.get(team) if team_gaps else None)
 
     # Strategy 1: Keep previous squad if valid (after applying gap limits)
     prev_scoring = prev_squad[home] + prev_squad[away]
@@ -518,17 +529,8 @@ def beam_search(
                             break
                     team_gaps[team] = gap
 
-                # Get max per team based on gaps
-                def get_max_carry(team, gap):
-                    if team in (match.home, match.away):
-                        return 7
-                    if gap is None:
-                        return 3
-                    if gap <= 3:
-                        return 3
-                    return 2
-
-                max_per_team = {t: get_max_carry(t, team_gaps.get(t)) for t in TEAMS}
+                # Get max per team based on gaps using module-level function
+                max_per_team = {t: get_max_carry(t, match.home, match.away, team_gaps.get(t)) for t in TEAMS}
 
                 # Try to find any valid squad within budget that meets min_scoring
                 best_candidate = None
