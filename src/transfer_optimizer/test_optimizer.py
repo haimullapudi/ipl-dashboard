@@ -315,6 +315,57 @@ class TestOptimizationQuality(unittest.TestCase):
                         f"Used {total_transfers} transfers, expected {TOTAL_TRANSFERS_CAP}")
 
 
+class TestFreeHit(unittest.TestCase):
+    """Test Free Hit functionality."""
+
+    def test_free_hit_optimizer(self):
+        """Test that Free Hit generates optimal squad at specified match."""
+        import tempfile
+        import os
+
+        # Create minimal test data
+        test_csv = """Match No,Date,Home,Away,Team-1 Gap,Team-2 Gap,CSK,DC,GT,KKR,LSG,MI,PBKS,RCB,RR,SRH,Total,Transfers,Scoring Players
+1,28-Mar-26,RCB,SRH,,,,,,,,,,,,,,,,
+2,29-Mar-26,MI,KKR,,,,,,,,,,,,,,,,
+3,30-Mar-26,RR,CSK,,,,,,,,,,,,,,,,
+4,31-Mar-26,PBKS,GT,,,,,,,,,,,,,,,,
+5,1-Apr-26,LSG,DC,,,,,,,,,,,,,,,,
+"""
+
+        with tempfile.NamedTemporaryFile(mode='w', suffix='.csv', delete=False) as f:
+            f.write(test_csv)
+            input_path = f.name
+
+        try:
+            # Run optimizer with Free Hit at match 3
+            from ipl_optimizer import load_matches, compute_gaps, beam_search
+
+            matches = load_matches(input_path)
+            compute_gaps(matches)
+
+            best_state = beam_search(
+                matches,
+                min_scoring=3,
+                max_scoring=6,
+                max_transfers_per_match=4,
+                use_free_hit=True,
+                free_hit_match=3
+            )
+
+            assert best_state is not None, "Optimization should succeed with Free Hit"
+            assert best_state.free_hit_used, "Free Hit should be marked as used"
+
+            # Check that match 3 has 0 transfers (Free Hit is free)
+            match_3_entry = [h for h in best_state.match_history if h[0] == 3][0]
+            assert match_3_entry[2] == 0, "Free Hit match should have 0 transfers"
+
+            print("Free Hit test PASSED")
+
+        finally:
+            if os.path.exists(input_path):
+                os.unlink(input_path)
+
+
 def run_tests():
     """Run all tests and report results."""
     loader = unittest.TestLoader()
@@ -327,6 +378,7 @@ def run_tests():
     suite.addTests(loader.loadTestsFromTestCase(TestScoringPlayers))
     suite.addTests(loader.loadTestsFromTestCase(TestOutputFormat))
     suite.addTests(loader.loadTestsFromTestCase(TestOptimizationQuality))
+    suite.addTests(loader.loadTestsFromTestCase(TestFreeHit))
 
     # Run tests
     runner = unittest.TextTestRunner(verbosity=2)

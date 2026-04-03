@@ -497,7 +497,8 @@ def beam_search(
                     match_history=state.match_history + [
                         (match.match_no, candidate.copy(), transfers, scoring)
                     ],
-                    violations=state.violations
+                    violations=state.violations,
+                    free_hit_used=state.free_hit_used
                 )
                 new_beam.append(new_state)
 
@@ -640,7 +641,8 @@ def beam_search(
                     match_history=state.match_history + [
                         (match.match_no, best_candidate.copy(), best_transfers, best_scoring)
                     ],
-                    violations=state.violations + (0 if min_scoring <= best_scoring <= max_scoring else 1)
+                    violations=state.violations + (0 if min_scoring <= best_scoring <= max_scoring else 1),
+                    free_hit_used=state.free_hit_used
                 )
                 new_beam.append(new_state)
 
