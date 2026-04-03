@@ -40,6 +40,11 @@ async function loadData() {
         const matchesData = await matchesRes.json();
         todayMatches = matchesData.today || [];
 
+        // Calculate dynamic points thresholds based on all player data
+        const players = playersData.gamedayPlayers || [];
+        calculatePointsThresholds(players);
+        console.log('Points thresholds:', getPointsThresholds());
+
         renderMyTeam();
     } catch (error) {
         console.error('Error loading data:', error);

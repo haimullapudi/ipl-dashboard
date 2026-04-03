@@ -24,6 +24,11 @@ async function loadData() {
         playersData = await playersRes.json();
         const fixtures = await fixturesRes.json();
 
+        // Calculate dynamic points thresholds based on all player data
+        const players = playersData.gamedayPlayers || [];
+        calculatePointsThresholds(players);
+        console.log('Points thresholds:', getPointsThresholds());
+
         // Calculate next matches from fixtures
         const { next } = getTodayAndNextMatches(fixtures);
         nextMatches = next;
