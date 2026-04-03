@@ -28,6 +28,12 @@ FREE_HIT_MATCH = 38  # Optimal: LSG vs KKR (26-Apr-26)
 # - LSG: gap=9 forward, gap=6 backward
 # - KKR: gap=7 forward, gap=10 backward
 
+# Wildcard configuration
+WILDCARD_MATCH = 14  # Default: Early strategy (end of first round-robin)
+# Alternative: Match 56 (Late strategy - playoff push)
+# Analysis: Early Wildcard gives 56 matches to benefit from new squad
+#           Late Wildcard optimizes for final 15 matches
+
 
 class Match:
     """Represents a single match in the IPL schedule."""
