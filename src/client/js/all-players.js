@@ -19,6 +19,11 @@ async function loadData() {
 
         playersData = await response.json();
 
+        // Calculate dynamic points thresholds based on player data
+        const players = playersData.gamedayPlayers || [];
+        calculatePointsThresholds(players);
+        console.log('Points thresholds:', getPointsThresholds());
+
         // Update last updated time
         const now = new Date();
         document.getElementById('lastUpdated').textContent =

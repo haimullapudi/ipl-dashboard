@@ -1,20 +1,52 @@
 // Shared utility functions for IPL Dashboard
 
-function formatNumber(num) {
-    if (num === null || num === undefined || num === '') return '-';
-    return num.toString();
+// Dynamic thresholds for points classification (calculated from data)
+let _pointsThresholds = { high: 50, med: 20 };
+
+/**
+ * Calculate percentile-based thresholds for points classification
+ * @param {Array} players - Array of player objects with overallPoints
+ */
+function calculatePointsThresholds(players) {
+    const points = players
+        .map(p => p.overallPoints)
+        .filter(p => p !== null && p !== undefined)
+        .sort((a, b) => a - b);
+
+    if (points.length === 0) {
+        _pointsThresholds = { high: 50, med: 20 };
+        return _pointsThresholds;
+    }
+
+    // Calculate 67th percentile (high threshold) and 33rd percentile (med threshold)
+    const highIdx = Math.floor(points.length * 0.67);
+    const medIdx = Math.floor(points.length * 0.33);
+
+    _pointsThresholds = {
+        high: points[highIdx] || 50,
+        med: points[medIdx] || 20
+    };
+
+    return _pointsThresholds;
 }
 
-function formatPercent(num) {
-    if (num === null || num === undefined || num === 0) return '-';
-    return num.toFixed(1) + '%';
-}
-
+/**
+ * Get points class based on dynamic percentile thresholds
+ * @param {number} points - Player's overall points
+ * @returns {string} CSS class name (points-high, points-med, points-low)
+ */
 function getPointsClass(points) {
     if (points === null || points === undefined) return '';
-    if (points > 50) return 'points-high';
-    if (points > 20) return 'points-med';
+    if (points > _pointsThresholds.high) return 'points-high';
+    if (points > _pointsThresholds.med) return 'points-med';
     return 'points-low';
+}
+
+/**
+ * Get thresholds for display/debugging
+ */
+function getPointsThresholds() {
+    return _pointsThresholds;
 }
 
 function sortPlayers(players, field, type) {
