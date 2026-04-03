@@ -101,6 +101,7 @@ function renderTransfersTable() {
                             <td>${match.PBKS || ''}</td>
                             <td>${match.RCB || ''}</td>
                             <td>${match.RR || ''}</td>
+                            <td>${match.SRH || ''}</td>
                             <td>${match.total}</td>
                             <td>${match.transfers}</td>
                             <td>${match.scoring_players}</td>
