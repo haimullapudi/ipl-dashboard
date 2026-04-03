@@ -1,5 +1,54 @@
 // Shared utility functions for IPL Dashboard
 
+// Cache for tour fixtures and gameday
+let _fixturesCache = null;
+let _gamedayCache = null;
+
+/**
+ * Fetch tour fixtures with caching (single API call across all modules)
+ * @returns {Promise<Array>} Tour fixtures array
+ */
+async function getTourFixtures() {
+    if (_fixturesCache) {
+        return _fixturesCache;
+    }
+
+    try {
+        let response;
+        try {
+            response = await fetch('/api/tour-fixtures');
+            if (!response.ok) {
+                response = await fetch('api/tour-fixtures.json');
+            }
+        } catch (e) {
+            response = await fetch('api/tour-fixtures.json');
+        }
+
+        if (response.ok) {
+            _fixturesCache = await response.json();
+            return _fixturesCache;
+        }
+    } catch (e) {
+        console.warn('Could not fetch tour-fixtures:', e);
+    }
+
+    return [];
+}
+
+/**
+ * Get current gameday (uses cached fixtures)
+ * @returns {Promise<number>} Current gameday ID
+ */
+async function getCurrentGameday() {
+    if (_gamedayCache !== null) {
+        return _gamedayCache;
+    }
+
+    const fixtures = await getTourFixtures();
+    _gamedayCache = getCurrentGamedayFromFixtures(fixtures);
+    return _gamedayCache;
+}
+
 function formatNumber(num) {
     if (num === null || num === undefined || num === '') return '-';
     return num.toString();

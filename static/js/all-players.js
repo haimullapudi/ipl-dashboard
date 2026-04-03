@@ -5,22 +5,8 @@ let sortedPlayers = [];
 
 async function loadData() {
     try {
-        // First fetch tour-fixtures to get current gameday
-        let fixturesRes;
-        try {
-            fixturesRes = await fetch('/api/tour-fixtures');
-            if (!fixturesRes.ok) {
-                fixturesRes = await fetch('api/tour-fixtures.json');
-            }
-        } catch (e) {
-            fixturesRes = await fetch('api/tour-fixtures.json');
-        }
-
-        let gameday = 7; // Default fallback
-        if (fixturesRes.ok) {
-            const fixtures = await fixturesRes.json();
-            gameday = getCurrentGamedayFromFixtures(fixtures);
-        }
+        // Get current gameday (uses cached fixtures - single API call)
+        const gameday = await getCurrentGameday();
 
         // Fetch players with explicit tourgamedayId
         let response;
@@ -48,25 +34,8 @@ async function loadData() {
                 month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit'
             });
 
-        // Fetch and display current gameday from tour-fixtures
-        try {
-            let fixturesRes;
-            try {
-                fixturesRes = await fetch('/api/tour-fixtures');
-                if (!fixturesRes.ok) {
-                    fixturesRes = await fetch('api/tour-fixtures.json');
-                }
-            } catch (e) {
-                fixturesRes = await fetch('api/tour-fixtures.json');
-            }
-            if (fixturesRes.ok) {
-                const fixtures = await fixturesRes.json();
-                const gameday = getCurrentGamedayFromFixtures(fixtures);
-                document.getElementById('gamedayDisplay').textContent = `Game Day ${gameday}`;
-            }
-        } catch (e) {
-            console.log('Could not fetch gameday:', e);
-        }
+        // Display current gameday (uses cached fixtures)
+        document.getElementById('gamedayDisplay').textContent = `Game Day ${gameday}`;
 
         initStats();
         initLegend(); // Called after calculatePointsThresholds so it has correct values

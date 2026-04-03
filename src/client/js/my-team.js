@@ -17,28 +17,43 @@ function sortMatchPlayers(field) {
 
 async function loadData() {
     try {
-        let myTeamRes, playersRes, matchesRes;
+        // Fetch my-team data
+        let myTeamRes;
         try {
             myTeamRes = await fetch('/api/my-team');
-            playersRes = await fetch('/api/players');
-            matchesRes = await fetch('/api/today-matches');
-            if (!myTeamRes.ok || !playersRes.ok || !matchesRes.ok) {
-                throw new Error('API not available');
+            if (!myTeamRes.ok) {
+                myTeamRes = await fetch('api/my-team.json');
             }
         } catch (e) {
             myTeamRes = await fetch('api/my-team.json');
-            playersRes = await fetch('api/players.json');
-            matchesRes = await fetch('api/today-matches.json');
         }
 
-        if (!myTeamRes.ok || !playersRes.ok || !matchesRes.ok) {
-            throw new Error('Failed to fetch data');
-        }
-
+        if (!myTeamRes.ok) throw new Error('Failed to fetch my team');
         myTeamData = await myTeamRes.json();
+
+        // Get fixtures from shared cache (single API call)
+        const fixtures = await getTourFixtures();
+
+        // Get current gameday from shared cache
+        const gameday = await getCurrentGameday();
+
+        // Fetch players with explicit tourgamedayId
+        let playersRes;
+        try {
+            playersRes = await fetch(`/api/players?tourgamedayId=${gameday}`);
+            if (!playersRes.ok) {
+                playersRes = await fetch('api/players.json');
+            }
+        } catch (e) {
+            playersRes = await fetch('api/players.json');
+        }
+
+        if (!playersRes.ok) throw new Error('Failed to fetch players');
         playersData = await playersRes.json();
-        const matchesData = await matchesRes.json();
-        todayMatches = matchesData.today || [];
+
+        // Calculate today's matches from fixtures
+        const { today } = getTodayAndNextMatches(fixtures);
+        todayMatches = today || [];
 
         // Calculate dynamic points thresholds based on all player data
         const players = playersData.gamedayPlayers || [];

@@ -6,23 +6,26 @@ let matchSortDir = 'desc';
 
 async function loadData() {
     try {
-        // Try API first (for local dev server), fall back to static JSON (for GitHub Pages)
-        let playersRes, fixturesRes;
+        // Get fixtures from shared cache (single API call)
+        const fixtures = await getTourFixtures();
+
+        // Get current gameday from shared cache
+        const gameday = await getCurrentGameday();
+
+        // Fetch players with explicit tourgamedayId
+        let response;
         try {
-            playersRes = await fetch('/api/players');
-            fixturesRes = await fetch('/api/tour-fixtures');
-            if (!playersRes.ok || !fixturesRes.ok) {
-                throw new Error('API not available');
+            response = await fetch(`/api/players?tourgamedayId=${gameday}`);
+            if (!response.ok) {
+                response = await fetch('api/players.json');
             }
         } catch (e) {
-            playersRes = await fetch('api/players.json');
-            fixturesRes = await fetch('api/tour-fixtures.json');
+            response = await fetch('api/players.json');
         }
 
-        if (!playersRes.ok || !fixturesRes.ok) throw new Error('Failed to fetch data');
+        if (!response.ok) throw new Error('Failed to fetch players');
 
-        playersData = await playersRes.json();
-        const fixtures = await fixturesRes.json();
+        playersData = await response.json();
 
         // Calculate dynamic points thresholds based on all player data
         const players = playersData.gamedayPlayers || [];
