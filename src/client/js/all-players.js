@@ -52,7 +52,7 @@ async function loadData() {
         }
 
         initStats();
-        initLegend();
+        initLegend(); // Called after calculatePointsThresholds so it has correct values
         refreshPlayers();
     } catch (error) {
         console.error('Error loading data:', error);
@@ -92,18 +92,19 @@ function initStats() {
 }
 
 function initLegend() {
+    const thresholds = getPointsThresholds();
     document.getElementById('legend').innerHTML = `
         <div class="legend-item">
             <span class="legend-color green"></span>
-            <span>Playing XI / High Points (>50)</span>
+            <span>Playing XI / High Points (>${thresholds.high})</span>
         </div>
         <div class="legend-item">
             <span class="legend-color yellow"></span>
-            <span>Medium Points (20-50)</span>
+            <span>Medium Points (${thresholds.med}-${thresholds.high})</span>
         </div>
         <div class="legend-item">
             <span class="legend-color red"></span>
-            <span>Low Points (<20)</span>
+            <span>Low Points (<${thresholds.med})</span>
         </div>
     `;
 }
