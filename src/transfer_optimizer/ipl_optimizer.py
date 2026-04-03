@@ -860,6 +860,12 @@ def main():
         print("Done!")
         return
 
+    # Validate booster configuration
+    if args.free_hit_match is not None and args.wildcard_match is not None:
+        if args.free_hit_match == args.wildcard_match:
+            print("Error: Cannot use Free Hit and Wildcard at the same match")
+            sys.exit(1)
+
     best_state = beam_search(
         matches,
         min_scoring=args.min_scoring,
