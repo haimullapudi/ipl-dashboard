@@ -37,19 +37,8 @@ async function loadData() {
         // Get current gameday from shared cache
         const gameday = await getCurrentGameday();
 
-        // Fetch players with explicit tourgamedayId
-        let playersRes;
-        try {
-            playersRes = await fetch(`/api/players?tourgamedayId=${gameday}`);
-            if (!playersRes.ok) {
-                playersRes = await fetch('api/players.json');
-            }
-        } catch (e) {
-            playersRes = await fetch('api/players.json');
-        }
-
-        if (!playersRes.ok) throw new Error('Failed to fetch players');
-        playersData = await playersRes.json();
+        // Fetch players from shared cache (5-min TTL)
+        playersData = await getPlayers(gameday);
 
         // Calculate today's matches from fixtures
         const { today } = getTodayAndNextMatches(fixtures);

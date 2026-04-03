@@ -2,14 +2,31 @@
 
 // Cache for tour fixtures and gameday
 let _fixturesCache = null;
+let _fixturesTimestamp = null;
 let _gamedayCache = null;
+
+// Cache for players data with 5-minute TTL
+let _playersCache = null;
+let _playersTimestamp = null;
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
+/**
+ * Check if cached data is stale (older than TTL)
+ * @param {number} timestamp - Cache timestamp
+ * @returns {boolean} True if cache is stale
+ */
+function isCacheStale(timestamp) {
+    if (!timestamp) return true;
+    return (Date.now() - timestamp) > CACHE_TTL_MS;
+}
 
 /**
  * Fetch tour fixtures with caching (single API call across all modules)
+ * Cache expires after 5 minutes
  * @returns {Promise<Array>} Tour fixtures array
  */
 async function getTourFixtures() {
-    if (_fixturesCache) {
+    if (_fixturesCache && !isCacheStale(_fixturesTimestamp)) {
         return _fixturesCache;
     }
 
@@ -26,13 +43,14 @@ async function getTourFixtures() {
 
         if (response.ok) {
             _fixturesCache = await response.json();
+            _fixturesTimestamp = Date.now();
             return _fixturesCache;
         }
     } catch (e) {
         console.warn('Could not fetch tour-fixtures:', e);
     }
 
-    return [];
+    return _fixturesCache || [];
 }
 
 /**
@@ -47,6 +65,39 @@ async function getCurrentGameday() {
     const fixtures = await getTourFixtures();
     _gamedayCache = getCurrentGamedayFromFixtures(fixtures);
     return _gamedayCache;
+}
+
+/**
+ * Fetch players data with caching (5-minute TTL)
+ * @param {number} gameday - Gameday ID for tourgamedayId param
+ * @returns {Promise<Object>} Players data with gamedayPlayers array
+ */
+async function getPlayers(gameday) {
+    if (_playersCache && !isCacheStale(_playersTimestamp)) {
+        return _playersCache;
+    }
+
+    try {
+        let response;
+        try {
+            response = await fetch(`/api/players?tourgamedayId=${gameday}`);
+            if (!response.ok) {
+                response = await fetch('api/players.json');
+            }
+        } catch (e) {
+            response = await fetch('api/players.json');
+        }
+
+        if (response.ok) {
+            _playersCache = await response.json();
+            _playersTimestamp = Date.now();
+            return _playersCache;
+        }
+    } catch (e) {
+        console.warn('Could not fetch players:', e);
+    }
+
+    return _playersCache || { gamedayPlayers: [] };
 }
 
 function formatNumber(num) {

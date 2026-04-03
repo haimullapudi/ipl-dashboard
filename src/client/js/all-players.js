@@ -8,19 +8,8 @@ async function loadData() {
         // Get current gameday (uses cached fixtures - single API call)
         const gameday = await getCurrentGameday();
 
-        // Fetch players with explicit tourgamedayId
-        let response;
-        try {
-            response = await fetch(`/api/players?tourgamedayId=${gameday}`);
-            if (!response.ok) {
-                response = await fetch('api/players.json');
-            }
-        } catch (e) {
-            response = await fetch('api/players.json');
-        }
-        if (!response.ok) throw new Error('Failed to fetch players');
-
-        playersData = await response.json();
+        // Fetch players from shared cache (5-min TTL)
+        playersData = await getPlayers(gameday);
 
         // Calculate dynamic points thresholds based on player data
         const players = playersData.gamedayPlayers || [];
