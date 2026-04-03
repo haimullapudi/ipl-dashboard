@@ -53,6 +53,7 @@ The Wildcard booster allows unlimited transfers for one match with a persistent 
 - End of first round-robin
 - 56 remaining matches to benefit from new squad
 - Recommended: +6 scoring players vs Late strategy
+- Smart accumulation: Automatically accumulates players from teams playing before Wildcard (e.g., RR, MI before Match 14)
 
 **Late Wildcard (Match 52):**
 - Start of final 19 matches
@@ -76,9 +77,69 @@ python3 ipl_optimizer.py --wildcard --wildcard-match 25 --output ipl26_custom.cs
 
 | Strategy | Total Scoring | Avg/Match | Transfers |
 |----------|---------------|-----------|-----------|
-| Standard | TBD | TBD | TBD |
-| Early Wildcard (14) | 289 | 4.13 | 160 |
+| Standard | 283 | 4.04 | 160 |
+| Early Wildcard (14) | 291 | 4.16 | 160 |
 | Late Wildcard (52) | 283 | 4.04 | 158 |
+
+### Using Both Boosters Together
+
+For maximum scoring, use both Wildcard and Free Hit in the same season:
+
+```bash
+# Both boosters: Wildcard at Match 14 + Free Hit at Match 38
+python3 ipl_optimizer.py --wildcard --free-hit --output ipl26_both_boosters.csv
+```
+
+**Results with Both Boosters:**
+
+| Metric | Value | Improvement vs Standard |
+|--------|-------|------------------------|
+| Total Scoring Players | **304** | +21 (+7.4%) |
+| Average per Match | **4.34** | +0.30 |
+| Wildcard (Match 14) | 11 scoring | DC vs GT (6+5) |
+| Free Hit (Match 38) | 11 scoring | LSG vs KKR (5+6) |
+
+**Strategy:**
+1. **Wildcard (Match 14)**: Accumulate players from teams playing before Match 14 (RR, MI), then reset to DC+GT squad
+2. **Free Hit (Match 38)**: Full squad overhaul for isolated LSG vs KKR match
+3. **Combined benefit**: +21 scoring players over the season
+
+## Final Match Boost
+
+The **Final Match Boost** applies dead-weight discarding logic for matches 68-70, similar to the Wildcard strategy.
+
+### How It Works
+
+Teams that won't play in the final stretch are minimized to free up slots for teams that will play:
+
+| Team | Last Match Before 68-70 | Gap |
+|------|------------------------|-----|
+| DC   | Match 62               | 8 matches (biggest dead weight) |
+| GT   | Match 66               | 4 matches |
+| Others | Varies | 1-5 matches |
+
+**DC is the biggest dead weight** - last plays Match 62, then doesn't play again until Match 70 (gap=8).
+
+### Usage
+
+```bash
+# Final Match Boost only
+python3 ipl_optimizer.py --final-boost
+
+# Combined with other boosters
+python3 ipl_optimizer.py --wildcard --free-hit --final-boost
+```
+
+### Results
+
+| Strategy | Total Scoring | Avg/Match |
+|----------|---------------|-----------|
+| Standard | 283 | 4.04 |
+| Final Boost only | 283 | 4.04 |
+| Wildcard + Free Hit | 304 | 4.34 |
+| All 3 Boosters | 303 | 4.33 |
+
+**Note:** Final Match Boost provides the most benefit when transfer budget is tight. With Wildcard+Free Hit already using the full 160 transfers optimally, the additional boost has minimal impact.
 
 ## Installation
 

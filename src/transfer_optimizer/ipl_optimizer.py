@@ -34,6 +34,11 @@ WILDCARD_MATCH = 14  # Default: Early strategy (end of first round-robin)
 # Analysis: Early Wildcard gives 56 matches to benefit from new squad
 #           Late Wildcard optimizes for final 15 matches
 
+# Final Match Boost configuration
+FINAL_MATCH_BOOST_START = 68  # Apply dead-weight discarding from Match 68 onwards
+# Analysis: DC last plays Match 62, then gap=8 until Match 70 (biggest dead weight)
+#           Matches 68-70 benefit from discarding teams that won't play
+
 
 class Match:
     """Represents a single match in the IPL schedule."""
@@ -102,24 +107,53 @@ def tuple_to_squad(squad_tuple: Tuple[Tuple[str, int], ...]) -> Dict[str, int]:
     return dict(squad_tuple)
 
 
-def get_max_carry(team: str, home: str, away: str, gap: Optional[int]) -> int:
+def get_max_carry(team: str, home: str, away: str, gap: Optional[int], before_wildcard: bool = False, wildcard_match: int = None, current_match: int = None,
+                  final_match_boost: bool = False, final_match_start: int = None) -> int:
     """Get max players that can be carried for a team based on gap.
 
     Gap-based carry limits ensure we don't hold too many players from teams
     that won't play soon. However, limits are set to ensure we can always
     stay within the 4-transfer-per-match budget by keeping at least 7 players.
 
+    When before_wildcard=True, teams that won't play before the Wildcard
+    must be discarded (max_carry=0) since they're dead weight.
+
+    When final_match_boost=True, teams that won't play before FINAL_MATCH_BOOST_START
+    should be minimized to free up slots for teams that will play in the final stretch.
+
     Args:
         team: The team to check
         home: Home team for the current match
         away: Away team for the current match
-        gap: Gap until the team plays next (None if no more matches)
+        gap: Gap until the team plays next (None if no more matches before Wildcard)
+        before_wildcard: If True, enforce strict discard for teams not playing before Wildcard
+        wildcard_match: Match number of upcoming Wildcard (used with before_wildcard)
+        current_match: Current match number (used with before_wildcard)
+        final_match_boost: If True, enforce strict discard for teams not playing in final stretch
+        final_match_start: Start match of final boost phase (used with final_match_boost)
 
     Returns:
         Maximum number of players that can be carried for this team
     """
     if team in (home, away):
         return 7  # Playing teams can have full allocation
+
+    # Final Match Boost: teams that won't play in final stretch should be minimized
+    # DC last plays Match 62, then gap=8 until Match 70 - biggest dead weight
+    # Only apply if team has large gap (won't play before Match 70)
+    if final_match_boost and current_match >= final_match_start:
+        # Only restrict teams that truly won't play again (gap is None means no more matches)
+        if gap is None:
+            return 1  # Dead weight - carry max 1 (just enough to fill 11)
+        # For teams with gap > 5, allow up to 2 players (less aggressive)
+        elif gap > 5:
+            return 2  # Large gap - carry max 2
+
+    # Before Wildcard: teams that won't play before Wildcard should be minimized
+    # But we still need 11 players total, so allow carrying if necessary
+    if before_wildcard and gap is None:
+        return 1  # Dead weight - carry max 1 (just enough to fill 11, but strongly discouraged)
+
     if gap is None:
         return 4  # No more matches - keep up to 4
     if gap <= 3:
@@ -146,7 +180,13 @@ def generate_candidates(
     max_scoring: int,
     max_transfers: int,
     remaining_budget: int,
-    team_gaps: Dict[str, Optional[int]] = None
+    team_gaps: Dict[str, Optional[int]] = None,
+    before_wildcard: bool = False,
+    wildcard_match: int = None,
+    current_match: int = None,
+    matches: List[Match] = None,
+    final_match_boost: bool = False,
+    final_match_start: int = None
 ) -> List[Tuple[Dict[str, int], int, int]]:
     """
     Generate candidate squads efficiently.
@@ -156,6 +196,7 @@ def generate_candidates(
     - Gap <= 3: max 3 players can be carried
     - Gap > 3: max 2 players can be carried
     - Playing teams (home/away) can have up to 7 players
+    - Before Wildcard: teams not playing before Wildcard must be discarded (max_carry=0)
     """
     candidates = []
     seen = set()
@@ -178,7 +219,8 @@ def generate_candidates(
         # Check gap-based carry limits
         if team_gaps:
             for team in TEAMS:
-                max_carry = get_max_carry(team, home, away, team_gaps.get(team))
+                max_carry = get_max_carry(team, home, away, team_gaps.get(team), before_wildcard, wildcard_match, current_match,
+                                          final_match_boost, final_match_start)
                 if squad[team] > max_carry:
                     return
         candidates.append((squad.copy(), transfers, scoring))
@@ -186,7 +228,8 @@ def generate_candidates(
     # Apply gap limits to previous squad to get max allowed per team
     max_per_team = {}
     for team in TEAMS:
-        max_per_team[team] = get_max_carry(team, home, away, team_gaps.get(team) if team_gaps else None)
+        max_per_team[team] = get_max_carry(team, home, away, team_gaps.get(team) if team_gaps else None, before_wildcard, wildcard_match, current_match,
+                                           final_match_boost, final_match_start)
 
     # Strategy 1: Keep previous squad if valid (after applying gap limits)
     prev_scoring = prev_squad[home] + prev_squad[away]
@@ -217,8 +260,25 @@ def generate_candidates(
             min_keep = 11 - max_transfers
             kept = h + a  # Count home/away as kept if they were in prev_squad
 
-            # First, keep as many as possible from non-playing teams
-            for t in TEAMS:
+            # Before Wildcard: prioritize teams that WILL play before Wildcard
+            # This allows accumulating players from those teams (like RR, MI before Match 14)
+            if before_wildcard and wildcard_match:
+                # Sort teams by whether they play before Wildcard (prioritize those that do)
+                def team_priority(t):
+                    # Find if team plays before wildcard
+                    for m in range(current_match + 1, wildcard_match):
+                        match_data = matches[m - 1]
+                        if match_data.home == t or match_data.away == t:
+                            return 0  # Plays before wildcard - prioritize
+                    return 1  # Doesn't play before wildcard - deprioritize
+
+                other_teams = [t for t in TEAMS if t not in (home, away)]
+                other_teams.sort(key=team_priority)
+            else:
+                other_teams = [t for t in TEAMS if t not in (home, away)]
+
+            # First, keep as many as possible from non-playing teams (prioritized order)
+            for t in other_teams:
                 if t in (home, away):
                     continue
                 # Take from prev_squad but respect gap limit
@@ -257,11 +317,23 @@ def generate_candidates(
                 squad[t] = max_allowed
                 remaining -= max_allowed
 
-            # If still remaining, add to teams with room (up to their gap limit)
+            # If still remaining, first try to add to teams with room (up to their gap limit)
             for t in other:
                 while remaining > 0 and squad[t] < max_per_team[t]:
                     squad[t] += 1
                     remaining -= 1
+
+            # If still can't reach 11 (due to strict gap limits before Wildcard),
+            # fill to home/away teams - 11 players is mandatory
+            while remaining > 0:
+                if squad[home] < 7:
+                    squad[home] += 1
+                    remaining -= 1
+                elif squad[away] < 7:
+                    squad[away] += 1
+                    remaining -= 1
+                else:
+                    break  # Can't add more (shouldn't happen)
 
             if sum(squad.values()) == 11:
                 add(squad)
@@ -374,7 +446,9 @@ def beam_search(
     use_free_hit: bool = False,
     free_hit_match: int = FREE_HIT_MATCH,
     use_wildcard: bool = False,
-    wildcard_match: int = WILDCARD_MATCH
+    wildcard_match: int = WILDCARD_MATCH,
+    use_final_boost: bool = False,
+    final_match_start: int = FINAL_MATCH_BOOST_START
 ) -> Optional[State]:
     """Run beam search optimization."""
 
@@ -505,10 +579,16 @@ def beam_search(
                 continue
 
             # Build team gaps at this match (gap from current match to next)
+            # If Wildcard is upcoming, treat teams that won't play before Wildcard as "no more matches"
             team_gaps = {}
+            wildcard_cutoff = wildcard_match if use_wildcard and match.match_no < wildcard_match else None
+
             for team in TEAMS:
                 gap = None
                 for m in matches[match_idx:]:
+                    # If Wildcard is coming and this match is at/after Wildcard, stop looking
+                    if wildcard_cutoff and m.match_no >= wildcard_cutoff:
+                        break
                     if m.home == team or m.away == team:
                         gap = m.match_no - match.match_no
                         break
@@ -523,7 +603,11 @@ def beam_search(
                 max_scoring=max_scoring,
                 max_transfers=max_transfers_per_match,
                 remaining_budget=remaining_budget,
-                team_gaps=team_gaps
+                team_gaps=team_gaps,
+                before_wildcard=use_wildcard and match.match_no < wildcard_match,
+                wildcard_match=wildcard_match,
+                current_match=match.match_no,
+                matches=matches
             )
 
             for candidate, transfers, scoring in candidates:
@@ -576,23 +660,32 @@ def beam_search(
                 prev_squad = tuple_to_squad(state.squad_tuple)
                 remaining_budget = TOTAL_TRANSFERS_CAP - state.transfers_used
 
-                # Build team_gaps for fallback
+                # Build team_gaps for fallback (account for Wildcard cutoff)
                 team_gaps = {}
+                wildcard_cutoff = wildcard_match if use_wildcard and match.match_no < wildcard_match else None
+
                 for team in TEAMS:
                     gap = None
                     for m in matches[match_idx:]:
+                        # If Wildcard is coming and this match is at/after Wildcard, stop looking
+                        if wildcard_cutoff and m.match_no >= wildcard_cutoff:
+                            break
                         if m.home == team or m.away == team:
                             gap = m.match_no - match.match_no
                             break
                     team_gaps[team] = gap
 
-                # Get max per team based on gaps using module-level function
-                max_per_team = {t: get_max_carry(t, match.home, match.away, team_gaps.get(t)) for t in TEAMS}
+                # Get max per team based on gaps using module-level function (with Wildcard awareness)
+                before_wc = use_wildcard and match.match_no < wildcard_match
+                max_per_team = {t: get_max_carry(t, match.home, match.away, team_gaps.get(t), before_wc, wildcard_match, match.match_no) for t in TEAMS}
 
                 # Try to find any valid squad within budget that meets min_scoring
                 best_candidate = None
                 best_transfers = float('inf')
                 best_scoring = 0
+
+                # Enable Final Match Boost for matches 68-70 if enabled
+                is_final_boost = use_final_boost and (match.match_no >= final_match_start)
 
                 candidates = generate_candidates(
                     prev_squad=prev_squad,
@@ -602,7 +695,13 @@ def beam_search(
                     max_scoring=max_scoring,
                     max_transfers=DEFAULT_MAX_TRANSFERS_PER_MATCH,  # Enforce 4-transfer limit
                     remaining_budget=remaining_budget,
-                    team_gaps=team_gaps
+                    team_gaps=team_gaps,
+                    before_wildcard=before_wc,
+                    wildcard_match=wildcard_match,
+                    current_match=match.match_no,
+                    matches=matches,
+                    final_match_boost=is_final_boost,
+                    final_match_start=final_match_start
                 )
 
                 for candidate, transfers, scoring in candidates:
@@ -806,7 +905,8 @@ def validate_output(matches: List[Match]) -> Tuple[bool, List[str]]:
 
 
 def print_summary(matches: List[Match], free_hit_used: bool = False, free_hit_match: int = None,
-                  wildcard_used: bool = False, wildcard_match: int = None) -> None:
+                  wildcard_used: bool = False, wildcard_match: int = None,
+                  final_boost_used: bool = False, final_boost_start: int = None) -> None:
     """Print summary."""
     total_scoring = sum(m.scoring_players for m in matches)
     total_transfers = sum(m.transfers for m in matches[1:])
@@ -830,6 +930,11 @@ def print_summary(matches: List[Match], free_hit_used: bool = False, free_hit_ma
         print(f"  Wildcard squad scoring: {wc_match.scoring_players} players")
         print(f"  Squad persists for remaining matches (no reversion)")
 
+    if final_boost_used:
+        print(f"\nFINAL MATCH BOOST USED: Matches {final_boost_start}-70")
+        print(f"  Dead weight teams discarded (e.g., DC gap=8 before Match 70)")
+        print(f"  Maximizes scoring in final stretch")
+
     print("\nTransfer Distribution:")
     for i in range(0, 70, 10):
         seg = matches[i:i+10]
@@ -846,6 +951,9 @@ def main():
     parser.add_argument('--max-transfers', type=int, default=DEFAULT_MAX_TRANSFERS_PER_MATCH)
     parser.add_argument('--free-hit', action='store_true', help='Use Free Hit booster at optimal match (match 38)')
     parser.add_argument('--free-hit-match', type=int, help='Specify custom match number for Free Hit')
+    parser.add_argument('--wildcard', action='store_true', help='Use Wildcard booster at early match (match 14)')
+    parser.add_argument('--wildcard-match', type=int, help='Specify custom Wildcard match number')
+    parser.add_argument('--final-boost', action='store_true', help='Use Final Match Boost for matches 68-70 (discard dead weight)')
     parser.add_argument('--input', default='ipl26.csv')
     parser.add_argument('--output', default='ipl26_computed.csv')
     args = parser.parse_args()
@@ -874,7 +982,11 @@ def main():
         max_scoring=args.max_scoring,
         max_transfers_per_match=args.max_transfers,
         use_free_hit=args.free_hit or (args.free_hit_match is not None),
-        free_hit_match=args.free_hit_match if args.free_hit_match else FREE_HIT_MATCH
+        free_hit_match=args.free_hit_match if args.free_hit_match else FREE_HIT_MATCH,
+        use_wildcard=args.wildcard or (args.wildcard_match is not None),
+        wildcard_match=args.wildcard_match if args.wildcard_match else WILDCARD_MATCH,
+        use_final_boost=args.final_boost,
+        final_match_start=FINAL_MATCH_BOOST_START
     )
 
     if best_state is None:
@@ -894,7 +1006,9 @@ def main():
     print_summary(matches, free_hit_used=args.free_hit or (args.free_hit_match is not None),
                   free_hit_match=args.free_hit_match if args.free_hit_match else FREE_HIT_MATCH,
                   wildcard_used=args.wildcard or (args.wildcard_match is not None),
-                  wildcard_match=args.wildcard_match if args.wildcard_match else WILDCARD_MATCH)
+                  wildcard_match=args.wildcard_match if args.wildcard_match else WILDCARD_MATCH,
+                  final_boost_used=args.final_boost,
+                  final_boost_start=FINAL_MATCH_BOOST_START if args.final_boost else None)
 
     print(f"\nSaving results to {args.output}...")
     save_matches(matches, args.output)

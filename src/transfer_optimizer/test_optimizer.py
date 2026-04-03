@@ -180,12 +180,20 @@ class TestTransferConstraints(unittest.TestCase):
         for team in TEAMS:
             prev_squad[team] = int(match1[team]) if match1[team] else 0
 
+        # Detect if this is a Free Hit run (Match 38 has 0 transfers)
+        match38_transfers = int(self.matches[37]['Transfers']) if self.matches[37]['Transfers'] else 0
+        is_free_hit_run = (match38_transfers == 0)
+
+        # Detect if this is a Wildcard run (Match 14 has 0 transfers)
+        match14_transfers = int(self.matches[13]['Transfers']) if self.matches[13]['Transfers'] else 0
+        is_wildcard_run = (match14_transfers == 0)
+
         for i in range(1, len(self.matches)):
             match = self.matches[i]
             match_no = int(match['Match No'])
 
             # Skip Free Hit (Match 38) and Wildcard (Match 14) - they have 0 transfers by design
-            if match_no == 38 or match_no == 14:
+            if (is_free_hit_run and match_no == 38) or (is_wildcard_run and match_no == 14):
                 prev_squad = {team: int(match[team]) if match[team] else 0 for team in TEAMS}
                 continue
 
@@ -195,7 +203,7 @@ class TestTransferConstraints(unittest.TestCase):
 
             # For Match 39 (after Free Hit), compare against Match 37's squad (pre-Free Hit)
             # because Free Hit squad reverts after the match
-            if match_no == 39:
+            if is_free_hit_run and match_no == 39:
                 match37 = self.matches[36]
                 prev_squad = {team: int(match37[team]) if match37[team] else 0 for team in TEAMS}
 
