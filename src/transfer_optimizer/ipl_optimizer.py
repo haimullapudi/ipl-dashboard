@@ -321,6 +321,27 @@ def generate_free_hit_squad(home: str, away: str, min_scoring: int, max_scoring:
     return squad
 
 
+def generate_wildcard_squad(home: str, away: str, min_scoring: int, max_scoring: int) -> Dict[str, int]:
+    """
+    Generate optimal squad for Wildcard match.
+
+    Since Wildcard has no transfer cost, we can build the ideal squad from scratch
+    focused purely on maximizing scoring players for this match.
+    Unlike Free Hit, this squad persists for subsequent matches.
+
+    Strategy:
+    - Use ALL 11 players from home and away teams (they all score in this match)
+    - Split: 6 home + 5 away (balanced with slight home advantage)
+    """
+    squad = {team: 0 for team in TEAMS}
+
+    # All 11 players from playing teams - maximizes scoring for this match
+    squad[home] = 6  # Slight home advantage
+    squad[away] = 5  # 11 total scoring players
+
+    return squad
+
+
 class State:
     """Represents a state in the beam search."""
 
