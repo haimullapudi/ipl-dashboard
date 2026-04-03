@@ -22,6 +22,12 @@ DEFAULT_MIN_SCORING = 3
 DEFAULT_MAX_SCORING = 6
 DEFAULT_MAX_TRANSFERS_PER_MATCH = 4
 
+# Free Hit configuration
+FREE_HIT_MATCH = 38  # Optimal: LSG vs KKR (26-Apr-26)
+# Analysis shows both teams have maximum isolation:
+# - LSG: gap=9 forward, gap=6 backward
+# - KKR: gap=7 forward, gap=10 backward
+
 
 class Match:
     """Represents a single match in the IPL schedule."""
