@@ -39,9 +39,10 @@ def get_current_gameday():
             print(f"Warning: Could not fetch tour-fixtures: {e}")
             _tour_fixtures_cache = []
 
-    # Find the current gameday based on match date (UTC)
+    # Find the current gameday based on match dateTime (UTC)
     # MatchdateTime format: "03/28/2026 14:00:00"
     current_gameday = 1
+    found_started_match = False
 
     for match in _tour_fixtures_cache:
         match_dt_str = match.get('MatchdateTime', '')
@@ -49,11 +50,20 @@ def get_current_gameday():
             try:
                 match_dt = datetime.strptime(match_dt_str, '%m/%d/%Y %H:%M:%S')
                 match_date = match_dt.date()
-                # If match date is today or in the past, this is the current gameday
+
+                # Only consider matches scheduled for today or earlier
                 if match_date <= today:
                     tour_gameday_id = match.get('TourGamedayId', 1)
-                    if tour_gameday_id and tour_gameday_id > current_gameday:
-                        current_gameday = tour_gameday_id
+                    if tour_gameday_id:
+                        if match_dt <= now:
+                            # Match has started - use this gameday
+                            if tour_gameday_id > current_gameday:
+                                current_gameday = tour_gameday_id
+                                found_started_match = True
+                        elif not found_started_match:
+                            # Match hasn't started yet, but it's today's earliest upcoming match
+                            if tour_gameday_id > current_gameday:
+                                current_gameday = tour_gameday_id
             except Exception as e:
                 print(f"Warning: Could not parse match dateTime: {e}")
 

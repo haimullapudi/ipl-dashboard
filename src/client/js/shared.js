@@ -136,9 +136,12 @@ function showLoading(containerId) {
 function getCurrentGamedayFromFixtures(fixtures) {
     const now = new Date();
     const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    today.setHours(23, 59, 59, 999); // End of today
 
     let currentGameday = 1;
+    let foundStartedMatch = false;
 
+    // First pass: find the latest match that has already started
     for (const match of fixtures) {
         const matchDtStr = match.MatchdateTime || '';
         if (matchDtStr) {
@@ -147,11 +150,22 @@ function getCurrentGamedayFromFixtures(fixtures) {
                 const matchDt = new Date(matchDtStr + ' UTC');
                 const matchDate = new Date(matchDt.getFullYear(), matchDt.getMonth(), matchDt.getDate());
 
-                // If match date is today or in the past, this is the current gameday
+                // Only consider matches scheduled for today or earlier
                 if (matchDate <= today) {
                     const tourGamedayId = match.TourGamedayId || 1;
-                    if (tourGamedayId && tourGamedayId > currentGameday) {
-                        currentGameday = tourGamedayId;
+                    if (tourGamedayId) {
+                        if (matchDt <= now) {
+                            // Match has started - use this gameday
+                            if (tourGamedayId > currentGameday) {
+                                currentGameday = tourGamedayId;
+                                foundStartedMatch = true;
+                            }
+                        } else if (!foundStartedMatch) {
+                            // Match hasn't started yet, but it's today's earliest upcoming match
+                            if (tourGamedayId > currentGameday) {
+                                currentGameday = tourGamedayId;
+                            }
+                        }
                     }
                 }
             } catch (e) {
