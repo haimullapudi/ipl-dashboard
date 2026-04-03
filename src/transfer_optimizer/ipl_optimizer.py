@@ -372,7 +372,9 @@ def beam_search(
     max_scoring: int = DEFAULT_MAX_SCORING,
     max_transfers_per_match: int = DEFAULT_MAX_TRANSFERS_PER_MATCH,
     use_free_hit: bool = False,
-    free_hit_match: int = FREE_HIT_MATCH
+    free_hit_match: int = FREE_HIT_MATCH,
+    use_wildcard: bool = False,
+    wildcard_match: int = WILDCARD_MATCH
 ) -> Optional[State]:
     """Run beam search optimization."""
 
@@ -439,6 +441,40 @@ def beam_search(
 
             beam = new_beam
             continue  # Skip normal candidate generation for Free Hit match
+
+        # Check if this is the Wildcard match
+        is_wildcard_match = use_wildcard and (match.match_no == wildcard_match)
+
+        if is_wildcard_match:
+            # Generate optimal Wildcard squad (no transfer cost)
+            wildcard_squad = generate_wildcard_squad(
+                home=match.home,
+                away=match.away,
+                min_scoring=min_scoring,
+                max_scoring=max_scoring
+            )
+
+            # For Wildcard, we don't care about transfers - it's free!
+            # Squad persists after this match (no reversion needed)
+            new_beam = []
+            for state in beam:
+                # Create new state with Wildcard squad
+                new_state = State(
+                    squad_tuple=squad_to_tuple(wildcard_squad),
+                    transfers_used=state.transfers_used,  # No transfer cost!
+                    total_scoring=state.total_scoring + calculate_scoring_players(wildcard_squad, match.home, match.away),
+                    match_history=state.match_history + [
+                        (match.match_no, wildcard_squad.copy(), 0, calculate_scoring_players(wildcard_squad, match.home, match.away))
+                    ],
+                    violations=state.violations,
+                    free_hit_used=state.free_hit_used,
+                    pre_free_hit_squad=state.pre_free_hit_squad,
+                    wildcard_used=True  # Mark Wildcard as used
+                )
+                new_beam.append(new_state)
+
+            beam = new_beam
+            continue  # Skip normal candidate generation for Wildcard match
 
         # If Free Hit was used last match, revert to pre-Free Hit squad and process normally
         if use_free_hit and match.match_no == free_hit_match + 1:
