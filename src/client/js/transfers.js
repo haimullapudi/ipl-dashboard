@@ -83,7 +83,7 @@ function renderTransfersTable() {
                             rowClass = 'match-past';
                         }
 
-                        const tooltip = isFreeHit ? ' title="🚀 Free Hit Booster - Unlimited transfers (0 cost), all 11 players score" ' : '';
+                        const tooltip = isFreeHit ? ' title="🚀 Free Hit Booster: Unlimited transfers (0 cost), all 11 players score. Squad resets to Match 37 lineup after this match."' : '';
 
                         return `<tr class="${rowClass}"${tooltip}>
                             <td>${match.match_no}</td>
