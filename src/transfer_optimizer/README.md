@@ -10,6 +10,29 @@ The optimizer uses **beam search with backtracking** to maximize scoring players
 - **Max per team**: 7 players per team per match
 - **Transfer cap**: 160 total transfers across matches 2-70
 - **Scoring bounds**: 3-6 scoring players per match (home + away team players)
+- **Max transfers**: 4 per match
+
+## Free Hit Booster
+
+The optimizer supports the **Free Hit** booster, which allows unlimited transfers for one match with no budget restrictions. After the Free Hit match, the squad reverts to the previous lineup.
+
+### Optimal Free Hit Match
+
+The optimizer automatically identifies **Match 38 (LSG vs KKR on 26-Apr-26)** as the optimal Free Hit match based on gap analysis:
+
+| Team | Forward Gap | Backward Gap | Isolation |
+|------|-------------|--------------|-----------|
+| LSG  | 9 matches   | 6 matches    | 15 days   |
+| KKR  | 7 matches   | 10 matches   | 17 days   |
+
+Both teams have maximum isolation, making their players "dead weight" in surrounding matches. Using Free Hit here allows a complete squad overhaul focused purely on this match.
+
+### Free Hit Strategy
+
+- **All 11 players** from the two playing teams (6 home + 5 away)
+- **Maximum scoring**: All 11 players score points in the Free Hit match
+- **Zero transfer cost**: Free Hit transfers don't count against the 160 budget
+- **Automatic reversion**: Squad reverts to pre-Free Hit lineup for the next match
 
 ## Installation
 
@@ -42,9 +65,16 @@ python3 ipl_optimizer.py --min-scoring 2 --max-scoring 5
 # Custom transfer limits
 python3 ipl_optimizer.py --max-transfers 5
 
+# Use Free Hit booster at optimal match (Match 38)
+python3 ipl_optimizer.py --free-hit
+
+# Custom Free Hit match number
+python3 ipl_optimizer.py --free-hit-match 45
+
 # All options
 python3 ipl_optimizer.py --min-scoring 3 --max-scoring 6 \
                          --max-transfers 4 \
+                         --free-hit \
                          --input ipl26.csv \
                          --output ipl26_computed.csv
 ```
@@ -59,6 +89,8 @@ python3 ipl_optimizer.py --min-scoring 3 --max-scoring 6 \
 | `--max-scoring` | `6` | Maximum scoring players per match |
 | `--max-transfers` | `4` | Maximum transfers per match |
 | `--populate-gap` | - | Only compute gaps, skip optimization |
+| `--free-hit` | - | Use Free Hit booster at optimal match (38) |
+| `--free-hit-match` | - | Specify custom match number for Free Hit |
 
 ## Input Format
 
@@ -106,7 +138,7 @@ Gaps are computed by forward scanning the schedule:
 
 ## Results
 
-The optimizer achieves:
+### Standard Optimization (No Free Hit)
 
 | Metric | Value | Target |
 |--------|-------|--------|
@@ -118,7 +150,16 @@ The optimizer achieves:
 | Max Transfers per Match | **4** | ≤ 4 |
 | Both Teams with Players | **All 70** | ≥ 1 each |
 
-### Transfer Distribution
+### Free Hit Optimization (Match 38)
+
+| Metric | Value | Improvement |
+|--------|-------|-------------|
+| Total Scoring Players | **295** | +12 (+4.2%) |
+| Average per Match | **4.21** | +0.17 |
+| Match 38 Scoring | **11 players** | All squad scores |
+| Match 38 Transfers | **0** | ~4 saved |
+
+### Transfer Distribution (Standard)
 
 | Segment | Transfers | Avg/Match |
 |---------|-----------|-----------|
@@ -136,13 +177,14 @@ The optimizer achieves:
 python3 test_optimizer.py
 ```
 
-The test suite validates (21 tests total):
+The test suite validates (22 tests total):
 - Gap computation (forward scan, match numbers not days)
 - Squad constraints (11 players, max 7 per team, both playing teams ≥ 1 player)
 - Transfer constraints (160 cap, Match 1 = 0, max 4 per match, correct calculation)
 - Scoring players (formula, min/max bounds)
 - Output format (all columns, 70 matches)
 - Optimization quality (total scoring, transfer efficiency)
+- Free Hit functionality (booster generates 0 transfers at specified match)
 
 ## Progress Output
 
