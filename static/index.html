@@ -9,11 +9,11 @@
 <body>
     <div class="container">
         <nav class="tabs">
-            <a href="index.html" class="tab-btn active">All Players</a>
+            <a href="my-team.html" class="tab-btn active">My Team</a>
             <a href="todays-match.html" class="tab-btn">Today's Match</a>
             <a href="next-match.html" class="tab-btn">Next Match</a>
             <a href="transfers.html" class="tab-btn">Transfers</a>
-            <a href="my-team.html" class="tab-btn">My Team</a>
+            <a href="index.html" class="tab-btn">All Players</a>
         </nav>
 
         <div class="main-layout">
@@ -48,7 +48,6 @@
                 <div class="filter-panel">
                     <h3>Filters</h3>
                     <div class="filter-group">
-                        <label>Team</label>
                         <select id="teamFilter" onchange="applyFilters()">
                             <option value="">All Teams</option>
                             <option value="CSK">Chennai Super Kings</option>
@@ -64,7 +63,6 @@
                         </select>
                     </div>
                     <div class="filter-group">
-                        <label>Display Options</label>
                         <label class="checkbox-group" style="cursor: pointer;">
                             <input type="checkbox" id="playingXi" onchange="applyFilters()">
                             <span>Show Playing XI Only</span>
