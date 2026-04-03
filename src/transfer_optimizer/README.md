@@ -34,6 +34,52 @@ Both teams have maximum isolation, making their players "dead weight" in surroun
 - **Zero transfer cost**: Free Hit transfers don't count against the 160 budget
 - **Automatic reversion**: Squad reverts to pre-Free Hit lineup for the next match
 
+## Wildcard Booster
+
+The Wildcard booster allows unlimited transfers for one match with a persistent squad change.
+
+### Wildcard vs Free Hit
+
+| Aspect | Free Hit | Wildcard |
+|--------|----------|----------|
+| Transfers | Unlimited | Unlimited |
+| Squad after | Reverts to pre-match | Persists |
+| Best for | Isolated matches (gap analysis) | Squad reconstruction |
+| Default match | 38 (LSG vs KKR) | 14 (Early) or 52 (Late) |
+
+### Wildcard Strategies
+
+**Early Wildcard (Match 14):**
+- End of first round-robin
+- 56 remaining matches to benefit from new squad
+- Recommended: +6 scoring players vs Late strategy
+
+**Late Wildcard (Match 52):**
+- Start of final 19 matches
+- Playoff push optimization
+- Note: Match 56+ fails due to transfer budget exhaustion
+
+### Usage
+
+```bash
+# Early Wildcard (default match 14)
+python3 ipl_optimizer.py --wildcard --output ipl26_wildcard_early.csv
+
+# Late Wildcard (custom match)
+python3 ipl_optimizer.py --wildcard --wildcard-match 52 --output ipl26_wildcard_late.csv
+
+# Custom Wildcard match
+python3 ipl_optimizer.py --wildcard --wildcard-match 25 --output ipl26_custom.csv
+```
+
+### Results Comparison
+
+| Strategy | Total Scoring | Avg/Match | Transfers |
+|----------|---------------|-----------|-----------|
+| Standard | TBD | TBD | TBD |
+| Early Wildcard (14) | 289 | 4.13 | 160 |
+| Late Wildcard (52) | 283 | 4.04 | 158 |
+
 ## Installation
 
 No dependencies required - uses Python 3 standard library only.
