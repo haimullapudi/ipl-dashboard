@@ -22,10 +22,11 @@ TRANSFERS_FILE = os.path.join(SCRIPT_DIR, 'src', 'transfer_optimizer', 'ipl26_co
 _tour_fixtures_cache = None
 
 def get_current_gameday():
-    """Get the current TourGamedayId based on UTC time and match fixtures."""
+    """Get the current TourGamedayId based on UTC date and match fixtures."""
     global _tour_fixtures_cache
 
     now = datetime.now(timezone.utc).replace(tzinfo=None)
+    today = now.date()
 
     if _tour_fixtures_cache is None:
         try:
@@ -38,7 +39,7 @@ def get_current_gameday():
             print(f"Warning: Could not fetch tour-fixtures: {e}")
             _tour_fixtures_cache = []
 
-    # Find the current gameday based on match dateTime (UTC)
+    # Find the current gameday based on match date (UTC)
     # MatchdateTime format: "03/28/2026 14:00:00"
     current_gameday = 1
 
@@ -47,7 +48,9 @@ def get_current_gameday():
         if match_dt_str:
             try:
                 match_dt = datetime.strptime(match_dt_str, '%m/%d/%Y %H:%M:%S')
-                if match_dt <= now:
+                match_date = match_dt.date()
+                # If match date is today or in the past, this is the current gameday
+                if match_date <= today:
                     tour_gameday_id = match.get('TourGamedayId', 1)
                     if tour_gameday_id and tour_gameday_id > current_gameday:
                         current_gameday = tour_gameday_id

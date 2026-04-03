@@ -66,11 +66,12 @@ def _fetch_tour_fixtures():
     return _tour_fixtures_cache
 
 def get_current_gameday():
-    """Get the current TourGamedayId based on UTC time and match fixtures."""
+    """Get the current TourGamedayId based on UTC date and match fixtures."""
     now = datetime.now(timezone.utc).replace(tzinfo=None)
+    today = now.date()
     fixtures = _fetch_tour_fixtures()
 
-    # Find the current gameday based on match dateTime (UTC)
+    # Find the current gameday based on match date (UTC)
     # MatchdateTime format: "03/28/2026 14:00:00"
     current_gameday = 1
 
@@ -80,8 +81,9 @@ def get_current_gameday():
             try:
                 # Parse datetime in MM/DD/YYYY HH:MM:SS format
                 match_dt = datetime.strptime(match_dt_str, '%m/%d/%Y %H:%M:%S')
-                # If match has started or is in the past, this is the current gameday
-                if match_dt <= now:
+                match_date = match_dt.date()
+                # If match date is today or in the past, this is the current gameday
+                if match_date <= today:
                     tour_gameday_id = match.get('TourGamedayId', 1)
                     if tour_gameday_id and tour_gameday_id > current_gameday:
                         current_gameday = tour_gameday_id
