@@ -1,29 +1,29 @@
 {
   "Data": {
     "Value": {
-      "temval": 100.0,
+      "temval": 99.5,
       "temid": 244960210,
-      "tembal": 0.0,
-      "gdid": 6,
+      "tembal": 0.5,
+      "gdid": 7,
       "gdpt": null,
       "ovpt": null,
-      "subleft": 149,
+      "subleft": 147,
       "suballd": 160,
-      "subusr": 11,
-      "subgdusr": 0,
-      "subtotal": 11,
+      "subusr": 13,
+      "subgdusr": 2,
+      "subtotal": 13,
       "isacct": 1,
-      "mcapt": 64712,
-      "vcapt": 3991,
+      "mcapt": 61837,
+      "vcapt": 69409,
       "bcapt": 0,
       "plyid": [
         61837,
-        64712,
         59736,
-        3991,
+        70222,
         3852,
-        5313,
         63649,
+        5313,
+        66044,
         69409,
         67735,
         63611,
@@ -36,37 +36,37 @@
         1,
         1,
         1,
-        1,
+        3,
         3,
         2,
         2,
         2
       ],
-      "prmcapt": 5313,
-      "prvcapt": 28994,
+      "prmcapt": 64712,
+      "prvcapt": 3991,
       "prplyid": [
-        9782,
         61837,
+        64712,
+        59736,
         3991,
         3852,
         5313,
         63649,
-        69656,
         69409,
-        28994,
+        67735,
         63611,
         9844
       ],
       "prsubleft": 149,
-      "skillcnt": 43134,
+      "skillcnt": 33234,
       "isfreeup": 0,
       "freeupcnt": 1,
       "booster": null
     },
     "FeedTime": {
-      "UTCTime": "4/3/2026 12:54:39 PM",
-      "ISTTime": "4/3/2026 6:24:39 PM",
-      "CESTTime": "4/3/2026 2:54:39 PM"
+      "UTCTime": "4/3/2026 2:10:34 PM",
+      "ISTTime": "4/3/2026 7:40:34 PM",
+      "CESTTime": "4/3/2026 4:10:34 PM"
     }
   },
   "Meta": {
@@ -74,9 +74,9 @@
     "RetVal": 1,
     "Success": true,
     "Timestamp": {
-      "UTCTime": "4/3/2026 12:54:39 PM",
-      "ISTTime": "4/3/2026 6:24:39 PM",
-      "CESTTime": "4/3/2026 2:54:39 PM"
+      "UTCTime": "4/3/2026 2:10:34 PM",
+      "ISTTime": "4/3/2026 7:40:34 PM",
+      "CESTTime": "4/3/2026 4:10:34 PM"
     }
   }
 }
