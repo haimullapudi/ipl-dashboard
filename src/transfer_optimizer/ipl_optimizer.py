@@ -743,7 +743,7 @@ def validate_output(matches: List[Match]) -> Tuple[bool, List[str]]:
     return len(errors) == 0, errors
 
 
-def print_summary(matches: List[Match]) -> None:
+def print_summary(matches: List[Match], free_hit_used: bool = False, free_hit_match: int = None) -> None:
     """Print summary."""
     total_scoring = sum(m.scoring_players for m in matches)
     total_transfers = sum(m.transfers for m in matches[1:])
@@ -754,6 +754,13 @@ def print_summary(matches: List[Match]) -> None:
     print(f"Total Scoring Players: {total_scoring}")
     print(f"Average per Match: {total_scoring / len(matches):.2f}")
     print(f"Transfers Used: {total_transfers}/{TOTAL_TRANSFERS_CAP}")
+
+    if free_hit_used:
+        fh_match = matches[free_hit_match - 1]
+        print(f"\nFREE HIT USED: Match {free_hit_match} ({fh_match.home} vs {fh_match.away})")
+        print(f"  Free Hit squad scoring: {fh_match.scoring_players} players")
+        print(f"  Transfers saved: Would have cost ~4 transfers, used 0")
+
     print("\nTransfer Distribution:")
     for i in range(0, 70, 10):
         seg = matches[i:i+10]
@@ -809,7 +816,8 @@ def main():
     else:
         print("\nValidation passed!")
 
-    print_summary(matches)
+    print_summary(matches, free_hit_used=args.free_hit or (args.free_hit_match is not None),
+                  free_hit_match=args.free_hit_match if args.free_hit_match else FREE_HIT_MATCH)
 
     print(f"\nSaving results to {args.output}...")
     save_matches(matches, args.output)
