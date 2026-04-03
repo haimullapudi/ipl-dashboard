@@ -6,3 +6,4 @@ venv/
 players_data.json
 *.log
 static/
+.worktrees/
