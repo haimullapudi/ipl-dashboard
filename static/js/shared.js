@@ -1,5 +1,15 @@
 // Shared utility functions for IPL Dashboard
 
+function formatNumber(num) {
+    if (num === null || num === undefined || num === '') return '-';
+    return num.toString();
+}
+
+function formatPercent(num) {
+    if (num === null || num === undefined || num === 0) return '-';
+    return num.toFixed(1) + '%';
+}
+
 // Dynamic thresholds for points classification (calculated from data)
 let _pointsThresholds = { high: 50, med: 20 };
 
