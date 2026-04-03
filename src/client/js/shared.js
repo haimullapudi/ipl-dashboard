@@ -135,7 +135,7 @@ function showLoading(containerId) {
  */
 function getCurrentGamedayFromFixtures(fixtures) {
     const now = new Date();
-    now.setMilliseconds(0, 0);
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     let currentGameday = 1;
 
@@ -145,7 +145,10 @@ function getCurrentGamedayFromFixtures(fixtures) {
             try {
                 // Parse "MM/DD/YYYY HH:MM:SS" format (UTC)
                 const matchDt = new Date(matchDtStr + ' UTC');
-                if (matchDt <= now) {
+                const matchDate = new Date(matchDt.getFullYear(), matchDt.getMonth(), matchDt.getDate());
+
+                // If match date is today or in the past, this is the current gameday
+                if (matchDate <= today) {
                     const tourGamedayId = match.TourGamedayId || 1;
                     if (tourGamedayId && tourGamedayId > currentGameday) {
                         currentGameday = tourGamedayId;
