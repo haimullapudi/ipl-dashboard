@@ -339,7 +339,9 @@ def beam_search(
     matches: List[Match],
     min_scoring: int = DEFAULT_MIN_SCORING,
     max_scoring: int = DEFAULT_MAX_SCORING,
-    max_transfers_per_match: int = DEFAULT_MAX_TRANSFERS_PER_MATCH
+    max_transfers_per_match: int = DEFAULT_MAX_TRANSFERS_PER_MATCH,
+    use_free_hit: bool = False,
+    free_hit_match: int = FREE_HIT_MATCH
 ) -> Optional[State]:
     """Run beam search optimization."""
 
@@ -372,6 +374,61 @@ def beam_search(
         match = matches[match_idx]
         new_beam = []
         remaining_matches = len(matches) - match_idx - 1
+
+        # Check if this is the Free Hit match
+        is_free_hit_match = use_free_hit and (match.match_no == free_hit_match)
+
+        if is_free_hit_match:
+            # Generate optimal Free Hit squad (no transfer cost)
+            free_hit_squad = generate_free_hit_squad(
+                home=match.home,
+                away=match.away,
+                min_scoring=min_scoring,
+                max_scoring=max_scoring
+            )
+
+            # For Free Hit, we don't care about transfers - it's free!
+            # But we need to track the pre-Free Hit squad for reversion
+            for state in beam:
+                prev_squad = tuple_to_squad(state.squad_tuple)
+
+                # Create new state with Free Hit squad
+                new_state = State(
+                    squad_tuple=squad_to_tuple(free_hit_squad),
+                    transfers_used=state.transfers_used,  # No transfer cost!
+                    total_scoring=state.total_scoring + calculate_scoring_players(free_hit_squad, match.home, match.away),
+                    match_history=state.match_history + [
+                        (match.match_no, free_hit_squad.copy(), 0, calculate_scoring_players(free_hit_squad, match.home, match.away))
+                    ],
+                    violations=state.violations,
+                    free_hit_used=True,
+                    pre_free_hit_squad=prev_squad  # Save for reversion
+                )
+                new_beam.append(new_state)
+
+            beam = new_beam
+            continue  # Skip normal candidate generation for Free Hit match
+
+        # If Free Hit was used last match, revert to pre-Free Hit squad
+        if use_free_hit and match.match_no == free_hit_match + 1:
+            reverted_beam = []
+            for state in beam:
+                if state.free_hit_used and state.pre_free_hit_squad:
+                    # Create reverted state using pre-Free Hit squad
+                    reverted_state = State(
+                        squad_tuple=squad_to_tuple(state.pre_free_hit_squad),
+                        transfers_used=state.transfers_used,
+                        total_scoring=state.total_scoring,  # Keep the Free Hit scoring
+                        match_history=state.match_history,
+                        violations=state.violations,
+                        free_hit_used=True,
+                        pre_free_hit_squad=None  # Clear after reversion
+                    )
+                    reverted_beam.append(reverted_state)
+
+            # Use reverted beam for this match
+            if reverted_beam:
+                beam = reverted_beam
 
         for state in beam:
             prev_squad = tuple_to_squad(state.squad_tuple)
