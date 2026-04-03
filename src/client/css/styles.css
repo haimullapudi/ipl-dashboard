@@ -347,14 +347,12 @@ th.sorted .sort-icon {
     left: 0;
     z-index: 15;
     background: #1a1a2e;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.3);
 }
 .team-table tbody tr:hover td:first-child {
-    background: rgba(255, 255, 255, 0.05);
+    background: #1a1a2e;
 }
 .team-table tbody tr:hover {
-    background: rgba(255, 255, 255, 0.05);
-}
-.team-table tbody tr:hover td:not(:first-child) {
     background: rgba(255, 255, 255, 0.05);
 }
 .match-today {
