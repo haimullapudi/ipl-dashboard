@@ -15,27 +15,44 @@ let _pointsThresholds = { high: 50, med: 20 };
 
 /**
  * Calculate percentile-based thresholds for points classification
+ * Uses 67th percentile for high (top 33%) and 33rd percentile for med (bottom 33%)
  * @param {Array} players - Array of player objects with overallPoints
  */
 function calculatePointsThresholds(players) {
     const points = players
         .map(p => p.overallPoints)
         .filter(p => p !== null && p !== undefined)
-        .sort((a, b) => a - b);
+        .sort((a, b) => a - b); // Sort ascending: low to high
 
     if (points.length === 0) {
         _pointsThresholds = { high: 50, med: 20 };
         return _pointsThresholds;
     }
 
-    // Calculate 67th percentile (high threshold) and 33rd percentile (med threshold)
-    const highIdx = Math.floor(points.length * 0.67);
+    // Calculate indices for percentiles (ascending order)
+    // 33rd percentile: value below which 33% of data falls (med threshold)
+    // 67th percentile: value below which 67% of data falls (high threshold)
     const medIdx = Math.floor(points.length * 0.33);
+    const highIdx = Math.floor(points.length * 0.67);
 
+    const medValue = points[medIdx] || 0;
+    const highValue = points[highIdx] || 0;
+
+    // Ensure high > med (in case of skewed data with many zeros)
     _pointsThresholds = {
-        high: points[highIdx] || 50,
-        med: points[medIdx] || 20
+        high: Math.max(highValue, medValue + 1),
+        med: medValue
     };
+
+    console.log('Points distribution:', {
+        total: points.length,
+        min: points[0],
+        max: points[points.length - 1],
+        medIdx: medIdx,
+        highIdx: highIdx,
+        medValue: medValue,
+        highValue: highValue
+    });
 
     return _pointsThresholds;
 }
