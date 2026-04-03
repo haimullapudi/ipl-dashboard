@@ -28,6 +28,9 @@ FREE_HIT_MATCH = 38  # Optimal: LSG vs KKR (26-Apr-26)
 # - LSG: gap=9 forward, gap=6 backward
 # - KKR: gap=7 forward, gap=10 backward
 
+# Wildcard configuration
+WILDCARD_MATCH = 1  # Use Wildcard on first match to build optimal squad from start
+
 
 class Match:
     """Represents a single match in the IPL schedule."""
@@ -315,6 +318,29 @@ def generate_free_hit_squad(home: str, away: str, min_scoring: int, max_scoring:
     return squad
 
 
+def generate_wildcard_squad(home: str, away: str, min_scoring: int, max_scoring: int) -> Dict[str, int]:
+    """
+    Generate optimal squad for Wildcard match.
+
+    Since Wildcard allows unlimited free transfers, we can build the ideal squad
+    from scratch focused purely on maximizing scoring players for this match.
+
+    Strategy:
+    - Use ALL 11 players from home and away teams (they all score in this match)
+    - Maximize scoring potential by filling squad entirely with playing teams
+    - Split: 6 home + 5 away (balanced with slight home advantage)
+    """
+    squad = {team: 0 for team in TEAMS}
+
+    # Optimal scoring distribution: ALL 11 players from playing teams
+    # This maximizes scoring potential - every player in the squad scores points
+    # Split: 6 home + 5 away (balanced with slight home advantage)
+    squad[home] = 6
+    squad[away] = 5
+
+    return squad
+
+
 class State:
     """Represents a state in the beam search."""
 
@@ -345,7 +371,9 @@ def beam_search(
     max_scoring: int = DEFAULT_MAX_SCORING,
     max_transfers_per_match: int = DEFAULT_MAX_TRANSFERS_PER_MATCH,
     use_free_hit: bool = False,
-    free_hit_match: int = FREE_HIT_MATCH
+    free_hit_match: int = FREE_HIT_MATCH,
+    use_wildcard: bool = False,
+    wildcard_match: int = WILDCARD_MATCH
 ) -> Optional[State]:
     """Run beam search optimization."""
 
@@ -412,6 +440,40 @@ def beam_search(
 
             beam = new_beam
             continue  # Skip normal candidate generation for Free Hit match
+
+        # Check if this is the Wildcard match
+        is_wildcard_match = use_wildcard and (match.match_no == wildcard_match)
+
+        if is_wildcard_match:
+            # Generate optimal Wildcard squad (no transfer cost)
+            wildcard_squad = generate_wildcard_squad(
+                home=match.home,
+                away=match.away,
+                min_scoring=min_scoring,
+                max_scoring=max_scoring
+            )
+
+            # For Wildcard, we don't care about transfers - it's free!
+            # Squad persists after this match (no reversion needed)
+            new_beam = []
+            for state in beam:
+                # Create new state with Wildcard squad
+                new_state = State(
+                    squad_tuple=squad_to_tuple(wildcard_squad),
+                    transfers_used=state.transfers_used,  # No transfer cost!
+                    total_scoring=state.total_scoring + calculate_scoring_players(wildcard_squad, match.home, match.away),
+                    match_history=state.match_history + [
+                        (match.match_no, wildcard_squad.copy(), 0, calculate_scoring_players(wildcard_squad, match.home, match.away))
+                    ],
+                    violations=state.violations,
+                    free_hit_used=state.free_hit_used,
+                    pre_free_hit_squad=state.pre_free_hit_squad,
+                    wildcard_used=True  # Mark Wildcard as used
+                )
+                new_beam.append(new_state)
+
+            beam = new_beam
+            continue  # Skip normal candidate generation for Wildcard match
 
         # If Free Hit was used last match, revert to pre-Free Hit squad and process normally
         if use_free_hit and match.match_no == free_hit_match + 1:
@@ -774,6 +836,8 @@ def main():
     parser.add_argument('--max-transfers', type=int, default=DEFAULT_MAX_TRANSFERS_PER_MATCH)
     parser.add_argument('--free-hit', action='store_true', help='Use Free Hit booster at optimal match (match 38)')
     parser.add_argument('--free-hit-match', type=int, help='Specify custom match number for Free Hit')
+    parser.add_argument('--wildcard', action='store_true', help='Use Wildcard booster at early match (match 14)')
+    parser.add_argument('--wildcard-match', type=int, help='Specify custom Wildcard match number')
     parser.add_argument('--input', default='ipl26.csv')
     parser.add_argument('--output', default='ipl26_computed.csv')
     args = parser.parse_args()
@@ -796,7 +860,9 @@ def main():
         max_scoring=args.max_scoring,
         max_transfers_per_match=args.max_transfers,
         use_free_hit=args.free_hit or (args.free_hit_match is not None),
-        free_hit_match=args.free_hit_match if args.free_hit_match else FREE_HIT_MATCH
+        free_hit_match=args.free_hit_match if args.free_hit_match else FREE_HIT_MATCH,
+        use_wildcard=args.wildcard or (args.wildcard_match is not None),
+        wildcard_match=args.wildcard_match if args.wildcard_match else WILDCARD_MATCH
     )
 
     if best_state is None:
