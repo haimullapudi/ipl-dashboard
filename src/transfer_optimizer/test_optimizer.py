@@ -182,9 +182,22 @@ class TestTransferConstraints(unittest.TestCase):
 
         for i in range(1, len(self.matches)):
             match = self.matches[i]
+            match_no = int(match['Match No'])
+
+            # Skip Free Hit (Match 38) and Wildcard (Match 14) - they have 0 transfers by design
+            if match_no == 38 or match_no == 14:
+                prev_squad = {team: int(match[team]) if match[team] else 0 for team in TEAMS}
+                continue
+
             curr_squad = {}
             for team in TEAMS:
                 curr_squad[team] = int(match[team]) if match[team] else 0
+
+            # For Match 39 (after Free Hit), compare against Match 37's squad (pre-Free Hit)
+            # because Free Hit squad reverts after the match
+            if match_no == 39:
+                match37 = self.matches[36]
+                prev_squad = {team: int(match37[team]) if match37[team] else 0 for team in TEAMS}
 
             # Calculate expected transfers: 11 - carried_over
             carried_over = sum(min(prev_squad[team], curr_squad[team]) for team in TEAMS)
@@ -241,11 +254,14 @@ class TestScoringPlayers(unittest.TestCase):
                                   f"Match {match_no}: Only {scoring} scoring players")
 
     def test_max_scoring_players(self):
-        """Each match (except Match 1) should have at most 6 scoring players."""
+        """Each match (except Match 1, Free Hit, and Wildcard) should have at most 6 scoring players."""
         for match in self.matches:
             match_no = int(match['Match No'])
             if match_no == 1:
                 continue  # Match 1 is initial squad, constraints apply from Match 2
+            # Free Hit (Match 38) and Wildcard (Match 14) allow 11 scoring players
+            if match_no == 38 or match_no == 14:
+                continue
             scoring = int(match['Scoring Players'])
             self.assertLessEqual(scoring, 6,
                                f"Match {match_no}: {scoring} scoring players exceeds max")

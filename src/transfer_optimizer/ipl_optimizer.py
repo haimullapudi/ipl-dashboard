@@ -565,7 +565,8 @@ def beam_search(
                         (match.match_no, candidate.copy(), transfers, scoring)
                     ],
                     violations=state.violations,
-                    free_hit_used=state.free_hit_used
+                    free_hit_used=state.free_hit_used,
+                    wildcard_used=state.wildcard_used
                 )
                 new_beam.append(new_state)
 
@@ -700,7 +701,8 @@ def beam_search(
                         (match.match_no, best_candidate.copy(), best_transfers, best_scoring)
                     ],
                     violations=state.violations + (0 if min_scoring <= best_scoring <= max_scoring else 1),
-                    free_hit_used=state.free_hit_used
+                    free_hit_used=state.free_hit_used,
+                    wildcard_used=state.wildcard_used
                 )
                 new_beam.append(new_state)
 
@@ -891,7 +893,8 @@ def main():
 
     print_summary(matches, free_hit_used=args.free_hit or (args.free_hit_match is not None),
                   free_hit_match=args.free_hit_match if args.free_hit_match else FREE_HIT_MATCH,
-                  wildcard_used=False, wildcard_match=None)
+                  wildcard_used=args.wildcard or (args.wildcard_match is not None),
+                  wildcard_match=args.wildcard_match if args.wildcard_match else WILDCARD_MATCH)
 
     print(f"\nSaving results to {args.output}...")
     save_matches(matches, args.output)
