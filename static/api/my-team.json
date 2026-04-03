@@ -64,9 +64,9 @@
       "booster": null
     },
     "FeedTime": {
-      "UTCTime": "4/3/2026 2:10:34 PM",
-      "ISTTime": "4/3/2026 7:40:34 PM",
-      "CESTTime": "4/3/2026 4:10:34 PM"
+      "UTCTime": "4/3/2026 2:17:45 PM",
+      "ISTTime": "4/3/2026 7:47:45 PM",
+      "CESTTime": "4/3/2026 4:17:45 PM"
     }
   },
   "Meta": {
@@ -74,9 +74,9 @@
     "RetVal": 1,
     "Success": true,
     "Timestamp": {
-      "UTCTime": "4/3/2026 2:10:34 PM",
-      "ISTTime": "4/3/2026 7:40:34 PM",
-      "CESTTime": "4/3/2026 4:10:34 PM"
+      "UTCTime": "4/3/2026 2:17:45 PM",
+      "ISTTime": "4/3/2026 7:47:45 PM",
+      "CESTTime": "4/3/2026 4:17:45 PM"
     }
   }
 }
