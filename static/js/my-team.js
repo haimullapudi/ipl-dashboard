@@ -112,11 +112,13 @@ function renderMyTeam() {
                 players.forEach(p => {
                     const isCaptain = p.id === captainId;
                     const isViceCaptain = p.id === viceCaptainId;
+                    const isPlaying = p.isPlaying;
                     const cvTag = isCaptain ? '<span class="cv-tag captain">C</span>' :
                                   isViceCaptain ? '<span class="cv-tag vice-captain">VC</span>' : '';
                     const teamTag = p.teamShortName ? `<span class="team-tag team-${p.teamShortName}">${p.teamShortName}</span>` : '';
+                    const playingClass = isPlaying ? ' playing-player' : '';
                     html += `
-                        <div class="my-team-player">
+                        <div class="my-team-player${playingClass}">
                             <span class="player-name">${teamTag}${p.fullName || p.shortName}</span>
                             ${cvTag}
                             <span class="player-value">${formatNumber(p.value)}</span>

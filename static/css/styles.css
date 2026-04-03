@@ -483,6 +483,16 @@ th.sorted .sort-icon {
     background: rgba(255, 255, 255, 0.1);
 }
 
+.my-team-player.playing-player {
+    background: rgba(34, 197, 94, 0.2);
+    border: 1px solid rgba(34, 197, 94, 0.5);
+}
+
+.my-team-player.playing-player .player-name {
+    color: #22c55e;
+    font-weight: 700;
+}
+
 .player-name {
     flex: 1;
     display: flex;
