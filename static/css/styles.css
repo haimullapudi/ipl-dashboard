@@ -361,6 +361,14 @@ th.sorted .sort-icon {
 .match-past {
     opacity: 0.3;
 }
+/* Free Hit booster highlight */
+.match-free-hit {
+    background: rgba(240, 165, 0, 0.25) !important;
+    border: 1px solid rgba(240, 165, 0, 0.5);
+}
+.match-free-hit:hover {
+    background: rgba(240, 165, 0, 0.35) !important;
+}
 .transfers-table th, .transfers-table td {
     font-size: 0.85rem;
 }

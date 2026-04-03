@@ -72,9 +72,20 @@ function renderTransfersTable() {
                     ${transfersData.map(match => {
                         const isToday = todayMatchNos.includes(match.match_no);
                         const isPast = isMatchPast(match.date);
-                        const rowClass = isToday ? 'match-today' : (isPast ? 'match-past' : '');
+                        const isFreeHit = match.match_no === 38; // Free Hit booster match
 
-                        return `<tr class="${rowClass}">
+                        let rowClass = '';
+                        if (isFreeHit) {
+                            rowClass = 'match-free-hit';
+                        } else if (isToday) {
+                            rowClass = 'match-today';
+                        } else if (isPast) {
+                            rowClass = 'match-past';
+                        }
+
+                        const tooltip = isFreeHit ? ' title="🚀 Free Hit Booster - Unlimited transfers (0 cost), all 11 players score" ' : '';
+
+                        return `<tr class="${rowClass}"${tooltip}>
                             <td>${match.match_no}</td>
                             <td>${match.date}</td>
                             <td>${match.home}</td>
@@ -90,7 +101,6 @@ function renderTransfersTable() {
                             <td>${match.PBKS || ''}</td>
                             <td>${match.RCB || ''}</td>
                             <td>${match.RR || ''}</td>
-                            <td>${match.SRH || ''}</td>
                             <td>${match.total}</td>
                             <td>${match.transfers}</td>
                             <td>${match.scoring_players}</td>
