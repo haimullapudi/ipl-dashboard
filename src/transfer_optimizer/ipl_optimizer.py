@@ -300,26 +300,17 @@ def generate_free_hit_squad(home: str, away: str, min_scoring: int, max_scoring:
     focused purely on maximizing scoring players for this match.
 
     Strategy:
-    - Maximize players from home and away teams (they score in this match)
-    - Balance between home/away based on their relative strength (assumed equal)
-    - Fill remaining slots with players from teams with favorable gaps
+    - Use ALL 11 players from home and away teams (they all score in this match)
+    - Maximize scoring potential by filling squad entirely with playing teams
+    - Split: 6 home + 5 away (or 7+4 if within max 7 per team constraint)
     """
     squad = {team: 0 for team in TEAMS}
 
-    # Optimal scoring distribution: maximize home + away players
-    # Target: 6 scoring players (max allowed) for maximum points potential
-    # Split: 3 home + 3 away (balanced approach)
-    squad[home] = 3
-    squad[away] = 3
-
-    # Distribute remaining 5 players to teams with best gap values
-    # For now, distribute evenly among other teams
-    other_teams = [t for t in TEAMS if t not in (home, away)]
-    remaining = 11 - 6  # 5 players
-
-    # Simple distribution: give 1 to each of 5 teams, 0 to the other 3
-    for i, team in enumerate(other_teams[:5]):
-        squad[team] = 1
+    # Optimal scoring distribution: ALL 11 players from playing teams
+    # This maximizes scoring potential - every player in the squad scores points
+    # Split: 6 home + 5 away (balanced with slight home advantage)
+    squad[home] = 6
+    squad[away] = 5
 
     return squad
 
