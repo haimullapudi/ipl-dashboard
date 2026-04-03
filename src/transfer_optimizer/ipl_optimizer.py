@@ -326,6 +326,7 @@ class State:
         match_history: List[Tuple[int, Dict[str, int], int, int]],
         violations: int,
         free_hit_used: bool = False,
+        wildcard_used: bool = False,
         pre_free_hit_squad: Optional[Dict[str, int]] = None
     ):
         self.squad_tuple = squad_tuple
@@ -334,6 +335,7 @@ class State:
         self.match_history = match_history
         self.violations = violations
         self.free_hit_used = free_hit_used
+        self.wildcard_used = wildcard_used
         self.pre_free_hit_squad = pre_free_hit_squad  # Squad before Free Hit for reversion
 
 
