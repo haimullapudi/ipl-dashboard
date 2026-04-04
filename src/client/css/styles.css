@@ -396,6 +396,11 @@ th.sorted .sort-icon {
 }
 .transfers-table th, .transfers-table td {
     font-size: 0.85rem;
+    text-align: center;
+    border-right: 1px solid #ddd;
+}
+.transfers-table th:last-child, .transfers-table td:last-child {
+    border-right: none;
 }
 .avg-subheader {
     font-size: 0.75rem;
