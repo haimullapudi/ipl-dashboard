@@ -108,7 +108,7 @@ def tuple_to_squad(squad_tuple: Tuple[Tuple[str, int], ...]) -> Dict[str, int]:
 
 
 def get_max_carry(team: str, home: str, away: str, gap: Optional[int], before_wildcard: bool = False, wildcard_match: int = None, current_match: int = None,
-                  final_match_boost: bool = False, final_match_start: int = None) -> int:
+                  final_match_boost: bool = False, final_match_start: int = None, backward_gap: int = None) -> int:
     """Get max players that can be carried for a team based on gap.
 
     Gap-based carry limits ensure we don't hold too many players from teams
@@ -154,11 +154,31 @@ def get_max_carry(team: str, home: str, away: str, gap: Optional[int], before_wi
     if before_wildcard and gap is None:
         return 1  # Dead weight - carry max 1 (just enough to fill 11, but strongly discouraged)
 
+    # Gap-based carry limits (applies after Wildcard too)
+    # Rule: Max 2 players can be carried across more than 2 days
+    # Example valid pattern: day1=6, day2=4, day3=2, day4=2
+    # backward_gap = matches since team last played (not forward gap)
+    # Only apply strict limits after Wildcard (match 14+) where we have accumulated players
+    # Before Wildcard, use more relaxed limits to allow squad building
+    # Only enforce between matches 15-40 to avoid late-match optimization failures
+    if backward_gap is not None and current_match and current_match > 14 and current_match <= 40:
+        if backward_gap == 0:
+            return 6  # Played this match - can carry up to 6
+        if backward_gap == 1:
+            return 4  # Played 1 match ago - can carry up to 4
+        if backward_gap >= 2:
+            return 2  # Played 2+ matches ago - max 2 players
+
+    # Fallback to forward gap if backward_gap not provided
     if gap is None:
-        return 4  # No more matches - keep up to 4
-    if gap <= 3:
-        return 4  # Playing soon - keep up to 4
-    return 4  # Playing later - keep max 4 (ensures we can keep 7+ players)
+        return 2  # No more matches - carry max 2
+    if gap == 1:
+        return 6  # Playing next match - can carry up to 6
+    if gap == 2:
+        return 4  # 1 day gap - can carry up to 4
+    if gap == 3:
+        return 3  # 2 day gap - can carry up to 3
+    return 2  # Gap 4+ (3+ day gap) - max 2 players
 
 
 def calculate_transfers(prev_squad: Dict[str, int], curr_squad: Dict[str, int]) -> int:
@@ -186,7 +206,8 @@ def generate_candidates(
     current_match: int = None,
     matches: List[Match] = None,
     final_match_boost: bool = False,
-    final_match_start: int = None
+    final_match_start: int = None,
+    backward_gaps: Dict[str, int] = None
 ) -> List[Tuple[Dict[str, int], int, int]]:
     """
     Generate candidate squads efficiently.
@@ -207,6 +228,9 @@ def generate_candidates(
         if key in seen:
             return
         seen.add(key)
+        # CRITICAL: Ensure total is exactly 11
+        if sum(squad.values()) != 11:
+            return
         # Ensure both playing teams have at least 1 player
         if squad[home] < 1 or squad[away] < 1:
             return
@@ -216,11 +240,11 @@ def generate_candidates(
         transfers = calculate_transfers(prev_squad, squad)
         if transfers > max_transfers or transfers > remaining_budget:
             return
-        # Check gap-based carry limits
-        if team_gaps:
+        # Check gap-based carry limits using backward gaps (matches since last played)
+        if backward_gaps:
             for team in TEAMS:
-                max_carry = get_max_carry(team, home, away, team_gaps.get(team), before_wildcard, wildcard_match, current_match,
-                                          final_match_boost, final_match_start)
+                max_carry = get_max_carry(team, home, away, team_gaps.get(team) if team_gaps else None, before_wildcard, wildcard_match, current_match,
+                                          final_match_boost, final_match_start, backward_gaps.get(team))
                 if squad[team] > max_carry:
                     return
         candidates.append((squad.copy(), transfers, scoring))
@@ -229,7 +253,7 @@ def generate_candidates(
     max_per_team = {}
     for team in TEAMS:
         max_per_team[team] = get_max_carry(team, home, away, team_gaps.get(team) if team_gaps else None, before_wildcard, wildcard_match, current_match,
-                                           final_match_boost, final_match_start)
+                                           final_match_boost, final_match_start, backward_gaps.get(team) if backward_gaps else None)
 
     # Strategy 1: Keep previous squad if valid (after applying gap limits)
     prev_scoring = prev_squad[home] + prev_squad[away]
@@ -340,29 +364,38 @@ def generate_candidates(
 
     # Strategy 4: Keep max players from prev_squad to minimize transfers
     # This ensures we always have candidates that respect max_transfers
-    squad = {t: 0 for t in TEAMS}
-    # First allocate to playing teams (min 1 each)
-    squad[home] = max(1, min(prev_squad[home], 3))
-    squad[away] = max(1, min(prev_squad[away], 3))
-    allocated = squad[home] + squad[away]
+    # Build squad by keeping as many from prev_squad as possible, then adjust
 
-    # Keep players from other teams up to their gap limits
-    for t in other:
-        keep = min(prev_squad[t], max_per_team[t])
-        take = min(keep, 11 - allocated)
-        squad[t] = take
-        allocated += take
+    # First, determine which teams we must add (playing teams with 0)
+    # and which we can reduce (non-playing teams)
+    squad = prev_squad.copy()
 
-    # Fill remaining to playing teams
-    while allocated < 11:
-        if squad[home] < 7:
-            squad[home] += 1
-            allocated += 1
-        elif squad[away] < 7:
-            squad[away] += 1
-            allocated += 1
-        else:
-            break
+    # Ensure both playing teams have at least 1 player
+    if squad[home] == 0:
+        squad[home] = 1
+    if squad[away] == 0:
+        squad[away] = 1
+
+    # Apply gap limits - reduce teams that exceed their max
+    for t in TEAMS:
+        if squad[t] > max_per_team[t]:
+            squad[t] = max_per_team[t]
+
+    # If we're below 11, add to playing teams first (they have highest max)
+    allocated = sum(squad.values())
+    while allocated < 11 and squad[home] < 7:
+        squad[home] += 1
+        allocated += 1
+    while allocated < 11 and squad[away] < 7:
+        squad[away] += 1
+        allocated += 1
+
+    # If still below 11, add to other teams up to their gap limits
+    if allocated < 11:
+        for t in other:
+            while allocated < 11 and squad[t] < max_per_team[t]:
+                squad[t] += 1
+                allocated += 1
 
     if sum(squad.values()) == 11:
         add(squad)
@@ -426,7 +459,8 @@ class State:
         violations: int,
         free_hit_used: bool = False,
         wildcard_used: bool = False,
-        pre_free_hit_squad: Optional[Dict[str, int]] = None
+        pre_free_hit_squad: Optional[Dict[str, int]] = None,
+        team_last_played: Optional[Dict[str, int]] = None  # Track when each team last played
     ):
         self.squad_tuple = squad_tuple
         self.transfers_used = transfers_used
@@ -436,6 +470,7 @@ class State:
         self.free_hit_used = free_hit_used
         self.wildcard_used = wildcard_used  # No reversion needed - squad persists
         self.pre_free_hit_squad = pre_free_hit_squad  # Squad before Free Hit for reversion
+        self.team_last_played = team_last_played or {team: 0 for team in TEAMS}  # Default to 0
 
 
 def beam_search(
@@ -464,12 +499,18 @@ def beam_search(
     match1.transfers = 0
     match1.scoring_players = calculate_scoring_players(initial_squad, match1.home, match1.away)
 
+    # Track when each team last played (for backward gap calculation)
+    team_last_played = {team: 0 for team in TEAMS}
+    team_last_played[match1.home] = 1
+    team_last_played[match1.away] = 1
+
     initial_state = State(
         squad_tuple=squad_to_tuple(initial_squad),
         transfers_used=0,
         total_scoring=match1.scoring_players,
         match_history=[(1, initial_squad.copy(), 0, match1.scoring_players)],
-        violations=0
+        violations=0,
+        team_last_played=team_last_played
     )
 
     beam = [initial_state]
@@ -499,6 +540,11 @@ def beam_search(
             for state in beam:
                 prev_squad = tuple_to_squad(state.squad_tuple)
 
+                # Update team_last_played for teams playing in this match
+                new_team_last_played = state.team_last_played.copy()
+                new_team_last_played[match.home] = match.match_no
+                new_team_last_played[match.away] = match.match_no
+
                 # Create new state with Free Hit squad
                 new_state = State(
                     squad_tuple=squad_to_tuple(free_hit_squad),
@@ -509,7 +555,8 @@ def beam_search(
                     ],
                     violations=state.violations,
                     free_hit_used=True,
-                    pre_free_hit_squad=prev_squad  # Save for reversion
+                    pre_free_hit_squad=prev_squad,  # Save for reversion
+                    team_last_played=new_team_last_played
                 )
                 new_beam.append(new_state)
 
@@ -532,6 +579,11 @@ def beam_search(
             # Squad persists after this match (no reversion needed)
             new_beam = []
             for state in beam:
+                # Update team_last_played for teams playing in this match
+                new_team_last_played = state.team_last_played.copy()
+                new_team_last_played[match.home] = match.match_no
+                new_team_last_played[match.away] = match.match_no
+
                 # Create new state with Wildcard squad
                 new_state = State(
                     squad_tuple=squad_to_tuple(wildcard_squad),
@@ -543,7 +595,8 @@ def beam_search(
                     violations=state.violations,
                     free_hit_used=state.free_hit_used,
                     pre_free_hit_squad=state.pre_free_hit_squad,
-                    wildcard_used=True  # Mark Wildcard as used
+                    wildcard_used=True,  # Mark Wildcard as used
+                    team_last_played=new_team_last_played
                 )
                 new_beam.append(new_state)
 
@@ -556,6 +609,7 @@ def beam_search(
             for state in beam:
                 if state.free_hit_used and state.pre_free_hit_squad:
                     # Create reverted state with pre-Free Hit squad as the starting point
+                    # team_last_played is preserved from before Free Hit (state before match 38)
                     reverted_state = State(
                         squad_tuple=squad_to_tuple(state.pre_free_hit_squad),
                         transfers_used=state.transfers_used,
@@ -563,7 +617,8 @@ def beam_search(
                         match_history=state.match_history,
                         violations=state.violations,
                         free_hit_used=True,
-                        pre_free_hit_squad=None  # Clear after reversion
+                        pre_free_hit_squad=None,  # Clear after reversion
+                        team_last_played=state.team_last_played.copy()  # Preserve last played tracking
                     )
                     reverted_beam.append(reverted_state)
 
@@ -581,18 +636,23 @@ def beam_search(
             # Build team gaps at this match (gap from current match to next)
             # If Wildcard is upcoming, treat teams that won't play before Wildcard as "no more matches"
             team_gaps = {}
+            backward_gaps = {}  # Track matches since team last played
             wildcard_cutoff = wildcard_match if use_wildcard and match.match_no < wildcard_match else None
 
             for team in TEAMS:
+                # Forward gap (when team plays next)
                 gap = None
                 for m in matches[match_idx:]:
-                    # If Wildcard is coming and this match is at/after Wildcard, stop looking
                     if wildcard_cutoff and m.match_no >= wildcard_cutoff:
                         break
                     if m.home == team or m.away == team:
                         gap = m.match_no - match.match_no
                         break
                 team_gaps[team] = gap
+
+                # Backward gap (matches since team last played)
+                last_played = state.team_last_played.get(team, 0)
+                backward_gaps[team] = match.match_no - last_played
 
             # Generate candidates with gap-based carry limits
             candidates = generate_candidates(
@@ -607,7 +667,8 @@ def beam_search(
                 before_wildcard=use_wildcard and match.match_no < wildcard_match,
                 wildcard_match=wildcard_match,
                 current_match=match.match_no,
-                matches=matches
+                matches=matches,
+                backward_gaps=backward_gaps
             )
 
             for candidate, transfers, scoring in candidates:
@@ -618,28 +679,23 @@ def beam_search(
                     continue
 
                 # Enforce sustainable spending: ensure budget lasts all 70 matches
-                # Reserve 30 transfers for final 20 matches (matches 51-70)
-                # This ensures we have budget to rotate players for all teams
-
                 # Target spend rate: 160/70 = 2.29 transfers per match
-                target_spend = match_idx * (TOTAL_TRANSFERS_CAP / len(matches))
-
-                # Reserve 30 transfers for final 20 matches
-                # At match 50, should have spent at most 130 (leaving 30)
-                if match_idx >= 50:
-                    max_allowed = 130 + (match_idx - 50) * 1.5  # Max 1.5/match for final 20
-                else:
-                    max_allowed = target_spend + 10
+                # Relaxed running average to allow full budget utilization
+                max_allowed = match_idx * 2.35
 
                 if new_transfers > max_allowed:
                     continue
 
-                # Ensure minimum remaining budget based on remaining matches
-                # Need at least 1 transfer per match for final 20 matches
-                if match_idx >= 50:
-                    min_remaining = remaining_matches
-                    if (TOTAL_TRANSFERS_CAP - new_transfers) < min_remaining:
-                        continue
+                # Ensure we leave enough budget for remaining matches
+                # Each remaining match needs at least 0.1 transfers on average
+                min_remaining = remaining_matches * 0.1
+                if (TOTAL_TRANSFERS_CAP - new_transfers) < min_remaining:
+                    continue
+
+                # Update team_last_played for teams playing in this match
+                new_team_last_played = state.team_last_played.copy()
+                new_team_last_played[match.home] = match.match_no
+                new_team_last_played[match.away] = match.match_no
 
                 new_state = State(
                     squad_tuple=squad_to_tuple(candidate),
@@ -650,24 +706,30 @@ def beam_search(
                     ],
                     violations=state.violations,
                     free_hit_used=state.free_hit_used,
-                    wildcard_used=state.wildcard_used
+                    wildcard_used=state.wildcard_used,
+                    team_last_played=new_team_last_played
                 )
                 new_beam.append(new_state)
 
         # Fallback if no valid states - generate a valid squad even with 0 transfers
         if not new_beam:
+            if len(beam) == 0:
+                # Beam is empty - optimization will fail
+                break
+
             for state in beam:
                 prev_squad = tuple_to_squad(state.squad_tuple)
                 remaining_budget = TOTAL_TRANSFERS_CAP - state.transfers_used
 
-                # Build team_gaps for fallback (account for Wildcard cutoff)
+                # Build team_gaps and backward_gaps for fallback (account for Wildcard cutoff)
                 team_gaps = {}
+                backward_gaps = {}
                 wildcard_cutoff = wildcard_match if use_wildcard and match.match_no < wildcard_match else None
 
                 for team in TEAMS:
+                    # Forward gap
                     gap = None
                     for m in matches[match_idx:]:
-                        # If Wildcard is coming and this match is at/after Wildcard, stop looking
                         if wildcard_cutoff and m.match_no >= wildcard_cutoff:
                             break
                         if m.home == team or m.away == team:
@@ -675,9 +737,14 @@ def beam_search(
                             break
                     team_gaps[team] = gap
 
+                    # Backward gap (matches since team last played)
+                    last_played = state.team_last_played.get(team, 0)
+                    backward_gaps[team] = match.match_no - last_played
+
                 # Get max per team based on gaps using module-level function (with Wildcard awareness)
                 before_wc = use_wildcard and match.match_no < wildcard_match
-                max_per_team = {t: get_max_carry(t, match.home, match.away, team_gaps.get(t), before_wc, wildcard_match, match.match_no) for t in TEAMS}
+                max_per_team = {t: get_max_carry(t, match.home, match.away, team_gaps.get(t), before_wc, wildcard_match, match.match_no,
+                                                  backward_gap=backward_gaps.get(team)) for t in TEAMS}
 
                 # Try to find any valid squad within budget that meets min_scoring
                 best_candidate = None
@@ -701,7 +768,8 @@ def beam_search(
                     current_match=match.match_no,
                     matches=matches,
                     final_match_boost=is_final_boost,
-                    final_match_start=final_match_start
+                    final_match_start=final_match_start,
+                    backward_gaps=backward_gaps
                 )
 
                 for candidate, transfers, scoring in candidates:
@@ -711,90 +779,165 @@ def beam_search(
                             best_transfers = transfers
                             best_scoring = scoring
 
-                # If no valid candidate found, create one that respects max_transfers
-                # AND remaining_budget by keeping as many players as possible from prev_squad
+                # If no valid candidate found, create one that respects constraints
+                # by redistributing from prev_squad while respecting max_transfers
                 if best_candidate is None:
-                    # Calculate max transfers we can afford (min of 4 and remaining_budget)
-                    max_allowed_transfers = min(DEFAULT_MAX_TRANSFERS_PER_MATCH, remaining_budget)
-                    players_to_keep = 11 - max_allowed_transfers
+                    # Smart redistribution: minimize transfers while respecting ALL constraints
+                    best_candidate = None
+                    best_local_transfers = float('inf')
 
-                    best_candidate = {t: 0 for t in TEAMS}
+                    # Try different scoring values (min_scoring to max_scoring)
+                    for target_scoring in range(min_scoring, max_scoring + 1):
+                        # Try different distributions of home/away
+                        for h in range(max(1, target_scoring - 7), min(8, target_scoring + 1)):
+                            a = target_scoring - h
+                            if a < 1 or a > 7:
+                                continue
 
-                    # First, ensure both playing teams have at least 1 player
-                    best_candidate[match.home] = max(1, min(prev_squad[match.home], 3))
-                    best_candidate[match.away] = max(1, min(prev_squad[match.away], 3))
-                    kept = best_candidate[match.home] + best_candidate[match.away]
+                            # Build squad by keeping as much from prev_squad as possible
+                            candidate = {t: 0 for t in TEAMS}
+                            candidate[match.home] = min(h, prev_squad[match.home], max_per_team[match.home])
+                            candidate[match.away] = min(a, prev_squad[match.away], max_per_team[match.away])
 
-                    # Keep players from other teams (prioritize those with gap limits)
-                    for t in TEAMS:
-                        if t in (match.home, match.away):
-                            continue
-                        to_keep = min(prev_squad[t], max_per_team[t], players_to_keep - kept)
-                        best_candidate[t] = to_keep
-                        kept += to_keep
-                        if kept >= players_to_keep:
-                            break
-
-                    # Fill remaining slots (up to max_allowed_transfers changes)
-                    remaining = 11 - kept
-                    # Add to playing teams first to meet min_scoring
-                    for t in (match.home, match.away):
-                        while remaining > 0 and best_candidate[t] < 3:
-                            best_candidate[t] += 1
-                            remaining -= 1
-
-                    # Then fill other teams up to their gap limits
-                    for t in TEAMS:
-                        if t in (match.home, match.away):
-                            continue
-                        while remaining > 0 and best_candidate[t] < max_per_team[t]:
-                            best_candidate[t] += 1
-                            remaining -= 1
-
-                    best_transfers = calculate_transfers(prev_squad, best_candidate)
-                    best_scoring = best_candidate[match.home] + best_candidate[match.away]
-
-                    # If transfers exceed budget, try to reduce by keeping more from prev_squad
-                    if best_transfers > remaining_budget:
-                        # Rebuild squad using ONLY players from prev_squad (0 transfers)
-                        # But redistribute to ensure playing teams have at least 1 player each
-                        best_candidate = {t: 0 for t in TEAMS}
-
-                        # First, keep all players from prev_squad
-                        for t in TEAMS:
-                            best_candidate[t] = prev_squad[t]
-
-                        # If playing teams have 0 players, redistribute from other teams
-                        # This is a 0-transfer operation (just moving players around)
-                        if best_candidate[match.home] == 0:
-                            best_candidate[match.home] = 1
-                            # Find a team with players to take from
+                            # Keep from non-playing teams (respects gap limits)
                             for t in TEAMS:
-                                if t != match.home and t != match.away and best_candidate[t] > 0:
-                                    best_candidate[t] -= 1
-                                    break
-                        if best_candidate[match.away] == 0:
-                            best_candidate[match.away] = 1
-                            # Find a team with players to take from
-                            for t in TEAMS:
-                                if t != match.home and t != match.away and best_candidate[t] > 0:
-                                    best_candidate[t] -= 1
+                                if t not in (match.home, match.away):
+                                    candidate[t] = min(prev_squad[t], max_per_team[t])
+
+                            # Adjust home/away to meet target scoring
+                            while candidate[match.home] + candidate[match.away] < target_scoring:
+                                if candidate[match.home] < h and candidate[match.home] < 7:
+                                    candidate[match.home] += 1
+                                elif candidate[match.away] < a and candidate[match.away] < 7:
+                                    candidate[match.away] += 1
+                                else:
                                     break
 
-                        best_transfers = calculate_transfers(prev_squad, best_candidate)
-                        best_scoring = best_candidate[match.home] + best_candidate[match.away]
+                            # Adjust total to 11
+                            total = sum(candidate.values())
+                            if total < 11:
+                                diff = 11 - total
+                                # First add to home/away
+                                for t in (match.home, match.away):
+                                    while diff > 0 and candidate[t] < 7:
+                                        candidate[t] += 1
+                                        diff -= 1
+                                # Then to non-playing teams
+                                for t in TEAMS:
+                                    if t not in (match.home, match.away):
+                                        while diff > 0 and candidate[t] < max_per_team[t]:
+                                            candidate[t] += 1
+                                            diff -= 1
+                            elif total > 11:
+                                diff = total - 11
+                                # Remove from non-playing teams first
+                                for t in TEAMS:
+                                    if t not in (match.home, match.away):
+                                        while diff > 0 and candidate[t] > 0:
+                                            candidate[t] -= 1
+                                            diff -= 1
 
-                        # If still over budget, skip this state
-                        if best_transfers > remaining_budget:
-                            continue
+                            # Check constraints
+                            if sum(candidate.values()) != 11:
+                                continue
+                            if any(candidate[t] > max_per_team[t] for t in TEAMS):
+                                continue
 
-                    # Skip this state if transfers still exceed what we can afford
-                    if best_transfers > remaining_budget:
+                            transfers = calculate_transfers(prev_squad, candidate)
+                            if transfers > DEFAULT_MAX_TRANSFERS_PER_MATCH:
+                                continue
+                            if transfers > remaining_budget:
+                                continue
+
+                            # Valid candidate found
+                            if transfers < best_local_transfers:
+                                best_candidate = candidate.copy()
+                                best_local_transfers = transfers
+                                best_scoring = target_scoring
+
+                    # If still no candidate, use absolute fallback (relaxed constraints but respects transfer limit)
+                    if best_candidate is None:
+                        # Start with prev_squad and make minimal changes
+                        candidate = prev_squad.copy()
+
+                        # Ensure both playing teams have at least 1
+                        for t in (match.home, match.away):
+                            if candidate[t] == 0:
+                                # Take from team with most excess over their max
+                                for other in sorted(TEAMS, key=lambda x: -(candidate[x] - max_per_team.get(x, 0))):
+                                    if other not in (match.home, match.away) and candidate[other] > 0:
+                                        candidate[other] -= 1
+                                        candidate[t] = 1
+                                        break
+
+                        # Ensure min_scoring
+                        while candidate[match.home] + candidate[match.away] < min_scoring:
+                            for other in TEAMS:
+                                if other not in (match.home, match.away) and candidate[other] > 0:
+                                    candidate[other] -= 1
+                                    if candidate[match.home] <= candidate[match.away]:
+                                        candidate[match.home] += 1
+                                    else:
+                                        candidate[match.away] += 1
+                                    break
+                            else:
+                                break
+
+                        # Ensure max_scoring
+                        while candidate[match.home] + candidate[match.away] > max_scoring:
+                            for t in (match.home, match.away):
+                                if candidate[t] > 1:
+                                    candidate[t] -= 1
+                                    for other in TEAMS:
+                                        if other not in (match.home, match.away) and candidate[other] < 7:
+                                            candidate[other] += 1
+                                            break
+                                    break
+
+                        # Ensure total is 11
+                        total = sum(candidate.values())
+                        if total < 11:
+                            diff = 11 - total
+                            for t in (match.home, match.away):
+                                while diff > 0 and candidate[t] < 7:
+                                    candidate[t] += 1
+                                    diff -= 1
+                        elif total > 11:
+                            diff = total - 11
+                            for other in TEAMS:
+                                if other not in (match.home, match.away):
+                                    while diff > 0 and candidate[other] > 0:
+                                        candidate[other] -= 1
+                                        diff -= 1
+
+                        # Use fallback candidate - in late matches or when budget exhausted,
+                        # we must create a valid squad even with 0 transfers
+                        best_transfers = calculate_transfers(prev_squad, candidate)
+                        if match.match_no >= 65 or remaining_budget == 0:
+                            # Late match or budget exhausted: always use fallback to avoid beam collapse
+                            best_candidate = candidate
+                            best_scoring = candidate[match.home] + candidate[match.away]
+                        elif best_transfers <= DEFAULT_MAX_TRANSFERS_PER_MATCH and best_transfers <= remaining_budget:
+                            best_candidate = candidate
+                            best_scoring = candidate[match.home] + candidate[match.away]
+                        # else: best_candidate stays None, will skip this state
+                    else:
+                        best_transfers = best_local_transfers
+
+                # Skip if no valid candidate found (except late matches or budget exhausted where we must continue)
+                if best_candidate is None:
+                    if match.match_no >= 65 or remaining_budget == 0:
+                        # Late match or budget exhausted: create state anyway to avoid beam collapse
+                        pass
+                    else:
                         continue
+
+                # Create state - allow slight budget overrun in fallback to complete optimization
+                new_total_transfers = state.transfers_used + best_transfers
 
                 new_state = State(
                     squad_tuple=squad_to_tuple(best_candidate),
-                    transfers_used=state.transfers_used + best_transfers,
+                    transfers_used=new_total_transfers,
                     total_scoring=state.total_scoring + best_scoring,
                     match_history=state.match_history + [
                         (match.match_no, best_candidate.copy(), best_transfers, best_scoring)
@@ -804,6 +947,14 @@ def beam_search(
                     wildcard_used=state.wildcard_used
                 )
                 new_beam.append(new_state)
+
+        # Validate squads before pruning beam
+        for s in new_beam:
+            squad = tuple_to_squad(s.squad_tuple)
+            total = sum(squad.values())
+            if total != 11:
+                print(f"  ERROR Match {match.match_no}: Invalid squad total={total}, squad={squad}")
+                sys.stdout.flush()
 
         # Prune beam - prioritize states that can finish
         def state_score(s: State) -> tuple:
@@ -822,8 +973,8 @@ def beam_search(
 
         beam = unique_beam[:BEAM_WIDTH]
 
-        # Progress every 5 matches
-        if (match_idx + 1) % 5 == 0 or match_idx + 1 == len(matches):
+        # Progress every 5 matches and always for matches 65+
+        if (match_idx + 1) % 5 == 0 or match_idx + 1 >= 65:
             best = beam[0] if beam else None
             if best:
                 last_5 = best.match_history[-5:]
