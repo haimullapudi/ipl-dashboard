@@ -316,7 +316,7 @@ function syncHorizontalScroll() {
     if (containers.length !== 2) return;
 
     containers.forEach((container, index) => {
-        container.addEventListener('scroll', (e) => {
+        container.addEventListener('scroll', () => {
             const otherIndex = index === 0 ? 1 : 0;
             const otherContainer = containers[otherIndex];
             otherContainer.scrollLeft = container.scrollLeft;

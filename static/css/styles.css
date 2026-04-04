@@ -594,7 +594,6 @@ th.sorted .sort-icon {
     font-size: 0.7rem;
     font-weight: 600;
     flex-shrink: 0;
-    margin-right: 8px;
     width: 36px;
     text-align: center;
 }
@@ -643,16 +642,18 @@ th.sorted .sort-icon {
 
 .match-teams-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 20px;
+}
+
+.all-matches-row {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
 @media (max-width: 1200px) {
     .my-team-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .match-teams-row {
         grid-template-columns: 1fr;
     }
 }
