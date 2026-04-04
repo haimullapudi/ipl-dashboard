@@ -93,10 +93,13 @@ function renderTransfersTable() {
                         const isToday = todayMatchNos.includes(match.match_no);
                         const isPast = isMatchPast(match.date);
                         const isFreeHit = match.match_no === 38; // Free Hit booster match
+                        const isWildcard = match.match_no === 20; // Wildcard booster match
 
                         let rowClass = '';
                         if (isFreeHit) {
                             rowClass = 'match-free-hit';
+                        } else if (isWildcard) {
+                            rowClass = 'match-wildcard';
                         } else if (isToday) {
                             rowClass = 'match-today';
                         } else if (isPast) {

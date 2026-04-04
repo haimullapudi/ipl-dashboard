@@ -394,6 +394,44 @@ th.sorted .sort-icon {
     opacity: 1;
     visibility: visible;
 }
+
+/* Wildcard booster highlight */
+.match-wildcard {
+    background: rgba(251, 191, 36, 0.25) !important;
+    border: 1px solid rgba(251, 191, 36, 0.5);
+    position: relative;
+}
+
+.match-wildcard:hover {
+    background: rgba(251, 191, 36, 0.35) !important;
+}
+
+/* Wildcard tooltip */
+.match-wildcard::after {
+    content: "🎯 Wildcard: Unlimited transfers (0 cost), squad persists. Best for match 14 or 52.";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(251, 191, 36, 0.95);
+    color: #1a1a2e;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: none;
+}
+
+.match-wildcard:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
 .transfers-table th, .transfers-table td {
     font-size: 0.85rem;
     text-align: center;
