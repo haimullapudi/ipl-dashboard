@@ -332,3 +332,118 @@ function getTodayAndNextMatches(fixtures) {
         next: nextMatches.map(m => [m.home, m.away])
     };
 }
+
+/**
+ * Get the currently active match from today's matches (for multi-match days)
+ * Returns the match that is in progress or the next upcoming match in UTC time
+ * @param {Array} fixtures - Tour fixtures array
+ * @returns {Object|null} Active match with home/away teams, or null if no active match
+ */
+function getActiveMatch(fixtures) {
+    // Use UTC time for comparison (matches are scheduled in UTC)
+    const now = new Date();
+    const nowUtc = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
+    const todayUtc = new Date(Date.UTC(nowUtc.getUTCFullYear(), nowUtc.getUTCMonth(), nowUtc.getUTCDate()));
+    const endOfTodayUtc = new Date(todayUtc.getTime() + (23 * 60 * 60 * 1000) + (59 * 60 * 1000) + (59 * 1000));
+
+    // First pass: find the match with the latest datetime that has started
+    let latestStartedMatch = null;
+    for (const match of fixtures) {
+        const matchDtStr = match.MatchdateTime || '';
+        if (matchDtStr) {
+            try {
+                const matchDt = new Date(matchDtStr + ' UTC');
+                const matchDateUtc = new Date(Date.UTC(matchDt.getUTCFullYear(), matchDt.getUTCMonth(), matchDt.getUTCDate()));
+
+                // Only consider today's matches
+                if (matchDateUtc.getTime() === todayUtc.getTime()) {
+                    // Check if match has started (match time <= now)
+                    if (matchDt <= nowUtc) {
+                        if (!latestStartedMatch || matchDt > latestStartedMatch.dateTime) {
+                            latestStartedMatch = {
+                                home: match.HomeTeamShortName || 'Unknown',
+                                away: match.AwayTeamShortName || 'Unknown',
+                                match_no: match.TourGamedayId || 0,
+                                dateTime: matchDt
+                            };
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Could not parse match dateTime for active match:', e);
+            }
+        }
+    }
+
+    // If a started match found, return it (most recent match)
+    if (latestStartedMatch) {
+        return latestStartedMatch;
+    }
+
+    // Second pass: find all upcoming matches for today
+    // If nowUtc is early enough that all matches are still upcoming, return all
+    const upcomingMatches = [];
+    for (const match of fixtures) {
+        const matchDtStr = match.MatchdateTime || '';
+        if (matchDtStr) {
+            try {
+                const matchDt = new Date(matchDtStr + ' UTC');
+                const matchDateUtc = new Date(Date.UTC(matchDt.getUTCFullYear(), matchDt.getUTCMonth(), matchDt.getUTCDate()));
+
+                // Only consider today's matches that haven't started yet
+                if (matchDateUtc.getTime() === todayUtc.getTime() && matchDt > nowUtc) {
+                    upcomingMatches.push({
+                        home: match.HomeTeamShortName || 'Unknown',
+                        away: match.AwayTeamShortName || 'Unknown',
+                        match_no: match.TourGamedayId || 0,
+                        dateTime: matchDt
+                    });
+                }
+            } catch (e) {
+                console.warn('Could not parse match dateTime for active match:', e);
+            }
+        }
+    }
+
+    // If no matches have started and no upcoming matches today, return null
+    if (upcomingMatches.length === 0) {
+        return null;
+    }
+
+    // Calculate today's matches to check if all matches are upcoming
+    const todayMatches = [];
+    for (const match of fixtures) {
+        const matchDtStr = match.MatchdateTime || '';
+        if (matchDtStr) {
+            try {
+                const matchDt = new Date(matchDtStr + ' UTC');
+                const matchDateUtc = new Date(Date.UTC(matchDt.getUTCFullYear(), matchDt.getUTCMonth(), matchDt.getUTCDate()));
+                if (matchDateUtc.getTime() === todayUtc.getTime()) {
+                    todayMatches.push({
+                        home: match.HomeTeamShortName || 'Unknown',
+                        away: match.AwayTeamShortName || 'Unknown'
+                    });
+                }
+            } catch (e) {
+                console.warn('Could not parse match dateTime for today matches:', e);
+            }
+        }
+    }
+
+    // If all today's matches are upcoming (none have started yet), show them all
+    if (upcomingMatches.length === todayMatches.length) {
+        // All today's matches are upcoming (none have started yet), show them all
+        const firstMatchTime = upcomingMatches[0]?.dateTime;
+        return {
+            home: upcomingMatches.map(m => m.home).join(' vs '),
+            away: upcomingMatches.map(m => m.away).join(' '),
+            match_no: upcomingMatches.map(m => m.match_no).join(', '),
+            dateTime: firstMatchTime,
+            multiMatch: true
+        };
+    }
+
+    // Return the next upcoming match
+    upcomingMatches.sort((a, b) => a.dateTime - b.dateTime);
+    return upcomingMatches[0];
+}

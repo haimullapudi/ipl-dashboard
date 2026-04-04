@@ -2,6 +2,7 @@
 let myTeamData = null;
 let playersData = null;
 let todayMatches = [];
+let activeMatch = null;
 let matchSortField = 'overallPoints';
 let matchSortDir = 'desc';
 
@@ -40,9 +41,12 @@ async function loadData() {
         // Fetch players from shared cache (5-min TTL)
         playersData = await getPlayers(gameday);
 
-        // Calculate today's matches from fixtures
+        // Calculate today's matches from fixtures (for display purposes)
         const { today } = getTodayAndNextMatches(fixtures);
         todayMatches = today || [];
+
+        // Get the active match (for multi-match days, shows only the current match)
+        activeMatch = getActiveMatch(fixtures);
 
         // Calculate dynamic points thresholds based on all player data
         const players = playersData.gamedayPlayers || [];
@@ -104,10 +108,14 @@ function renderMyTeam() {
         // Calculate total team value and total gameday points with captain/VC multipliers
         const totalValue = myTeamPlayers.reduce((sum, p) => sum + (p.value || 0), 0);
         let totalGamedayPoints = 0;
+        // Convert captain IDs to numbers for comparison
+        const captainNum = Number(captainId);
+        const viceCaptainNum = Number(viceCaptainId);
         myTeamPlayers.forEach(p => {
-            if (p.id === captainId) {
+            const playerId = Number(p.id);
+            if (playerId === captainNum) {
                 totalGamedayPoints += (p.gamedayPoints || 0) * 2;
-            } else if (p.id === viceCaptainId) {
+            } else if (playerId === viceCaptainNum) {
                 totalGamedayPoints += (p.gamedayPoints || 0) * 1.5;
             } else {
                 totalGamedayPoints += (p.gamedayPoints || 0);
@@ -121,8 +129,9 @@ function renderMyTeam() {
             if (players.length > 0) {
                 html += `<div class="skill-group"><h4>${skillDisplayNames[skill]}</h4>`;
                 players.forEach(p => {
-                    const isCaptain = p.id === captainId;
-                    const isViceCaptain = p.id === viceCaptainId;
+                    const playerId = Number(p.id);
+                    const isCaptain = playerId === captainNum;
+                    const isViceCaptain = playerId === viceCaptainNum;
                     const isPlaying = p.isPlaying;
                     const cvTag = isCaptain ? '<span class="cv-tag captain">C</span>' :
                                   isViceCaptain ? '<span class="cv-tag vice-captain">VC</span>' : '';
@@ -157,99 +166,135 @@ function renderMyTeam() {
         return html;
     };
 
-    // Render Home/Away teams (reuse today's match logic)
+    // Render Home/Away teams (handles single and multi-match days)
     const renderMatchTeams = () => {
         if (todayMatches.length === 0) {
             return '<div class="no-results">No matches scheduled for today</div>';
         }
 
-        return todayMatches.map((match, index) => {
-            const homeTeam = match[0];
-            const awayTeam = match[1];
+        // Handle multi-match scenario (when activeMatch has multiMatch flag)
+        let matchTeams = [];
+        if (activeMatch && activeMatch.multiMatch) {
+            // Multiple matches - create teams from todayMatches directly
+            matchTeams = todayMatches.map(m => ({
+                home: m[0],
+                away: m[1]
+            }));
+        } else if (activeMatch && activeMatch.home && activeMatch.away) {
+            // Single active match
+            matchTeams = [{
+                home: activeMatch.home,
+                away: activeMatch.away
+            }];
+        } else if (todayMatches && todayMatches.length > 0) {
+            // Fallback: use todayMatches
+            matchTeams = todayMatches.map(m => ({
+                home: m[0],
+                away: m[1]
+            }));
+        } else {
+            return '<div class="no-results">No matches scheduled for today</div>';
+        }
 
-            const playersByTeam = {};
-            allPlayers.forEach(p => {
-                const team = p.teamShortName;
-                if (team) {
-                    if (!playersByTeam[team]) playersByTeam[team] = [];
-                    playersByTeam[team].push(p);
-                }
+        const playersByTeam = {};
+        allPlayers.forEach(p => {
+            const team = p.teamShortName;
+            if (team) {
+                const teamKey = team.toLowerCase();
+                if (!playersByTeam[teamKey]) playersByTeam[teamKey] = [];
+                playersByTeam[teamKey].push(p);
+            }
+        });
+
+        const renderTeamTable = (teamName, teamPlayers) => {
+            // Show only playing XI players (P) first
+            let displayPlayers = teamPlayers.filter(p => p.isPlaying);
+
+            // If no playing XI available, show all players (like next-match tab)
+            if (displayPlayers.length === 0) {
+                displayPlayers = teamPlayers;
+            }
+
+            const sorted = [...displayPlayers].sort((a, b) => {
+                let aVal = a[matchSortField] || 0;
+                let bVal = b[matchSortField] || 0;
+                return matchSortDir === 'desc' ? bVal - aVal : aVal - bVal;
             });
 
-            const renderTeamTable = (teamName, teamPlayers) => {
-                // Show only playing XI players (P) first
-                let displayPlayers = teamPlayers.filter(p => p.isPlaying);
-
-                // If no playing XI available, show all players (like next-match tab)
-                if (displayPlayers.length === 0) {
-                    displayPlayers = teamPlayers;
-                }
-
-                const sorted = [...displayPlayers].sort((a, b) => {
-                    let aVal = a[matchSortField] || 0;
-                    let bVal = b[matchSortField] || 0;
-                    return matchSortDir === 'desc' ? bVal - aVal : aVal - bVal;
-                });
-
-                if (sorted.length === 0) {
-                    return `
-                        <div class="team-table-wrapper">
-                            <h3 class="team-table-title">${teamName}</h3>
-                            <div class="team-table-container">
-                                <div class="no-results" style="padding: 20px; text-align: center;">No players available</div>
-                            </div>
-                        </div>
-                    `;
-                }
-
+            if (sorted.length === 0) {
                 return `
                     <div class="team-table-wrapper">
                         <h3 class="team-table-title">${teamName}</h3>
                         <div class="team-table-container">
-                            <table class="team-table">
-                                <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Skill</th>
-                                        <th class="sortable" onclick="sortMatchPlayers('value')">Value <span class="sort-icon">⇅</span></th>
-                                        <th class="sortable" onclick="sortMatchPlayers('overallPoints')">Points <span class="sort-icon">⇅</span></th>
-                                        <th>Sel By (%)</th>
-                                        <th>Cap (%)</th>
-                                        <th>VCap (%)</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    ${sorted.map(p => `
-                                        <tr>
-                                            <td class="${p.isPlaying ? 'playing-player' : ''}">
-                                                ${p.fullName || p.shortName}
-                                                ${p.isImpactPlayer ? '<span class="impact-tag">IMP</span>' : ''}
-                                                ${!p.isPlaying && p.isAnnounced ? '<span class="impact-tag" style="background: rgba(255,255,255,0.2); color: #aaa; border: 1px solid #aaa;">NP</span>' : ''}
-                                            </td>
-                                            <td>${p.skillName || '-'}</td>
-                                            <td>${formatNumber(p.value)}</td>
-                                            <td class="${getPointsClass(p.overallPoints)}">${formatNumber(p.overallPoints)}</td>
-                                            <td>${formatPercent(p.selectedPer)}</td>
-                                            <td>${formatPercent(p.capSelectedPer)}</td>
-                                            <td>${formatPercent(p.vCapSelectedPer)}</td>
-                                        </tr>
-                                    `).join('')}
-                                </tbody>
-                            </table>
+                            <div class="no-results" style="padding: 20px; text-align: center;">No players available</div>
                         </div>
+                    </div>
+                `;
+            }
+
+            return `
+                <div class="team-table-wrapper">
+                    <h3 class="team-table-title">${teamName}</h3>
+                    <div class="team-table-container">
+                        <table class="team-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Skill</th>
+                                    <th class="sortable" onclick="sortMatchPlayers('value')">Value <span class="sort-icon">⇅</span></th>
+                                    <th class="sortable" onclick="sortMatchPlayers('overallPoints')">Points <span class="sort-icon">⇅</span></th>
+                                    <th>Sel By (%)</th>
+                                    <th>Cap (%)</th>
+                                    <th>VCap (%)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${sorted.map(p => `
+                                    <tr>
+                                        <td class="${p.isPlaying ? 'playing-player' : ''}">
+                                            ${p.fullName || p.shortName}
+                                            ${p.isImpactPlayer ? '<span class="impact-tag">IMP</span>' : ''}
+                                            ${!p.isPlaying && p.isAnnounced ? '<span class="impact-tag" style="background: rgba(255,255,255,0.2); color: #aaa; border: 1px solid #aaa;">NP</span>' : ''}
+                                        </td>
+                                        <td>${p.skillName || '-'}</td>
+                                        <td>${formatNumber(p.value)}</td>
+                                        <td class="${getPointsClass(p.overallPoints)}">${formatNumber(p.overallPoints)}</td>
+                                        <td>${formatPercent(p.selectedPer)}</td>
+                                        <td>${formatPercent(p.capSelectedPer)}</td>
+                                        <td>${formatPercent(p.vCapSelectedPer)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
                     </div>
                 `;
             };
 
-            const separator = index === 0 ? '' : '<hr style="border: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">';
-            return `
-                ${separator}
+            // Render all matches for the day
+            if (matchTeams.length > 1) {
+                // Multiple matches - render teams side by side
+                const matchRows = matchTeams.map(m => {
+                    const homeT = m.home;
+                    const awayT = m.away;
+                    return `
+                        <div class="match-teams-row">
+                            ${renderTeamTable(homeT, playersByTeam[homeT.toLowerCase()] || [])}
+                            ${renderTeamTable(awayT, playersByTeam[awayT.toLowerCase()] || [])}
+                        </div>
+                    `;
+                });
+                return `<div class="all-matches-row">${matchRows.join('')}</div>`;
+            } else {
+                // Single match
+                const homeT = matchTeams[0].home;
+                const awayT = matchTeams[0].away;
+                return `
                 <div class="match-teams-row">
-                    ${renderTeamTable(homeTeam, playersByTeam[homeTeam] || [])}
-                    ${renderTeamTable(awayTeam, playersByTeam[awayTeam] || [])}
+                    ${renderTeamTable(homeT, playersByTeam[homeT.toLowerCase()] || [])}
+                    ${renderTeamTable(awayT, playersByTeam[awayT.toLowerCase()] || [])}
                 </div>
-            `;
-        }).join('');
+                `;
+            }
     };
 
     container.innerHTML = `
@@ -271,7 +316,7 @@ function syncHorizontalScroll() {
     if (containers.length !== 2) return;
 
     containers.forEach((container, index) => {
-        container.addEventListener('scroll', (e) => {
+        container.addEventListener('scroll', () => {
             const otherIndex = index === 0 ? 1 : 0;
             const otherContainer = containers[otherIndex];
             otherContainer.scrollLeft = container.scrollLeft;

@@ -643,16 +643,18 @@ th.sorted .sort-icon {
 
 .match-teams-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 20px;
+}
+
+.all-matches-row {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
 }
 
 @media (max-width: 1200px) {
     .my-team-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .match-teams-row {
         grid-template-columns: 1fr;
     }
 }
