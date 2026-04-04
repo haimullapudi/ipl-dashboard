@@ -397,8 +397,8 @@ th.sorted .sort-icon {
 .transfers-table th, .transfers-table td {
     font-size: 0.85rem;
     text-align: center;
-    border-right: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
 }
 .transfers-table th:last-child, .transfers-table td:last-child {
     border-right: none;
