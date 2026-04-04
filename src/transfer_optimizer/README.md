@@ -47,16 +47,23 @@ The Wildcard booster allows unlimited transfers for one match with a persistent 
 | Transfers | Unlimited | Unlimited |
 | Squad after | Reverts to pre-match | **Persists** |
 | Best for | Isolated matches (gap analysis) | Squad reconstruction |
-| Default match | 38 (LSG vs KKR) | **14 (Early)** or 52 (Late) |
+| Default match | 38 (LSG vs KKR) | **14 (Early)**, 20, or 52 (Late) |
+
+### Custom Wildcard Match Selection
+
+You can choose any match for Wildcard based on your strategy:
+- **Match 14**: Early wildcard at end of first round-robin
+- **Match 20**: User choice for squad reset at optimal point
+- **Match 52**: Late wildcard for playoff push
 
 ### Wildcard Match Details
 
-| Parameter | Early Wildcard | Late Wildcard |
-|-----------|----------------|---------------|
-| **Match Number** | **14** | **52** |
-| **Date** | 08-Apr-26 | 02-May-26 |
-| **Teams** | DC vs GT | PBKS vs RR |
-| **Strategy** | Full squad reset | Playoff push |
+| Parameter | Early Wildcard | Match 20 | Late Wildcard |
+|-----------|----------------|----------|---------------|
+| **Match Number** | **14** | **20** | **52** |
+| **Date** | 08-Apr-26 | 11-Apr-26 | 02-May-26 |
+| **Teams** | DC vs GT | MI vs SRH | PBKS vs RR |
+| **Strategy** | Full squad reset | User choice | Playoff push |
 
 ### Wildcard Strategies
 
@@ -68,6 +75,12 @@ The Wildcard booster allows unlimited transfers for one match with a persistent 
 - Recommended: +6 scoring players vs Late strategy
 - Smart accumulation: Automatically accumulates players from teams playing before Wildcard (e.g., RR, MI before Match 14)
 
+**Match 20 Wildcard (User Choice):**
+- Mid-first round-robin
+- 50 remaining matches to benefit from new squad
+- Flexible choice based on team schedule and player availability
+- Good for resetting squad when transfer budget allows
+
 **Late Wildcard (Match 52):**
 - Start of final 19 matches
 - Playoff push optimization
@@ -78,6 +91,9 @@ The Wildcard booster allows unlimited transfers for one match with a persistent 
 ```bash
 # Early Wildcard (default match 14)
 python3 ipl_optimizer.py --wildcard --output ipl26_wildcard_early.csv
+
+# Match 20 Wildcard (user choice)
+python3 ipl_optimizer.py --wildcard --wildcard-match 20 --output ipl26_wildcard_20.csv
 
 # Late Wildcard (custom match)
 python3 ipl_optimizer.py --wildcard --wildcard-match 52 --output ipl26_wildcard_late.csv
@@ -99,13 +115,14 @@ python3 ipl_optimizer.py --wildcard --wildcard-match 25 --output ipl26_custom.cs
 | Booster | Match Number | Match Details | Date |
 |---------|--------------|---------------|------|
 | Wildcard | **14** | DC vs GT | 08-Apr-26 |
+| Wildcard | **20** | MI vs SRH | 11-Apr-26 |
 | Free Hit | **38** | LSG vs KKR | 26-Apr-26 |
 
 ### Booster Strategy Summary
 
 | Booster | Best Match | Why |
 |---------|------------|-----|
-| **Wildcard** | 14 | End of round-robin, full squad reset |
+| **Wildcard** | 14, 20, or 52 | End of round-robin (14), mid-season reset (20), or playoff push (52) |
 | **Free Hit** | 38 | Maximum team isolation (15+ day gaps) |
 
 ### Using Both Boosters Together
@@ -291,6 +308,7 @@ Gaps are computed by forward scanning the schedule:
 | Booster | Match | Date | Teams | Venue | Scoring |
 |---------|-------|------|-------|-------|---------|
 | **Wildcard** | **14** | 08-Apr-26 | DC vs GT | Delhi | 11 players |
+| **Wildcard** | **20** | 11-Apr-26 | MI vs SRH | Ahmedabad | 11 players |
 | **Free Hit** | **38** | 26-Apr-26 | LSG vs KKR | Lucknow | 11 players |
 
 ### Strategy Comparison
@@ -299,8 +317,9 @@ Gaps are computed by forward scanning the schedule:
 |----------|---------------|-----------|-----------|---------------|
 | Standard | 283 | 4.04 | 160 | None |
 | Wildcard (14) | 291 | 4.16 | 160 | Wildcard |
+| Wildcard (20) | 289 | 4.13 | 160 | Wildcard |
 | Free Hit (38) | 295 | 4.21 | 160 | Free Hit |
-| Wildcard + Free Hit | **304** | **4.34** | 160 | Both |
+| Wildcard (14) + Free Hit | **304** | **4.34** | 160 | Both |
 | All 3 Boosters | 303 | 4.33 | 160 | Both + Final |
 
 ### Standard Optimization (No Free Hit)
