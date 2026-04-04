@@ -180,7 +180,7 @@ function renderMyTeam() {
                 home: m[0],
                 away: m[1]
             }));
-        } else if (activeMatch && activeMatch.home && activeMatch.away) {
+        } else if (activeMatch && activeMatch.home && activeMatch.away && !activeMatch.multiMatch) {
             // Single active match
             matchTeams = [{
                 home: activeMatch.home,
