@@ -642,7 +642,7 @@ th.sorted .sort-icon {
 
 .match-teams-row {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
 
@@ -654,6 +654,10 @@ th.sorted .sort-icon {
 
 @media (max-width: 1200px) {
     .my-team-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .match-teams-row {
         grid-template-columns: 1fr;
     }
 }
