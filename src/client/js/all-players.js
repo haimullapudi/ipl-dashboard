@@ -181,7 +181,7 @@ function applyFilters() {
 
         let show = true;
 
-        if (teamFilter && team !== teamFilter) {
+        if (teamFilter && team.trim().toLowerCase() !== teamFilter.trim().toLowerCase()) {
             show = false;
         }
 
