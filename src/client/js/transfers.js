@@ -30,8 +30,26 @@ async function loadData() {
     }
 }
 
+function calculateOverallAverages() {
+    let totalTransfers = 0;
+    let totalScoring = 0;
+    let matchCount = 0;
+
+    for (let i = 1; i < transfersData.length; i++) {
+        totalTransfers += parseInt(transfersData[i].transfers) || 0;
+        totalScoring += parseInt(transfersData[i].scoring_players) || 0;
+        matchCount++;
+    }
+
+    return {
+        avgTransfers: matchCount > 0 ? (totalTransfers / matchCount).toFixed(2) : '0.00',
+        avgScoring: matchCount > 0 ? (totalScoring / matchCount).toFixed(2) : '0.00'
+    };
+}
+
 function renderTransfersTable() {
     const tbody = document.getElementById('transfers-content');
+    const overallAvgs = calculateOverallAverages();
 
     if (!transfersData || transfersData.length === 0) {
         tbody.innerHTML = `
@@ -49,6 +67,7 @@ function renderTransfersTable() {
                     <tr>
                         <th>No</th>
                         <th>Date</th>
+                        <th>Venue</th>
                         <th>Home</th>
                         <th>Away</th>
                         <th>Gap-1</th>
@@ -64,8 +83,9 @@ function renderTransfersTable() {
                         <th>RR</th>
                         <th>SRH</th>
                         <th>Total</th>
-                        <th>Transfers</th>
-                        <th>Scoring</th>
+                        <th>Transfers<br><span class="avg-subheader">Avg: ${overallAvgs.avgTransfers}</span></th>
+                        <th>Cumm.<br>Transfers</th>
+                        <th>Scoring<br><span class="avg-subheader">Avg: ${overallAvgs.avgScoring}</span></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,6 +106,7 @@ function renderTransfersTable() {
                         return `<tr class="${rowClass}">
                             <td>${match.match_no}</td>
                             <td>${match.date}</td>
+                            <td>${match.venue || ''}</td>
                             <td>${match.home}</td>
                             <td>${match.away}</td>
                             <td>${match.team1_gap}</td>
@@ -102,6 +123,7 @@ function renderTransfersTable() {
                             <td>${match.SRH || ''}</td>
                             <td>${match.total}</td>
                             <td>${match.transfers}</td>
+                            <td>${match.cumm_transfers || ''}</td>
                             <td>${match.scoring_players}</td>
                         </tr>`;
                     }).join('')}

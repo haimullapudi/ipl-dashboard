@@ -1,22 +1,50 @@
 {
   "Data": {
     "Value": {
-      "temval": 99.5,
+      "temval": 98.5,
       "temid": 244960210,
-      "tembal": 0.5,
-      "gdid": 7,
+      "tembal": 1.5,
+      "gdid": 8,
       "gdpt": null,
       "ovpt": null,
-      "subleft": 147,
+      "subleft": 145,
       "suballd": 160,
-      "subusr": 13,
+      "subusr": 15,
       "subgdusr": 2,
-      "subtotal": 13,
+      "subtotal": 15,
       "isacct": 1,
-      "mcapt": 61837,
-      "vcapt": 69409,
+      "mcapt": 3852,
+      "vcapt": 70761,
       "bcapt": 0,
       "plyid": [
+        61837,
+        59736,
+        70222,
+        3852,
+        63649,
+        5313,
+        70761,
+        66044,
+        64225,
+        67735,
+        63611
+      ],
+      "plyskl": [
+        4,
+        4,
+        4,
+        1,
+        1,
+        1,
+        1,
+        3,
+        2,
+        2,
+        2
+      ],
+      "prmcapt": 61837,
+      "prvcapt": 69409,
+      "prplyid": [
         61837,
         59736,
         70222,
@@ -29,44 +57,16 @@
         63611,
         9844
       ],
-      "plyskl": [
-        4,
-        4,
-        4,
-        1,
-        1,
-        1,
-        3,
-        3,
-        2,
-        2,
-        2
-      ],
-      "prmcapt": 64712,
-      "prvcapt": 3991,
-      "prplyid": [
-        61837,
-        64712,
-        59736,
-        3991,
-        3852,
-        5313,
-        63649,
-        69409,
-        67735,
-        63611,
-        9844
-      ],
-      "prsubleft": 149,
-      "skillcnt": 33234,
+      "prsubleft": 147,
+      "skillcnt": 43134,
       "isfreeup": 0,
       "freeupcnt": 1,
       "booster": null
     },
     "FeedTime": {
-      "UTCTime": "4/3/2026 3:53:07 PM",
-      "ISTTime": "4/3/2026 9:23:07 PM",
-      "CESTTime": "4/3/2026 5:53:07 PM"
+      "UTCTime": "4/4/2026 1:03:40 PM",
+      "ISTTime": "4/4/2026 6:33:40 PM",
+      "CESTTime": "4/4/2026 3:03:40 PM"
     }
   },
   "Meta": {
@@ -74,9 +74,9 @@
     "RetVal": 1,
     "Success": true,
     "Timestamp": {
-      "UTCTime": "4/3/2026 3:53:07 PM",
-      "ISTTime": "4/3/2026 9:23:07 PM",
-      "CESTTime": "4/3/2026 5:53:07 PM"
+      "UTCTime": "4/4/2026 1:03:40 PM",
+      "ISTTime": "4/4/2026 6:33:40 PM",
+      "CESTTime": "4/4/2026 3:03:40 PM"
     }
   }
 }

@@ -16,36 +16,49 @@ The optimizer uses **beam search with backtracking** to maximize scoring players
 
 The optimizer supports the **Free Hit** booster, which allows unlimited transfers for one match with no budget restrictions. After the Free Hit match, the squad reverts to the previous lineup.
 
-### Optimal Free Hit Match
+### Free Hit Match Details
 
-The optimizer automatically identifies **Match 38 (LSG vs KKR on 26-Apr-26)** as the optimal Free Hit match based on gap analysis:
+| Parameter | Value |
+|-----------|-------|
+| **Match Number** | **38** |
+| **Date** | 26-Apr-26 |
+| **Teams** | LSG vs KKR |
+| **Stadium** | Bharat Ratna Shri Atal Bihari Vajpayee Ekana Cricket Stadium |
+| **City** | Lucknow |
+| **Strategy** | Maximum team isolation |
+
+### Optimal Free Hit Match Analysis
+
+Both teams have maximum isolation, making their players "dead weight" in surrounding matches. Using Free Hit here allows a complete squad overhaul focused purely on this match.
 
 | Team | Forward Gap | Backward Gap | Isolation |
 |------|-------------|--------------|-----------|
 | LSG  | 9 matches   | 6 matches    | 15 days   |
 | KKR  | 7 matches   | 10 matches   | 17 days   |
 
-Both teams have maximum isolation, making their players "dead weight" in surrounding matches. Using Free Hit here allows a complete squad overhaul focused purely on this match.
-
-### Free Hit Strategy
-
-- **All 11 players** from the two playing teams (6 home + 5 away)
-- **Maximum scoring**: All 11 players score points in the Free Hit match
-- **Zero transfer cost**: Free Hit transfers don't count against the 160 budget
-- **Automatic reversion**: Squad reverts to pre-Free Hit lineup for the next match
-
 ## Wildcard Booster
 
-The Wildcard booster allows unlimited transfers for one match with a persistent squad change.
+The Wildcard booster allows unlimited transfers for one match with a persistent squad change (doesn't revert).
 
 ### Wildcard vs Free Hit
 
 | Aspect | Free Hit | Wildcard |
 |--------|----------|----------|
 | Transfers | Unlimited | Unlimited |
-| Squad after | Reverts to pre-match | Persists |
+| Squad after | Reverts to pre-match | **Persists** |
 | Best for | Isolated matches (gap analysis) | Squad reconstruction |
-| Default match | 38 (LSG vs KKR) | 14 (Early) or 52 (Late) |
+| Default match | 38 (LSG vs KKR) | **14 (Early)** or 52 (Late) |
+
+### Wildcard Match Details
+
+| Parameter | Early Wildcard | Late Wildcard |
+|-----------|----------------|---------------|
+| **Match Number** | **14** | **52** |
+| **Date** | 08-Apr-26 | 02-May-26 |
+| **Teams** | DC vs GT | PBKS vs RR |
+| **Strategy** | Full squad reset | Playoff push |
+
+### Wildcard Strategies
 
 ### Wildcard Strategies
 
@@ -81,13 +94,27 @@ python3 ipl_optimizer.py --wildcard --wildcard-match 25 --output ipl26_custom.cs
 | Early Wildcard (14) | 291 | 4.16 | 160 |
 | Late Wildcard (52) | 283 | 4.04 | 158 |
 
+### Booster Match Numbers
+
+| Booster | Match Number | Match Details | Date |
+|---------|--------------|---------------|------|
+| Wildcard | **14** | DC vs GT | 08-Apr-26 |
+| Free Hit | **38** | LSG vs KKR | 26-Apr-26 |
+
+### Booster Strategy Summary
+
+| Booster | Best Match | Why |
+|---------|------------|-----|
+| **Wildcard** | 14 | End of round-robin, full squad reset |
+| **Free Hit** | 38 | Maximum team isolation (15+ day gaps) |
+
 ### Using Both Boosters Together
 
 For maximum scoring, use both Wildcard and Free Hit in the same season:
 
 ```bash
 # Both boosters: Wildcard at Match 14 + Free Hit at Match 38
-python3 ipl_optimizer.py --wildcard --free-hit --output ipl26_both_boosters.csv
+python3 ipl_optimizer.py --wildcard --free-hit
 ```
 
 **Results with Both Boosters:**
@@ -96,8 +123,14 @@ python3 ipl_optimizer.py --wildcard --free-hit --output ipl26_both_boosters.csv
 |--------|-------|------------------------|
 | Total Scoring Players | **304** | +21 (+7.4%) |
 | Average per Match | **4.34** | +0.30 |
-| Wildcard (Match 14) | 11 scoring | DC vs GT (6+5) |
-| Free Hit (Match 38) | 11 scoring | LSG vs KKR (5+6) |
+| Transfers Used | 160/160 | 160 |
+| Min-Scoring Violations | 0 | 0 |
+
+**Booster Match Details:**
+| Booster | Match | Teams | Scoring | Strategy |
+|---------|-------|-------|---------|----------|
+| Wildcard | 14 | DC vs GT | 11 players | Accumulate RR, MI players first; reset squad |
+| Free Hit | 38 | LSG vs KKR | 11 players | Maximum isolation (gap=15+ days) |
 
 **Strategy:**
 1. **Wildcard (Match 14)**: Accumulate players from teams playing before Match 14 (RR, MI), then reset to DC+GT squad
@@ -132,12 +165,12 @@ python3 ipl_optimizer.py --wildcard --free-hit --final-boost
 
 ### Results
 
-| Strategy | Total Scoring | Avg/Match |
-|----------|---------------|-----------|
-| Standard | 283 | 4.04 |
-| Final Boost only | 283 | 4.04 |
-| Wildcard + Free Hit | 304 | 4.34 |
-| All 3 Boosters | 303 | 4.33 |
+| Strategy | Total Scoring | Avg/Match | Transfers |
+|----------|---------------|-----------|-----------|
+| Standard | 283 | 4.04 | 160 |
+| Final Boost only | 283 | 4.04 | 160 |
+| Wildcard + Free Hit | **304** | **4.34** | 160 |
+| All 3 Boosters | 303 | 4.33 | 160 |
 
 **Note:** Final Match Boost provides the most benefit when transfer budget is tight. With Wildcard+Free Hit already using the full 160 transfers optimally, the additional boost has minimal impact.
 
@@ -152,13 +185,21 @@ cd transfer_optimizer
 
 ## Usage
 
-### Basic Run
+### Basic Run (API-First)
 
 ```bash
 python3 ipl_optimizer.py
 ```
 
-This reads `ipl26.csv` and generates `ipl26_computed.csv` with all columns populated.
+This fetches match data from the tour-fixtures API and generates `ipl26_computed.csv`. CSV input is used only as a fallback when the API is unavailable.
+
+### Basic Run (CSV Fallback)
+
+```bash
+python3 ipl_optimizer.py --input ipl26.csv
+```
+
+This reads matches from `ipl26.csv` (fallback when API fails).
 
 ### Command Line Options
 
@@ -190,7 +231,7 @@ python3 ipl_optimizer.py --min-scoring 3 --max-scoring 6 \
 
 | Option | Default | Description |
 |--------|---------|-------------|
-| `--input` | `ipl26.csv` | Input CSV file |
+| `--input` | *empty* (API) | Input CSV file (empty = fetch from API) |
 | `--output` | `ipl26_computed.csv` | Output CSV file |
 | `--min-scoring` | `3` | Minimum scoring players per match |
 | `--max-scoring` | `6` | Maximum scoring players per match |
@@ -245,6 +286,23 @@ Gaps are computed by forward scanning the schedule:
 
 ## Results
 
+### Booster Match Summary
+
+| Booster | Match | Date | Teams | Venue | Scoring |
+|---------|-------|------|-------|-------|---------|
+| **Wildcard** | **14** | 08-Apr-26 | DC vs GT | Delhi | 11 players |
+| **Free Hit** | **38** | 26-Apr-26 | LSG vs KKR | Lucknow | 11 players |
+
+### Strategy Comparison
+
+| Strategy | Total Scoring | Avg/Match | Transfers | Boosters Used |
+|----------|---------------|-----------|-----------|---------------|
+| Standard | 283 | 4.04 | 160 | None |
+| Wildcard (14) | 291 | 4.16 | 160 | Wildcard |
+| Free Hit (38) | 295 | 4.21 | 160 | Free Hit |
+| Wildcard + Free Hit | **304** | **4.34** | 160 | Both |
+| All 3 Boosters | 303 | 4.33 | 160 | Both + Final |
+
 ### Standard Optimization (No Free Hit)
 
 | Metric | Value | Target |
@@ -265,6 +323,16 @@ Gaps are computed by forward scanning the schedule:
 | Average per Match | **4.21** | +0.17 |
 | Match 38 Scoring | **11 players** | All squad scores |
 | Match 38 Transfers | **0** | ~4 saved |
+
+### Final Match Boost Results
+
+| Strategy | Total Scoring | Avg/Match | Notes |
+|----------|---------------|-----------|-------|
+| Standard | 283 | 4.04 | Baseline |
+| Final Boost only | 283 | 4.04 | Minimal impact with 160 transfers |
+| All 3 Boosters | 303 | 4.33 | Wildcard+Free Hit already optimal |
+
+**Note:** Final Match Boost provides the most benefit when transfer budget is tight. With Wildcard+Free Hit already using the full 160 transfers optimally, the additional boost has minimal impact.
 
 ### Transfer Distribution (Standard)
 

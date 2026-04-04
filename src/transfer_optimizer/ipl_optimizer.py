@@ -9,6 +9,9 @@ across the 70-match IPL league stage with a 160-transfer budget.
 import csv
 import argparse
 import sys
+import urllib.request
+import json
+from datetime import datetime
 from typing import Dict, List, Optional, Tuple
 
 # Constants
@@ -43,11 +46,12 @@ FINAL_MATCH_BOOST_START = 68  # Apply dead-weight discarding from Match 68 onwar
 class Match:
     """Represents a single match in the IPL schedule."""
 
-    def __init__(self, match_no: int, date: str, home: str, away: str):
+    def __init__(self, match_no: int, date: str, home: str, away: str, venue: str = ''):
         self.match_no = match_no
         self.date = date
         self.home = home
         self.away = away
+        self.venue = venue
         self.team1_gap: Optional[int] = None
         self.team2_gap: Optional[int] = None
         self.squad: Dict[str, int] = {team: 0 for team in TEAMS}
@@ -55,23 +59,103 @@ class Match:
         self.scoring_players = 0
 
 
-def load_matches(filepath: str) -> List[Match]:
-    """Load matches from CSV file."""
+def fetch_tour_fixtures() -> List[Dict]:
+    """Fetch tour fixtures from API to get venue data."""
+    try:
+        url = "https://fantasy.iplt20.com/classic/api/feed/tour-fixtures"
+        req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+        with urllib.request.urlopen(req, timeout=30) as response:
+            data = json.loads(response.read().decode('utf-8'))
+            return data.get('Data', {}).get('Value', [])
+    except Exception as e:
+        print(f"Warning: Could not fetch tour-fixtures: {e}")
+        return []
+
+
+def get_venue_by_match_no(matches_data: List[Dict], match_no: int) -> str:
+    """Extract venue (city after comma) for a given match number."""
+    for match in matches_data:
+        if match.get('TourGamedayId') == match_no:
+            venue = match.get('Venue', '')
+            # Extract city (part after comma)
+            if venue and ',' in venue:
+                return venue.split(',')[1].strip()
+            return venue
+    return ''
+
+
+def load_matches_from_csv(filepath: str, matches_data: List[Dict] = None) -> List[Match]:
+    """Load matches from CSV file, optionally enriched with venue data from API."""
     matches = []
     with open(filepath, 'r', encoding='utf-8-sig') as f:
         reader = csv.DictReader(f)
         for row in reader:
+            match_no = int(row['Match No'])
+            venue = get_venue_by_match_no(matches_data, match_no) if matches_data else ''
+
             match = Match(
-                match_no=int(row['Match No']),
+                match_no=match_no,
                 date=row['Date'],
                 home=row['Home'],
-                away=row['Away']
+                away=row['Away'],
+                venue=venue
             )
             for team in TEAMS:
                 if row.get(team) and row[team].strip():
                     match.squad[team] = int(row[team])
             matches.append(match)
     return matches
+
+
+def load_matches_from_api() -> List[Match]:
+    """Load matches directly from tour-fixtures API."""
+    fixtures = fetch_tour_fixtures()
+    matches = []
+
+    for idx, fixture in enumerate(fixtures):
+        match_no = fixture.get('TourGamedayId', idx + 1)
+        match_dt_str = fixture.get('MatchdateTime', '')
+        date_str = ''
+        if match_dt_str:
+            try:
+                match_dt = datetime.strptime(match_dt_str, '%m/%d/%Y %H:%M:%S')
+                date_str = match_dt.strftime('%d-%b-%y')
+            except Exception:
+                date_str = ''
+
+        home = fixture.get('HomeTeamShortName', '')
+        away = fixture.get('AwayTeamShortName', '')
+        venue = ''
+        venue_raw = fixture.get('Venue', '')
+        if venue_raw and ',' in venue_raw:
+            venue = venue_raw.split(',')[1].strip()
+
+        match = Match(
+            match_no=match_no,
+            date=date_str,
+            home=home,
+            away=away,
+            venue=venue
+        )
+        matches.append(match)
+
+    return matches
+
+
+def load_matches(filepath: str = None, include_venue: bool = False) -> List[Match]:
+    """Load matches from API (default) or CSV file (fallback)."""
+    if filepath is None:
+        # No filepath - load directly from API
+        return load_matches_from_api()
+
+    # Try API first, fallback to CSV if API fails
+    try:
+        matches = load_matches_from_api()
+        return matches
+    except Exception as e:
+        print(f"Warning: API failed ({e}), falling back to CSV: {filepath}")
+        # Don't try API again in fallback - just load CSV without venue enrichment
+        return load_matches_from_csv(filepath, None)
 
 
 def compute_gaps(matches: List[Match]) -> None:
@@ -1007,17 +1091,19 @@ def apply_optimization(matches: List[Match], best_state: State) -> None:
 
 def save_matches(matches: List[Match], filepath: str) -> None:
     """Save matches to CSV."""
-    fieldnames = ['Match No', 'Date', 'Home', 'Away', 'Team-1 Gap', 'Team-2 Gap'] + \
-                 TEAMS + ['Total', 'Transfers', 'Scoring Players']
+    fieldnames = ['Match No', 'Date', 'Venue', 'Home', 'Away', 'Team-1 Gap', 'Team-2 Gap'] + \
+                 TEAMS + ['Total', 'Transfers', 'Cumm. Transfers', 'Scoring Players']
 
     with open(filepath, 'w', encoding='utf-8', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
 
+        cumulative_transfers = 0
         for match in matches:
             row = {
                 'Match No': match.match_no,
                 'Date': match.date,
+                'Venue': match.venue,
                 'Home': match.home,
                 'Away': match.away,
                 'Team-1 Gap': match.team1_gap if match.team1_gap else '',
@@ -1028,6 +1114,10 @@ def save_matches(matches: List[Match], filepath: str) -> None:
                 row[team] = '' if count == 0 else str(count)
             row['Total'] = sum(match.squad.values())
             row['Transfers'] = match.transfers
+            # Cumulative transfers: match 1 has 0 transfers (starting squad), then accumulate
+            if match.match_no > 1:
+                cumulative_transfers += match.transfers
+            row['Cumm. Transfers'] = cumulative_transfers
             row['Scoring Players'] = match.scoring_players
             writer.writerow(row)
 
@@ -1105,12 +1195,19 @@ def main():
     parser.add_argument('--wildcard', action='store_true', help='Use Wildcard booster at early match (match 14)')
     parser.add_argument('--wildcard-match', type=int, help='Specify custom Wildcard match number')
     parser.add_argument('--final-boost', action='store_true', help='Use Final Match Boost for matches 68-70 (discard dead weight)')
-    parser.add_argument('--input', default='ipl26.csv')
+    parser.add_argument('--input', default='', help='CSV file path (empty uses API)')
     parser.add_argument('--output', default='ipl26_computed.csv')
     args = parser.parse_args()
 
-    print(f"Loading matches from {args.input}...")
-    matches = load_matches(args.input)
+    # If input is empty or not provided, use API (default behavior)
+    input_path = None if not args.input or args.input.strip() == '' else args.input
+
+    if input_path is None:
+        print("Loading matches from tour-fixtures API...")
+    else:
+        print(f"Loading matches from {args.input}...")
+
+    matches = load_matches(input_path, include_venue=True)
     print(f"Loaded {len(matches)} matches")
 
     print("Computing gaps...")

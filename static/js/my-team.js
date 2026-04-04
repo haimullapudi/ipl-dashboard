@@ -101,8 +101,19 @@ function renderMyTeam() {
 
     // Render My Team section (simplified cards)
     const renderMyTeamSection = () => {
-        // Calculate total team value
+        // Calculate total team value and total gameday points with captain/VC multipliers
         const totalValue = myTeamPlayers.reduce((sum, p) => sum + (p.value || 0), 0);
+        let totalGamedayPoints = 0;
+        myTeamPlayers.forEach(p => {
+            if (p.id === captainId) {
+                totalGamedayPoints += (p.gamedayPoints || 0) * 2;
+            } else if (p.id === viceCaptainId) {
+                totalGamedayPoints += (p.gamedayPoints || 0) * 1.5;
+            } else {
+                totalGamedayPoints += (p.gamedayPoints || 0);
+            }
+        });
+
         let html = `<div class="team-table-wrapper"><h3 class="team-table-title">${teamName} (${totalValue})</h3><div class="team-table-container"><div class="my-team-list">`;
 
         skillOrder.forEach(skill => {
@@ -117,9 +128,22 @@ function renderMyTeam() {
                                   isViceCaptain ? '<span class="cv-tag vice-captain">VC</span>' : '';
                     const teamTag = p.teamShortName ? `<span class="team-tag team-${p.teamShortName}">${p.teamShortName}</span>` : '';
                     const playingClass = isPlaying ? ' playing-player' : '';
+
+                    // Calculate gameday points with captain/VC multiplier (only for playing players)
+                    let gamedayPointsHtml = '';
+                    if (isPlaying && (p.gamedayPoints || 0) > 0) {
+                        let points = p.gamedayPoints;
+                        if (isCaptain) {
+                            points = points * 2;
+                        } else if (isViceCaptain) {
+                            points = points * 1.5;
+                        }
+                        gamedayPointsHtml = ` <span class="gameday-points">(${formatNumber(points)})</span>`;
+                    }
+
                     html += `
                         <div class="my-team-player${playingClass}">
-                            <span class="player-name">${teamTag}${p.fullName || p.shortName}</span>
+                            <span class="player-name">${teamTag}${p.fullName || p.shortName}${gamedayPointsHtml}</span>
                             ${cvTag}
                             <span class="player-value">${formatNumber(p.value)}</span>
                         </div>
@@ -139,7 +163,7 @@ function renderMyTeam() {
             return '<div class="no-results">No matches scheduled for today</div>';
         }
 
-        return todayMatches.map(match => {
+        return todayMatches.map((match, index) => {
             const homeTeam = match[0];
             const awayTeam = match[1];
 
@@ -217,7 +241,9 @@ function renderMyTeam() {
                 `;
             };
 
+            const separator = index === 0 ? '' : '<hr style="border: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">';
             return `
+                ${separator}
                 <div class="match-teams-row">
                     ${renderTeamTable(homeTeam, playersByTeam[homeTeam] || [])}
                     ${renderTeamTable(awayTeam, playersByTeam[awayTeam] || [])}

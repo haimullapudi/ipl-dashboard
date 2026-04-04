@@ -157,7 +157,7 @@ body {
 .tabs {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     border-bottom: 2px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 10px;
 }
@@ -365,12 +365,76 @@ th.sorted .sort-icon {
 .match-free-hit {
     background: rgba(240, 165, 0, 0.25) !important;
     border: 1px solid rgba(240, 165, 0, 0.5);
+    position: relative;
 }
 .match-free-hit:hover {
     background: rgba(240, 165, 0, 0.35) !important;
 }
+/* Free Hit tooltip - instant appearance with custom styling */
+.match-free-hit::after {
+    content: "🚀 Free Hit: Unlimited transfers (0 cost), all 11 score. Squad resets to Match 37.";
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(240, 165, 0, 0.95);
+    color: #1a1a2e;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    white-space: nowrap;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: none;
+}
+.match-free-hit:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
 .transfers-table th, .transfers-table td {
     font-size: 0.85rem;
+}
+.avg-subheader {
+    font-size: 0.75rem;
+    color: #666;
+    white-space: nowrap;
+}
+.avg-header {
+    font-size: 0.75rem;
+    color: #888;
+}
+.avg-value {
+    color: #888;
+}
+.avg-footer {
+    background-color: #f0f0f0;
+    border-top: 2px solid #ccc;
+    font-weight: bold;
+}
+.avg-label {
+    text-align: right;
+    padding-right: 10px;
+}
+.avg-value {
+    text-align: left;
+    padding-left: 5px;
+    font-size: 0.75rem;
+    color: #666;
+}
+.avg-row td {
+    font-size: 0.75rem;
+    color: #888;
+}
+.avg-row td:nth-child(19) {
+    text-align: left;
+    padding-left: 5px;
+}
+.avg-row td:nth-child(21) {
+    text-align: left;
+    padding-left: 5px;
 }
 .transfers-table th {
     white-space: nowrap;
@@ -458,10 +522,17 @@ th.sorted .sort-icon {
 .my-team-layout {
     display: grid;
     grid-template-columns: 1fr 3fr;
-    gap: 20px;
+}
+
+.my-team-section {
+    padding: 15px;
 }
 
 .my-team-list {
+    padding: 15px;
+}
+
+.match-teams-section {
     padding: 15px;
 }
 
@@ -539,13 +610,13 @@ th.sorted .sort-icon {
     margin: 0 8px;
 }
 
-.cv-tag.captain {
+.cv-tag.vice-captain {
     background: rgba(240, 165, 0, 0.3);
     color: #f0a500;
     border: 1px solid #f0a500;
 }
 
-.cv-tag.vice-captain {
+.cv-tag.captain {
     background: rgba(240, 165, 0, 0.2);
     color: #fbbf24;
     border: 1px solid #fbbf24;
@@ -554,6 +625,11 @@ th.sorted .sort-icon {
 .player-value {
     color: #aaa;
     font-size: 0.9rem;
+}
+
+.gameday-points {
+    color: #4ade80;
+    font-weight: 600;
 }
 
 .match-teams-row {

@@ -169,6 +169,7 @@ def load_transfers_data():
                 transfers.append({
                     'match_no': int(row['Match No']),
                     'date': row['Date'],
+                    'venue': row.get('Venue', ''),
                     'home': row['Home'],
                     'away': row['Away'],
                     'team1_gap': row.get('Team-1 Gap', ''),
@@ -185,6 +186,7 @@ def load_transfers_data():
                     'SRH': row.get('SRH', ''),
                     'total': row.get('Total', '11'),
                     'transfers': row.get('Transfers', ''),
+                    'cumm_transfers': row.get('Cumm. Transfers', ''),
                     'scoring_players': row.get('Scoring Players', '')
                 })
     except Exception as e:

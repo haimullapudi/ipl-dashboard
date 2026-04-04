@@ -30,6 +30,14 @@ The application will be available at `http://localhost:8000`
   - Bold text = Announced squad
 - **Stats cards** - Total players, announced squad, avg points, playing XI count
 
+## Recent Updates
+
+### Venue Column in Transfers Tab
+The Transfers page now includes a **Venue** column showing the match location (city extracted from stadium data).
+
+### API-First Transfer Optimizer
+The optimizer now defaults to fetching match data from the tour-fixtures API. CSV input is used only as a fallback when API calls fail.
+
 ## Dashboard Columns
 
 | Column | Description |
