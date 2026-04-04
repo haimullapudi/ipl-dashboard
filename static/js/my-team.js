@@ -267,34 +267,35 @@ function renderMyTeam() {
                             </tbody>
                         </table>
                     </div>
-                `;
-            };
-
-            // Render all matches for the day
-            if (matchTeams.length > 1) {
-                // Multiple matches - render teams side by side
-                const matchRows = matchTeams.map(m => {
-                    const homeT = m.home;
-                    const awayT = m.away;
-                    return `
-                        <div class="match-teams-row">
-                            ${renderTeamTable(homeT, playersByTeam[homeT.toLowerCase()] || [])}
-                            ${renderTeamTable(awayT, playersByTeam[awayT.toLowerCase()] || [])}
-                        </div>
-                    `;
-                });
-                return `<div class="all-matches-row">${matchRows.join('')}</div>`;
-            } else {
-                // Single match
-                const homeT = matchTeams[0].home;
-                const awayT = matchTeams[0].away;
-                return `
-                <div class="match-teams-row">
-                    ${renderTeamTable(homeT, playersByTeam[homeT.toLowerCase()] || [])}
-                    ${renderTeamTable(awayT, playersByTeam[awayT.toLowerCase()] || [])}
                 </div>
+            `;
+        };
+
+        // Render all matches for the day
+        if (matchTeams.length > 1) {
+            // Multiple matches - render teams side by side
+            const matchRows = matchTeams.map(m => {
+                const homeT = m.home;
+                const awayT = m.away;
+                return `
+                    <div class="match-teams-row">
+                        ${renderTeamTable(homeT, playersByTeam[homeT.toLowerCase()] || [])}
+                        ${renderTeamTable(awayT, playersByTeam[awayT.toLowerCase()] || [])}
+                    </div>
                 `;
-            }
+            });
+            return `<div class="all-matches-row">${matchRows.join('')}</div>`;
+        } else {
+            // Single match
+            const homeT = matchTeams[0].home;
+            const awayT = matchTeams[0].away;
+            return `
+            <div class="match-teams-row">
+                ${renderTeamTable(homeT, playersByTeam[homeT.toLowerCase()] || [])}
+                ${renderTeamTable(awayT, playersByTeam[awayT.toLowerCase()] || [])}
+            </div>
+            `;
+        }
     };
 
     container.innerHTML = `

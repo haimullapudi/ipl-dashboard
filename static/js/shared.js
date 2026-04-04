@@ -432,6 +432,7 @@ function getActiveMatch(fixtures) {
 
     // If all today's matches are upcoming (none have started yet), show them all
     if (upcomingMatches.length === todayMatches.length) {
+        // All today's matches are upcoming (none have started yet), show them all
         const firstMatchTime = upcomingMatches[0]?.dateTime;
         return {
             home: upcomingMatches.map(m => m.home).join(' vs '),

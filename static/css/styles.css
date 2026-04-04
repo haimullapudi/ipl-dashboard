@@ -408,7 +408,7 @@ th.sorted .sort-icon {
 
 /* Wildcard tooltip */
 .match-wildcard::after {
-    content: "🎯 Wildcard: Unlimited transfers (0 cost), squad persists. Best for match 14 or 52.";
+    content: "🎯 Wildcard: Unlimited transfers (0 cost), squad persists.";
     position: absolute;
     bottom: 100%;
     left: 50%;
