@@ -656,8 +656,4 @@ th.sorted .sort-icon {
     .my-team-layout {
         grid-template-columns: 1fr;
     }
-
-    .match-teams-row {
-        grid-template-columns: 1fr;
-    }
 }
