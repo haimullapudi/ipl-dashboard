@@ -32,10 +32,10 @@ FREE_HIT_MATCH = 38  # Optimal: LSG vs KKR (26-Apr-26)
 # - KKR: gap=7 forward, gap=10 backward
 
 # Wildcard configuration
-WILDCARD_MATCH = 14  # Default: Early strategy (end of first round-robin)
-# Alternative: Match 56 (Late strategy - playoff push)
-# Analysis: Early Wildcard gives 56 matches to benefit from new squad
-#           Late Wildcard optimizes for final 15 matches
+WILDCARD_MATCH = 20  # User choice: Mid-first round-robin reset
+# Alternative: Match 14 (Early strategy) or Match 56 (Late strategy)
+# Analysis: Match 20 allows squad reset at optimal mid-season point
+#           User preference for flexible squad management
 
 # Final Match Boost configuration
 FINAL_MATCH_BOOST_START = 68  # Apply dead-weight discarding from Match 68 onwards

@@ -1,34 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git init:*)",
-      "Bash(git:*)",
-      "Bash(lsof:*)",
-      "Bash(pip3 install:*)",
-      "Bash(python3:*)",
-      "Bash(pkill:*)",
-      "Bash(gh repo:*)",
-      "Read(//Users/seeku/code/**)",
-      "Bash(mv ipl ipl-dashboard)",
-      "Bash(curl:*)",
-      "Bash(source:*)",
-      "Bash(venv/bin/python3:*)",
-      "Bash(grep:*)",
-      "Bash(do:*)",
       "WebSearch",
-      "Bash(gh run:*)",
-      "Bash(open:*)",
-      "Bash(find .worktrees:*)",
-      "Bash(do grep:*)",
-      "Bash(npm run:*)",
-      "Bash(ls:*)",
-      "Bash(for i in 14 15 16 17 18 19 20 21 22 23 24 25)",
       "Read(//Users/seeku/code/ipl-dashboard/**)",
-      "Bash(done)",
-      "Bash(for i in 14 15 16 17 18 19 20)",
-      "Bash(python3:*)",
       "Bash(*)",
-      "python3(*)"
+      "Python3(*)",
+      "mcp__ide__getDiagnostics"
     ]
   }
 }

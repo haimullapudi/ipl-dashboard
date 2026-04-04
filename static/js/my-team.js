@@ -106,12 +106,15 @@ function renderMyTeam() {
     // Render My Team section (simplified cards)
     const renderMyTeamSection = () => {
         // Calculate total team value and total gameday points with captain/VC multipliers
+        // Only include players who are playing in the current match (isPlaying = true)
         const totalValue = myTeamPlayers.reduce((sum, p) => sum + (p.value || 0), 0);
         let totalGamedayPoints = 0;
         // Convert captain IDs to numbers for comparison
         const captainNum = Number(captainId);
         const viceCaptainNum = Number(viceCaptainId);
         myTeamPlayers.forEach(p => {
+            // Only count players who are playing in this match
+            if (!p.isPlaying) return;
             const playerId = Number(p.id);
             if (playerId === captainNum) {
                 totalGamedayPoints += (p.gamedayPoints || 0) * 2;
@@ -122,7 +125,16 @@ function renderMyTeam() {
             }
         });
 
-        let html = `<div class="team-table-wrapper"><h3 class="team-table-title">${teamName} (${totalValue})</h3><div class="team-table-container"><div class="my-team-list">`;
+        let html = `
+            <div class="team-table-wrapper">
+                <h3 class="team-table-title">${teamName}</h3>
+                <div class="team-table-score">
+                    <span class="match-score">Score: ${formatNumber(totalGamedayPoints)}</span>
+                    <span class="player-cost">Value: ${formatNumber(totalValue)}</span>
+                </div>
+                <div class="team-table-container">
+                <div class="my-team-list">
+        `;
 
         skillOrder.forEach(skill => {
             const players = playersBySkill[skill] || [];
