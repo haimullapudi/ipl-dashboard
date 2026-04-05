@@ -137,7 +137,7 @@ function renderTable() {
             <tr>
                 <th>Name</th>
                 <th>Team</th>
-                <th>Skill</th>
+                <th class="sortable" onclick="sortTable('skillName', 'string')" data-sort="skillName">Skill <span class="sort-icon">⇅</span></th>
                 <th class="sortable" onclick="sortTable('value', 'number')" data-sort="value">Value <span class="sort-icon">⇅</span></th>
                 <th>Sel By (%)</th>
                 <th>Cap (%)</th>

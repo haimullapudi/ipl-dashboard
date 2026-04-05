@@ -206,9 +206,23 @@ function getPointsThresholds() {
 }
 
 function sortPlayers(players, field, type) {
+    // Custom sort order for skill field
+    const skillOrder = {
+        'WICKET KEEPER': 1,
+        'BATSMAN': 2,
+        'ALL ROUNDER': 3,
+        'BOWLER': 4
+    };
+
     return [...players].sort((a, b) => {
         let aVal = a[field];
         let bVal = b[field];
+
+        if (field === 'skillName' || field === 'skillName') {
+            const aSkill = skillOrder[aVal] || 99;
+            const bSkill = skillOrder[bVal] || 99;
+            return aSkill - bSkill;
+        }
 
         if (type === 'boolean') {
             if (aVal && !bVal) return -1;

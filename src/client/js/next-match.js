@@ -58,9 +58,24 @@ function renderSingleMatchTable(homeTeam, awayTeam) {
 
     const renderTeamTable = (teamName, teamPlayers) => {
         // For next match, show all players - match hasn't started yet
+        // Custom sort order for skill field
+        const skillOrder = {
+            'WICKET KEEPER': 1,
+            'BATSMAN': 2,
+            'ALL ROUNDER': 3,
+            'BOWLER': 4
+        };
+
         const sorted = [...teamPlayers].sort((a, b) => {
             let aVal = a[matchSortField] || 0;
             let bVal = b[matchSortField] || 0;
+
+            if (matchSortField === 'skillName') {
+                const aSkill = skillOrder[aVal] || 99;
+                const bSkill = skillOrder[bVal] || 99;
+                return matchSortDir === 'desc' ? bSkill - aSkill : aSkill - bSkill;
+            }
+
             return matchSortDir === 'desc' ? bVal - aVal : aVal - bVal;
         });
 
@@ -83,7 +98,7 @@ function renderSingleMatchTable(homeTeam, awayTeam) {
                         <thead>
                             <tr>
                                 <th>Name</th>
-                                <th>Skill</th>
+                                <th class="sortable" onclick="sortMatchPlayers('skillName')">Skill <span class="sort-icon">⇅</span></th>
                                 <th class="sortable" onclick="sortMatchPlayers('value')">Value <span class="sort-icon">⇅</span></th>
                                 <th class="sortable" onclick="sortMatchPlayers('overallPoints')">Points <span class="sort-icon">⇅</span></th>
                                 <th>Sel By (%)</th>

@@ -4,19 +4,47 @@
       "temval": 98.5,
       "temid": 244960210,
       "tembal": 1.5,
-      "gdid": 9,
+      "gdid": 11,
       "gdpt": null,
       "ovpt": null,
-      "subleft": 142,
+      "subleft": 139,
       "suballd": 160,
-      "subusr": 18,
-      "subgdusr": 0,
-      "subtotal": 18,
+      "subusr": 21,
+      "subgdusr": 3,
+      "subtotal": 21,
       "isacct": 1,
-      "mcapt": 114349,
-      "vcapt": 65295,
+      "mcapt": 3993,
+      "vcapt": 61837,
       "bcapt": 0,
       "plyid": [
+        61837,
+        3993,
+        67589,
+        3852,
+        63649,
+        70761,
+        65295,
+        66044,
+        64225,
+        57672,
+        63611
+      ],
+      "plyskl": [
+        4,
+        1,
+        1,
+        1,
+        1,
+        1,
+        3,
+        3,
+        2,
+        2,
+        2
+      ],
+      "prmcapt": 114349,
+      "prvcapt": 65295,
+      "prplyid": [
         61837,
         59736,
         114349,
@@ -29,44 +57,16 @@
         10116,
         63611
       ],
-      "plyskl": [
-        4,
-        4,
-        1,
-        1,
-        1,
-        1,
-        3,
-        3,
-        2,
-        2,
-        2
-      ],
-      "prmcapt": 3852,
-      "prvcapt": 70761,
-      "prplyid": [
-        61837,
-        59736,
-        70222,
-        3852,
-        63649,
-        5313,
-        70761,
-        66044,
-        64225,
-        67735,
-        63611
-      ],
       "prsubleft": 142,
-      "skillcnt": 43224,
+      "skillcnt": 53214,
       "isfreeup": 0,
       "freeupcnt": 1,
       "booster": null
     },
     "FeedTime": {
-      "UTCTime": "4/5/2026 1:34:26 PM",
-      "ISTTime": "4/5/2026 7:04:26 PM",
-      "CESTTime": "4/5/2026 3:34:26 PM"
+      "UTCTime": "4/5/2026 4:28:53 PM",
+      "ISTTime": "4/5/2026 9:58:53 PM",
+      "CESTTime": "4/5/2026 6:28:53 PM"
     }
   },
   "Meta": {
@@ -74,9 +74,9 @@
     "RetVal": 1,
     "Success": true,
     "Timestamp": {
-      "UTCTime": "4/5/2026 1:34:26 PM",
-      "ISTTime": "4/5/2026 7:04:26 PM",
-      "CESTTime": "4/5/2026 3:34:26 PM"
+      "UTCTime": "4/5/2026 4:28:53 PM",
+      "ISTTime": "4/5/2026 9:58:53 PM",
+      "CESTTime": "4/5/2026 6:28:53 PM"
     }
   }
 }
