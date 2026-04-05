@@ -242,7 +242,8 @@ def fetch_players():
                     'isInjured': p.get('isInjured') == '1',
                     'isActive': p.get('IsActive') == 1,
                     'playerDesc': p.get('PlayerDesc'),
-                    'isImpactPlayer': p.get('isImpactPlayer') == 1
+                    'isImpactPlayer': p.get('isImpactPlayer') == 1,
+                    'is_FP': p.get('IS_FP') == '1'
                 })
             return {'gamedayPlayers': players}
     except Exception as e:

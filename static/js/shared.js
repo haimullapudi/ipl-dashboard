@@ -89,7 +89,16 @@ async function getPlayers(gameday) {
         }
 
         if (response.ok) {
-            _playersCache = await response.json();
+            const rawData = await response.json();
+            // Transform IS_FP (string) to is_FP (boolean)
+            const rawPlayers = rawData?.Data?.Value?.Players || [];
+            const players = rawPlayers.map(p => ({
+                ...p,
+                is_FP: p.IS_FP === '1'
+            }));
+            _playersCache = {
+                gamedayPlayers: players
+            };
             _playersTimestamp = Date.now();
             return _playersCache;
         }
