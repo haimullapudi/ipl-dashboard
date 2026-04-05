@@ -104,6 +104,7 @@ function renderSingleMatchTable(homeTeam, awayTeam) {
                                     <td class="${p.isPlaying ? 'playing-player' : ''}">
                                         ${p.fullName || p.shortName}
                                         ${p.isImpactPlayer ? '<span class="impact-tag">IMP</span>' : ''}
+                                        ${p.is_FP ? '<span class="foreign-tag">FP</span>' : ''}
                                         ${!p.isPlaying && p.isAnnounced ? '<span class="impact-tag" style="background: rgba(255,255,255,0.2); color: #aaa; border: 1px solid #aaa;">NP</span>' : ''}
                                     </td>
                                     <td>${p.skillName || '-'}</td>

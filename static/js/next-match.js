@@ -97,6 +97,7 @@ function renderSingleMatchTable(homeTeam, awayTeam) {
                                     <td>
                                         ${p.fullName || p.shortName}
                                         ${p.isImpactPlayer ? '<span class="impact-tag">IMP</span>' : ''}
+                                        ${p.is_FP ? '<span class="foreign-tag">FP</span>' : ''}
                                     </td>
                                     <td>${p.skillName || '-'}</td>
                                     <td>${formatNumber(p.value)}</td>
