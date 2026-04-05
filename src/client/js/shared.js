@@ -90,12 +90,40 @@ async function getPlayers(gameday) {
 
         if (response.ok) {
             const rawData = await response.json();
-            // Transform API response format: Data.Value.Players
+            // Static file format: gamedayPlayers array with lowercase fields
+            // API format: Data.Value.Players (needs transformation)
             const rawPlayers = rawData?.Data?.Value?.Players || [];
-            const players = rawPlayers.map(p => ({
-                ...p,
-                is_FP: p.IS_FP === '1'
-            }));
+            let players = [];
+
+            if (rawPlayers.length > 0) {
+                // API format - transform to lowercase field names
+                players = rawPlayers.map(p => ({
+                    id: p.Id,
+                    fullName: p.Name,
+                    shortName: p.ShortName,
+                    teamId: p.TeamId,
+                    teamShortName: p.TeamShortName,
+                    skillName: p.SkillName,
+                    skillId: p.SkillId,
+                    value: p.Value,
+                    selectedPer: p.SelectedPer,
+                    capSelectedPer: p.CapSelectedPer,
+                    vCapSelectedPer: p.VCapSelectedPer,
+                    overallPoints: p.OverallPoints,
+                    gamedayPoints: p.GamedayPoints,
+                    isAnnounced: p.IsAnnounced === 'P',
+                    isPlaying: p.IsAnnounced === 'P',
+                    isInjured: p.isInjured === '1',
+                    isActive: p.IsActive === 1,
+                    playerDesc: p.PlayerDesc,
+                    isImpactPlayer: p.isImpactPlayer === '1',
+                    is_FP: p.IS_FP === '1'
+                }));
+            } else if (rawData.gamedayPlayers) {
+                // Static file format - already has lowercase fields
+                players = rawData.gamedayPlayers;
+            }
+
             _playersCache = {
                 gamedayPlayers: players
             };
