@@ -90,30 +90,12 @@ async function getPlayers(gameday) {
 
         if (response.ok) {
             const rawData = await response.json();
-            // Handle API response format: Data.Value.Players
-            let rawPlayers = rawData?.Data?.Value?.Players || [];
-            let players = [];
-
-            if (rawPlayers.length > 0) {
-                // API format - transform IS_FP (string) to is_FP (boolean)
-                players = rawPlayers.map(p => ({
-                    ...p,
-                    is_FP: p.IS_FP === '1'
-                }));
-            } else if (rawData.gamedayPlayers) {
-                // Static file format - gamedayPlayers array
-                // Check if is_FP already exists (from build_static.py)
-                if (rawData.gamedayPlayers[0] && 'is_FP' in rawData.gamedayPlayers[0]) {
-                    players = rawData.gamedayPlayers;
-                } else {
-                    // Fallback: try IS_FP field
-                    players = rawData.gamedayPlayers.map(p => ({
-                        ...p,
-                        is_FP: p.IS_FP === '1'
-                    }));
-                }
-            }
-
+            // Transform API response format: Data.Value.Players
+            const rawPlayers = rawData?.Data?.Value?.Players || [];
+            const players = rawPlayers.map(p => ({
+                ...p,
+                is_FP: p.IS_FP === '1'
+            }));
             _playersCache = {
                 gamedayPlayers: players
             };

@@ -224,28 +224,27 @@ def fetch_players():
             players = []
             for p in raw_players:
                 players.append({
-                    'id': p.get('Id'),
-                    'fullName': p.get('Name'),
-                    'shortName': p.get('ShortName'),
-                    'teamId': p.get('TeamId'),
-                    'teamShortName': p.get('TeamShortName'),
-                    'skillName': p.get('SkillName'),
-                    'skillId': p.get('SkillId'),
-                    'value': p.get('Value'),
-                    'selectedPer': p.get('SelectedPer'),
-                    'capSelectedPer': p.get('CapSelectedPer'),
-                    'vCapSelectedPer': p.get('VCapSelectedPer'),
-                    'overallPoints': p.get('OverallPoints'),
-                    'gamedayPoints': p.get('GamedayPoints'),
-                    'isAnnounced': p.get('IsAnnounced') in ['P', 'NP'],
-                    'isPlaying': p.get('IsAnnounced') == 'P',
-                    'isInjured': p.get('isInjured') == '1',
-                    'isActive': p.get('IsActive') == 1,
-                    'playerDesc': p.get('PlayerDesc'),
-                    'isImpactPlayer': p.get('isImpactPlayer') == 1,
-                    'is_FP': p.get('IS_FP') == '1'
+                    'Id': p.get('Id'),
+                    'Name': p.get('Name'),
+                    'ShortName': p.get('ShortName'),
+                    'TeamId': p.get('TeamId'),
+                    'TeamShortName': p.get('TeamShortName'),
+                    'SkillName': p.get('SkillName'),
+                    'SkillId': p.get('SkillId'),
+                    'Value': p.get('Value'),
+                    'SelectedPer': p.get('SelectedPer'),
+                    'CapSelectedPer': p.get('CapSelectedPer'),
+                    'VCapSelectedPer': p.get('VCapSelectedPer'),
+                    'OverallPoints': p.get('OverallPoints'),
+                    'GamedayPoints': p.get('GamedayPoints'),
+                    'IsAnnounced': 'P' if p.get('IsAnnounced') else '',
+                    'isInjured': '0',
+                    'IsActive': 1,
+                    'PlayerDesc': p.get('PlayerDesc'),
+                    'isImpactPlayer': '1' if p.get('isImpactPlayer') else '0',
+                    'IS_FP': '1' if p.get('IS_FP') else '0'
                 })
-            return {'gamedayPlayers': players}
+            return {'Data': {'Value': {'Players': players}, 'FeedTime': data.get('Data', {}).get('FeedTime', {})}, 'Meta': data.get('Meta', {})}
     except Exception as e:
         print(f"Error fetching players: {e}")
         return None
@@ -286,7 +285,8 @@ def main():
     # Fetch and save players data
     players_data = fetch_players()
     if players_data:
-        player_count = len(players_data.get('gamedayPlayers', []))
+        # Count from Data.Value.Players (API format)
+        player_count = len(players_data.get('Data', {}).get('Value', {}).get('Players', []))
         with open(os.path.join(api_dir, 'players.json'), 'w') as f:
             json.dump(players_data, f, indent=2)
         print(f"[SAVE] players.json - {player_count} players")
