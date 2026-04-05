@@ -10,7 +10,7 @@
       "subleft": 142,
       "suballd": 160,
       "subusr": 18,
-      "subgdusr": 3,
+      "subgdusr": 0,
       "subtotal": 18,
       "isacct": 1,
       "mcapt": 114349,
@@ -57,16 +57,16 @@
         67735,
         63611
       ],
-      "prsubleft": 145,
+      "prsubleft": 142,
       "skillcnt": 43224,
       "isfreeup": 0,
       "freeupcnt": 1,
       "booster": null
     },
     "FeedTime": {
-      "UTCTime": "4/4/2026 7:02:11 PM",
-      "ISTTime": "4/5/2026 12:32:11 AM",
-      "CESTTime": "4/4/2026 9:02:11 PM"
+      "UTCTime": "4/5/2026 12:11:03 PM",
+      "ISTTime": "4/5/2026 5:41:03 PM",
+      "CESTTime": "4/5/2026 2:11:03 PM"
     }
   },
   "Meta": {
@@ -74,9 +74,9 @@
     "RetVal": 1,
     "Success": true,
     "Timestamp": {
-      "UTCTime": "4/4/2026 7:02:11 PM",
-      "ISTTime": "4/5/2026 12:32:11 AM",
-      "CESTTime": "4/4/2026 9:02:11 PM"
+      "UTCTime": "4/5/2026 12:11:03 PM",
+      "ISTTime": "4/5/2026 5:41:03 PM",
+      "CESTTime": "4/5/2026 2:11:03 PM"
     }
   }
 }

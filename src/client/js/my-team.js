@@ -130,7 +130,7 @@ function renderMyTeam() {
                 <h3 class="team-table-title">${teamName}</h3>
                 <div class="team-table-score">
                     <span class="match-score">Score: ${formatNumber(totalGamedayPoints)}</span>
-                    <span class="player-cost">Value: ${formatNumber(totalValue)}</span>
+                    <span class="player-cost">Cost: ${formatNumber(totalValue)}</span>
                 </div>
                 <div class="team-table-container">
                 <div class="my-team-list">

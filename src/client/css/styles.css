@@ -254,6 +254,17 @@ th.sorted .sort-icon {
     font-size: 0.7rem;
     font-weight: 600;
 }
+.foreign-tag {
+    display: inline-block;
+    margin-left: 6px;
+    padding: 2px 5px;
+    background: rgba(255, 80, 80, 0.2);
+    border: 1px solid #ff5050;
+    border-radius: 4px;
+    color: #ff5050;
+    font-size: 0.65rem;
+    font-weight: 600;
+}
 .points-high { color: #4ade80; }
 .points-med { color: #fbbf24; }
 .points-low { color: #f87171; }

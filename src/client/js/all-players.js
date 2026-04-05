@@ -149,10 +149,11 @@ function renderTable() {
     }
 
     tbody.innerHTML = sortedPlayers.map(p => `
-        <tr data-team="${p.teamShortName || ''}" data-playing="${p.isPlaying ? '1' : '0'}">
+        <tr data-team="${p.teamShortName || ''}" data-playing="${p.isPlaying ? '1' : '0'}" data-fp="${p.is_FP ? '1' : '0'}">
             <td class="${p.isPlaying ? 'playing-player' : ''}">
                 ${p.fullName || p.shortName || '-'}
                 ${p.isImpactPlayer ? '<span class="impact-tag">IMP</span>' : ''}
+                ${p.is_FP ? '<span class="foreign-tag">FP</span>' : ''}
             </td>
             <td>${p.teamShortName || '-'}</td>
             <td>${p.skillName || '-'}</td>
@@ -171,6 +172,7 @@ function renderTable() {
 function applyFilters() {
     const teamFilter = document.getElementById('teamFilter').value;
     const playingXi = document.getElementById('playingXi').checked;
+    const foreignPlayers = document.getElementById('foreignPlayers').checked;
     const rows = document.querySelectorAll('#playersBody tr');
 
     let visibleCount = 0;
@@ -178,6 +180,7 @@ function applyFilters() {
     rows.forEach(row => {
         const team = row.dataset.team;
         const isPlaying = row.dataset.playing === '1';
+        const isFP = row.dataset.fp === '1';
 
         let show = true;
 
@@ -186,6 +189,10 @@ function applyFilters() {
         }
 
         if (playingXi && !isPlaying) {
+            show = false;
+        }
+
+        if (foreignPlayers && !isFP) {
             show = false;
         }
 
@@ -214,6 +221,7 @@ function applyFilters() {
 function resetFilters() {
     document.getElementById('teamFilter').value = '';
     document.getElementById('playingXi').checked = false;
+    document.getElementById('foreignPlayers').checked = false;
     applyFilters();
 }
 
