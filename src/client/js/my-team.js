@@ -164,7 +164,7 @@ function renderMyTeam() {
 
                     html += `
                         <div class="my-team-player${playingClass}">
-                            <span class="player-name">${teamTag}${p.fullName || p.shortName}${gamedayPointsHtml}</span>
+                            <span class="player-name">${teamTag}${p.fullName || p.shortName}${p.is_FP ? '<span class="foreign-tag">FP</span>' : ''}${gamedayPointsHtml}</span>
                             ${cvTag}
                             <span class="player-value">${formatNumber(p.value)}</span>
                         </div>

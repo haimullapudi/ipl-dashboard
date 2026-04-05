@@ -117,7 +117,7 @@ async function getPlayers(gameday) {
                     isActive: p.IsActive === 1,
                     playerDesc: p.PlayerDesc,
                     isImpactPlayer: p.isImpactPlayer === '1',
-                    is_FP: p.IS_FP === '1'
+                    is_FP: p.IS_FP === '1' || p.IS_FP === true
                 }));
             } else if (rawData.gamedayPlayers) {
                 // Static file format - already has lowercase fields

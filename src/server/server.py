@@ -234,7 +234,8 @@ def get_players():
                     'isInjured': p.get('isInjured') == '1',
                     'isActive': p.get('IsActive') == 1,
                     'playerDesc': p.get('PlayerDesc'),
-                    'isImpactPlayer': p.get('isImpactPlayer') == 1
+                    'isImpactPlayer': p.get('isImpactPlayer') == 1,
+                    'is_FP': p.get('IS_FP') == '1' or p.get('IS_FP') == True
                 })
             return jsonify({'gamedayPlayers': gameday_players})
     except Exception as e:
