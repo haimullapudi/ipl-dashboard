@@ -180,20 +180,34 @@ class TestTransferConstraints(unittest.TestCase):
         for team in TEAMS:
             prev_squad[team] = int(match1[team]) if match1[team] else 0
 
-        # Detect if this is a Free Hit run (Match 38 has 0 transfers)
-        match38_transfers = int(self.matches[37]['Transfers']) if self.matches[37]['Transfers'] else 0
-        is_free_hit_run = (match38_transfers == 0)
+        # Detect Wildcard and Free Hit matches by checking for 0 transfers
+        wildcard_match = None
+        free_hit_match = None
 
-        # Detect if this is a Wildcard run (Match 14 has 0 transfers)
-        match14_transfers = int(self.matches[13]['Transfers']) if self.matches[13]['Transfers'] else 0
-        is_wildcard_run = (match14_transfers == 0)
+        for i, match in enumerate(self.matches):
+            match_no = int(match['Match No'])
+            transfers = int(match['Transfers']) if match['Transfers'] else 0
+
+            # Match 1 is always 0 transfers (initial squad)
+            if match_no == 1:
+                continue
+
+            # Wildcard: first match after Match 1 with 0 transfers is Wildcard
+            if transfers == 0 and wildcard_match is None:
+                wildcard_match = match_no
+            # Free Hit: second match with 0 transfers is Free Hit
+            elif transfers == 0 and wildcard_match is not None and free_hit_match is None:
+                free_hit_match = match_no
+
+        is_free_hit_run = free_hit_match is not None
+        is_wildcard_run = wildcard_match is not None
 
         for i in range(1, len(self.matches)):
             match = self.matches[i]
             match_no = int(match['Match No'])
 
-            # Skip Free Hit (Match 38) and Wildcard (Match 14) - they have 0 transfers by design
-            if (is_free_hit_run and match_no == 38) or (is_wildcard_run and match_no == 14):
+            # Skip Free Hit and Wildcard matches - they have 0 transfers by design
+            if (is_free_hit_run and match_no == free_hit_match) or (is_wildcard_run and match_no == wildcard_match):
                 prev_squad = {team: int(match[team]) if match[team] else 0 for team in TEAMS}
                 continue
 
@@ -201,11 +215,12 @@ class TestTransferConstraints(unittest.TestCase):
             for team in TEAMS:
                 curr_squad[team] = int(match[team]) if match[team] else 0
 
-            # For Match 39 (after Free Hit), compare against Match 37's squad (pre-Free Hit)
+            # For Match after Free Hit, compare against squad before Free Hit
             # because Free Hit squad reverts after the match
-            if is_free_hit_run and match_no == 39:
-                match37 = self.matches[36]
-                prev_squad = {team: int(match37[team]) if match37[team] else 0 for team in TEAMS}
+            if is_free_hit_run and match_no == free_hit_match + 1:
+                prev_match = free_hit_match - 1
+                match_prev = self.matches[prev_match - 1]  # -1 for 0-index
+                prev_squad = {team: int(match_prev[team]) if match_prev[team] else 0 for team in TEAMS}
 
             # Calculate expected transfers: 11 - carried_over
             carried_over = sum(min(prev_squad[team], curr_squad[team]) for team in TEAMS)
@@ -263,12 +278,25 @@ class TestScoringPlayers(unittest.TestCase):
 
     def test_max_scoring_players(self):
         """Each match (except Match 1, Free Hit, and Wildcard) should have at most 6 scoring players."""
+        # Detect Wildcard and Free Hit by finding matches with 0 transfers (after Match 1)
+        wildcard_match = None
+        free_hit_match = None
+        for match in self.matches:
+            match_no = int(match['Match No'])
+            if match_no == 1:
+                continue
+            transfers = int(match['Transfers']) if match['Transfers'] else 0
+            if transfers == 0 and wildcard_match is None:
+                wildcard_match = match_no
+            elif transfers == 0 and wildcard_match is not None and free_hit_match is None:
+                free_hit_match = match_no
+
         for match in self.matches:
             match_no = int(match['Match No'])
             if match_no == 1:
                 continue  # Match 1 is initial squad, constraints apply from Match 2
-            # Free Hit (Match 38) and Wildcard (Match 14) allow 11 scoring players
-            if match_no == 38 or match_no == 14:
+            # Free Hit and Wildcard allow 11 scoring players
+            if match_no == free_hit_match or match_no == wildcard_match:
                 continue
             scoring = int(match['Scoring Players'])
             self.assertLessEqual(scoring, 6,
